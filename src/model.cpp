@@ -35,7 +35,7 @@
 /* Author Ioan Sucan */
 
 #include "srdf/model.h"
-#include <ros/console.h>
+#include <console_bridge/console.h>
 #include <boost/lexical_cast.hpp>
 #include <boost/algorithm/string/trim.hpp>
 #include <algorithm>
@@ -53,27 +53,27 @@ void srdf::Model::loadVirtualJoints(const urdf::ModelInterface &urdf_model, TiXm
     const char *type = vj_xml->Attribute("type");
     if (!jname)
     {
-      ROS_ERROR("Name of virtual joint is not specified");
+      logError("Name of virtual joint is not specified");
       continue;
     }
     if (!child)
     {
-      ROS_ERROR("Child link of virtual joint is not specified");
+      logError("Child link of virtual joint is not specified");
       continue;
     }
     if (!urdf_model.getLink(boost::trim_copy(std::string(child))))
     {
-      ROS_ERROR("Virtual joint does not attach to a link on the robot (link '%s' is not known)", child);
+      logError("Virtual joint does not attach to a link on the robot (link '%s' is not known)", child);
       continue;
     }
     if (!parent)
     {
-      ROS_ERROR("Parent frame of virtual joint is not specified");
+      logError("Parent frame of virtual joint is not specified");
       continue;
     }
     if (!type)
     {
-      ROS_ERROR("Type of virtual joint is not specified");
+      logError("Type of virtual joint is not specified");
       continue;
     }
     VirtualJoint vj;
@@ -81,7 +81,7 @@ void srdf::Model::loadVirtualJoints(const urdf::ModelInterface &urdf_model, TiXm
     std::transform(vj.type_.begin(), vj.type_.end(), vj.type_.begin(), ::tolower);
     if (vj.type_ != "planar" && vj.type_ != "floating" && vj.type_ != "fixed")
     {
-      ROS_ERROR("Unknown type of joint: '%s'. Assuming 'fixed' instead. Other known types are 'planar' and 'floating'.", type);
+      logError("Unknown type of joint: '%s'. Assuming 'fixed' instead. Other known types are 'planar' and 'floating'.", type);
       vj.type_ = "fixed";
     }
     vj.name_ = std::string(jname); boost::trim(vj.name_);        
@@ -98,7 +98,7 @@ void srdf::Model::loadGroups(const urdf::ModelInterface &urdf_model, TiXmlElemen
     const char *gname = group_xml->Attribute("name");
     if (!gname)
     {
-      ROS_ERROR("Group name not specified");
+      logError("Group name not specified");
       continue;
     }
     Group g;
@@ -110,13 +110,13 @@ void srdf::Model::loadGroups(const urdf::ModelInterface &urdf_model, TiXmlElemen
       const char *lname = link_xml->Attribute("name");
       if (!lname)
       {
-        ROS_ERROR("Link name not specified");
+        logError("Link name not specified");
         continue;
       }
       std::string lname_str = boost::trim_copy(std::string(lname));
       if (!urdf_model.getLink(lname_str))
       {
-        ROS_ERROR("Link '%s' declared as part of group '%s' is not known to the URDF", lname, gname);
+        logError("Link '%s' declared as part of group '%s' is not known to the URDF", lname, gname);
         continue;
       }
       g.links_.push_back(lname_str);
@@ -128,7 +128,7 @@ void srdf::Model::loadGroups(const urdf::ModelInterface &urdf_model, TiXmlElemen
       const char *jname = joint_xml->Attribute("name");
       if (!jname)
       {
-        ROS_ERROR("Joint name not specified");
+        logError("Joint name not specified");
         continue;
       }
       std::string jname_str = boost::trim_copy(std::string(jname));
@@ -143,7 +143,7 @@ void srdf::Model::loadGroups(const urdf::ModelInterface &urdf_model, TiXmlElemen
           }
         if (missing)
         {
-          ROS_ERROR("Joint '%s' declared as part of group '%s' is not known to the URDF", jname, gname);
+          logError("Joint '%s' declared as part of group '%s' is not known to the URDF", jname, gname);
           continue;
         }
       }
@@ -157,24 +157,24 @@ void srdf::Model::loadGroups(const urdf::ModelInterface &urdf_model, TiXmlElemen
       const char *tip = chain_xml->Attribute("tip_link");
       if (!base)
       {
-        ROS_ERROR("Base link name not specified for chain");
+        logError("Base link name not specified for chain");
         continue;
       }
       if (!tip)
       {
-        ROS_ERROR("Tip link name not specified for chain");
+        logError("Tip link name not specified for chain");
         continue;
       }
       std::string base_str = boost::trim_copy(std::string(base));
       std::string tip_str = boost::trim_copy(std::string(tip));
       if (!urdf_model.getLink(base_str))
       {
-        ROS_ERROR("Link '%s' declared as part of a chain in group '%s' is not known to the URDF", base, gname);
+        logError("Link '%s' declared as part of a chain in group '%s' is not known to the URDF", base, gname);
         continue;
       }
       if (!urdf_model.getLink(tip_str))
       {
-        ROS_ERROR("Link '%s' declared as part of a chain in group '%s' is not known to the URDF", tip, gname);
+        logError("Link '%s' declared as part of a chain in group '%s' is not known to the URDF", tip, gname);
         continue;
       }
       bool found = false;
@@ -202,7 +202,7 @@ void srdf::Model::loadGroups(const urdf::ModelInterface &urdf_model, TiXmlElemen
       if (found)
         g.chains_.push_back(std::make_pair(base_str, tip_str));
       else
-        ROS_ERROR("Links '%s' and '%s' do not form a chain. Not included in group '%s'", base, tip, gname);
+        logError("Links '%s' and '%s' do not form a chain. Not included in group '%s'", base, tip, gname);
     }
     
     // get the subgroups in the groups
@@ -211,13 +211,13 @@ void srdf::Model::loadGroups(const urdf::ModelInterface &urdf_model, TiXmlElemen
       const char *sub = subg_xml->Attribute("name");
       if (!sub)
       {
-        ROS_ERROR("Group name not specified when included as subgroup");
+        logError("Group name not specified when included as subgroup");
         continue;
       }
       g.subgroups_.push_back(boost::trim_copy(std::string(sub)));
     }
     if (g.links_.empty() && g.joints_.empty() && g.chains_.empty() && g.subgroups_.empty())
-      ROS_WARN("Group '%s' is empty.", gname);
+      logWarn("Group '%s' is empty.", gname);
     groups_.push_back(g);
   }
   
@@ -259,7 +259,7 @@ void srdf::Model::loadGroups(const urdf::ModelInterface &urdf_model, TiXmlElemen
       if (known_groups.find(groups_[i].name_) != known_groups.end())
         correct.push_back(groups_[i]);
       else
-        ROS_ERROR("Group '%s' has unsatisfied subgroups", groups_[i].name_.c_str());
+        logError("Group '%s' has unsatisfied subgroups", groups_[i].name_.c_str());
     groups_.swap(correct);
   }
 }
@@ -272,12 +272,12 @@ void srdf::Model::loadGroupStates(const urdf::ModelInterface &urdf_model, TiXmlE
     const char *gname = gstate_xml->Attribute("group");
     if (!sname)
     {
-      ROS_ERROR("Name of group state is not specified");
+      logError("Name of group state is not specified");
       continue;
     }
     if (!gname)
     {
-      ROS_ERROR("Name of group for state '%s' is not specified", sname);
+      logError("Name of group for state '%s' is not specified", sname);
       continue;
     }
     
@@ -294,7 +294,7 @@ void srdf::Model::loadGroupStates(const urdf::ModelInterface &urdf_model, TiXmlE
       }
     if (!found)
     {
-      ROS_ERROR("Group state '%s' specified for group '%s', but that group is not known", sname, gname);
+      logError("Group state '%s' specified for group '%s', but that group is not known", sname, gname);
       continue;
     }
     
@@ -305,12 +305,12 @@ void srdf::Model::loadGroupStates(const urdf::ModelInterface &urdf_model, TiXmlE
       const char *jval = joint_xml->Attribute("value");
       if (!jname)
       {
-        ROS_ERROR("Joint name not specified in group state '%s'", sname);
+        logError("Joint name not specified in group state '%s'", sname);
         continue;
       }
       if (!jval)
       {
-        ROS_ERROR("Joint name not specified for joint '%s' in group state '%s'", jname, sname);
+        logError("Joint name not specified for joint '%s' in group state '%s'", jname, sname);
         continue;
       }
       std::string jname_str = boost::trim_copy(std::string(jname));
@@ -325,7 +325,7 @@ void srdf::Model::loadGroupStates(const urdf::ModelInterface &urdf_model, TiXmlE
           }
         if (missing)
         {
-          ROS_ERROR("Joint '%s' declared as part of group state '%s' is not known to the URDF", jname, sname);
+          logError("Joint '%s' declared as part of group state '%s' is not known to the URDF", jname, sname);
           continue;
         }
       }
@@ -341,11 +341,11 @@ void srdf::Model::loadGroupStates(const urdf::ModelInterface &urdf_model, TiXmlE
       }
       catch (boost::bad_lexical_cast &e)
       {
-        ROS_ERROR("Unable to parse joint value '%s'", jval);
+        logError("Unable to parse joint value '%s'", jval);
       }
       
       if (gs.joint_values_.empty())
-        ROS_ERROR("Unable to parse joint value ('%s') for joint '%s' in group state '%s'", jval, jname, sname);
+        logError("Unable to parse joint value ('%s') for joint '%s' in group state '%s'", jval, jname, sname);
     }
     group_states_.push_back(gs);
   }
@@ -360,12 +360,12 @@ void srdf::Model::loadEndEffectors(const urdf::ModelInterface &urdf_model, TiXml
     const char *parent = eef_xml->Attribute("parent_link");
     if (!ename)
     {
-      ROS_ERROR("Name of end effector is not specified");
+      logError("Name of end effector is not specified");
       continue;
     }
     if (!gname)
     {
-      ROS_ERROR("Group not specified for end effector '%s'", ename);
+      logError("Group not specified for end effector '%s'", ename);
       continue;
     }
     EndEffector e;
@@ -380,18 +380,18 @@ void srdf::Model::loadEndEffectors(const urdf::ModelInterface &urdf_model, TiXml
       }
     if (!found)
     {
-      ROS_ERROR("End effector '%s' specified for group '%s', but that group is not known", ename, gname);
+      logError("End effector '%s' specified for group '%s', but that group is not known", ename, gname);
       continue;
     }
     if (!parent)
     {
-      ROS_ERROR("Parent link not specified for end effector '%s'", ename);
+      logError("Parent link not specified for end effector '%s'", ename);
       continue;
     }
     e.parent_link_ = std::string(parent); boost::trim(e.parent_link_);
     if (!urdf_model.getLink(e.parent_link_))
     {
-      ROS_ERROR("Link '%s' specified as parent for end effector '%s' is not known to the URDF", parent, ename);
+      logError("Link '%s' specified as parent for end effector '%s' is not known to the URDF", parent, ename);
       continue;
     }
     end_effectors_.push_back(e);
@@ -406,7 +406,7 @@ void srdf::Model::loadDisabledCollisions(const urdf::ModelInterface &urdf_model,
     const char *link2 = c_xml->Attribute("link2");
     if (!link1 || !link2)
     {
-      ROS_ERROR("A pair of links needs to be specified to disable collisions");
+      logError("A pair of links needs to be specified to disable collisions");
       continue;
     }
     DisabledCollision dc;
@@ -414,12 +414,12 @@ void srdf::Model::loadDisabledCollisions(const urdf::ModelInterface &urdf_model,
     dc.link2_ = boost::trim_copy(std::string(link2));
     if (!urdf_model.getLink(dc.link1_))
     {
-      ROS_ERROR("Link '%s' is not known to URDF. Cannot disable collisons.", link1);
+      logError("Link '%s' is not known to URDF. Cannot disable collisons.", link1);
       continue;
     }
     if (!urdf_model.getLink(dc.link2_))
     {
-      ROS_ERROR("Link '%s' is not known to URDF. Cannot disable collisons.", link2);
+      logError("Link '%s' is not known to URDF. Cannot disable collisons.", link2);
       continue;
     }
     const char *reason = c_xml->Attribute("reason");
@@ -434,19 +434,19 @@ bool srdf::Model::initXml(const urdf::ModelInterface &urdf_model, TiXmlElement *
   clear();
   if (!robot_xml || robot_xml->ValueStr() != "robot")
   {
-    ROS_ERROR("Could not find the 'robot' element in the xml file");
+    logError("Could not find the 'robot' element in the xml file");
     return false;
   }
   
   // get the robot name
   const char *name = robot_xml->Attribute("name");
   if (!name)
-    ROS_ERROR("No name given for the robot.");
+    logError("No name given for the robot.");
   else
   {
     name_ = std::string(name); boost::trim(name_);
     if (name_ != urdf_model.getName())
-      ROS_ERROR("Semantic description is not specified for the same robot as the URDF");
+      logError("Semantic description is not specified for the same robot as the URDF");
   }
   
   loadVirtualJoints(urdf_model, robot_xml);
@@ -463,7 +463,7 @@ bool srdf::Model::initXml(const urdf::ModelInterface &urdf_model, TiXmlDocument 
   TiXmlElement *robot_xml = xml ? xml->FirstChildElement("robot") : NULL;
   if (!robot_xml)
   {
-    ROS_ERROR("Could not find the 'robot' element in the xml file");
+    logError("Could not find the 'robot' element in the xml file");
     return false;
   }
   return initXml(urdf_model, robot_xml);
@@ -488,7 +488,7 @@ bool srdf::Model::initFile(const urdf::ModelInterface &urdf_model, const std::st
   }
   else
   {
-    ROS_ERROR("Could not open file [%s] for parsing.", filename.c_str());
+    logError("Could not open file [%s] for parsing.", filename.c_str());
     return false;
   }
 }

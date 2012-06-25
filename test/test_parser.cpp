@@ -42,6 +42,10 @@
 
 #define EXPECT_TRUE(arg) if (!(arg)) throw std::runtime_error("Assertion failed at line " + boost::lexical_cast<std::string>(__LINE__))
 
+#ifndef TEST_RESOURCE_LOCATION
+#  define TEST_RESOURCE_LOCATION "."
+#endif
+
 boost::shared_ptr<urdf::ModelInterface> loadURDF(const std::string& filename)
 {
   // get the entire file
@@ -68,24 +72,24 @@ boost::shared_ptr<urdf::ModelInterface> loadURDF(const std::string& filename)
 void testSimple(void)
 {
   srdf::Model s;
-  boost::shared_ptr<urdf::ModelInterface> u = loadURDF("test/res/pr2_desc.urdf");
+  boost::shared_ptr<urdf::ModelInterface> u = loadURDF(std::string(TEST_RESOURCE_LOCATION) + "/pr2_desc.urdf");
   EXPECT_TRUE(u != NULL);
   
-  EXPECT_TRUE(s.initFile(*u, "test/res/pr2_desc.1.srdf"));
+  EXPECT_TRUE(s.initFile(*u, std::string(TEST_RESOURCE_LOCATION) + "/pr2_desc.1.srdf"));
   EXPECT_TRUE(s.getVirtualJoints().size() == 0);
   EXPECT_TRUE(s.getGroups().size() == 0);
   EXPECT_TRUE(s.getGroupStates().size() == 0);
   EXPECT_TRUE(s.getDisabledCollisionPairs().empty());
   EXPECT_TRUE(s.getEndEffectors().size() == 0);
   
-  EXPECT_TRUE(s.initFile(*u, "test/res/pr2_desc.2.srdf"));
+  EXPECT_TRUE(s.initFile(*u, std::string(TEST_RESOURCE_LOCATION) + "/pr2_desc.2.srdf"));
   EXPECT_TRUE(s.getVirtualJoints().size() == 1);
   EXPECT_TRUE(s.getGroups().size() == 1);
   EXPECT_TRUE(s.getGroupStates().size() == 0);
   EXPECT_TRUE(s.getDisabledCollisionPairs().empty());
   EXPECT_TRUE(s.getEndEffectors().size() == 0);
   
-  EXPECT_TRUE(s.initFile(*u, "test/res/pr2_desc.1.srdf"));
+  EXPECT_TRUE(s.initFile(*u, std::string(TEST_RESOURCE_LOCATION) + "/pr2_desc.1.srdf"));
   EXPECT_TRUE(s.getVirtualJoints().size() == 0);
   EXPECT_TRUE(s.getGroups().size() == 0);
   EXPECT_TRUE(s.getGroupStates().size() == 0);
@@ -96,10 +100,10 @@ void testSimple(void)
 void testComplex(void)
 {
   srdf::Model s;
-  boost::shared_ptr<urdf::ModelInterface> u = loadURDF("test/res/pr2_desc.urdf");
+  boost::shared_ptr<urdf::ModelInterface> u = loadURDF(std::string(TEST_RESOURCE_LOCATION) + "/pr2_desc.urdf");
   EXPECT_TRUE(u != NULL);
 
-  EXPECT_TRUE(s.initFile(*u, "test/res/pr2_desc.3.srdf"));
+  EXPECT_TRUE(s.initFile(*u, std::string(TEST_RESOURCE_LOCATION) + "/pr2_desc.3.srdf"));
   EXPECT_TRUE(s.getVirtualJoints().size() == 1);
   EXPECT_TRUE(s.getGroups().size() == 7);
   EXPECT_TRUE(s.getGroupStates().size() == 2);

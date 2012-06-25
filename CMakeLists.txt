@@ -35,12 +35,17 @@ include_directories(SYSTEM ${urdfdom_headers_INCLUDE_DIRS})
 find_package(Boost REQUIRED)
 include_directories(SYSTEM ${Boost_INCLUDE_DIR})
 
+find_package(console_bridge REQUIRED)
+include_directories(SYSTEM ${console_bridge_INCLUDE_DIRS})
+
 add_library(${PROJECT_NAME} SHARED src/model.cpp)
-target_link_libraries(${PROJECT_NAME} ${tinyxml_libraries})
+target_link_libraries(${PROJECT_NAME} ${tinyxml_libraries} ${console_bridge_LIBRARIES})
 
 find_package(urdfdom)
 if (urdfdom_FOUND)
+  enable_testing()
   include_directories(SYSTEM ${urdfdom_INCLUDE_DIRS})
+  add_definitions('-DTEST_RESOURCE_LOCATION="${CMAKE_CURRENT_SOURCE_DIR}/test/res/"')
   add_executable(test_srdf test/test_parser.cpp)
   target_link_libraries(test_srdf ${PROJECT_NAME} ${urdfdom_LIBRARIES})
   add_test(test_srdf ${EXECUTABLE_OUTPUT_PATH}/test_srdf)
