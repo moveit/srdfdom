@@ -43,7 +43,7 @@ target_link_libraries(${PROJECT_NAME} ${tinyxml_libraries} ${console_bridge_LIBR
 install(TARGETS ${PROJECT_NAME} DESTINATION lib/)
 install(DIRECTORY include/srdfdom DESTINATION include/)
 
-find_package(urdfdom)
+find_package(urdfdom QUIET)
 if (urdfdom_FOUND)
   enable_testing()
   include_directories(SYSTEM ${urdfdom_INCLUDE_DIRS})
@@ -51,6 +51,8 @@ if (urdfdom_FOUND)
   add_executable(test_srdf test/test_parser.cpp)
   target_link_libraries(test_srdf ${PROJECT_NAME} ${urdfdom_LIBRARIES})
   add_test(test_srdf ${EXECUTABLE_OUTPUT_PATH}/test_srdf)
+else()
+  message(STATUS "Tests are not built without urdfdom")
 endif()
 
 set(PKG_NAME ${PROJECT_NAME})
