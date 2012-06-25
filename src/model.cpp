@@ -34,7 +34,7 @@
 
 /* Author Ioan Sucan */
 
-#include "srdf/model.h"
+#include "srdfdom/model.h"
 #include <console_bridge/console.h>
 #include <boost/lexical_cast.hpp>
 #include <boost/algorithm/string/trim.hpp>

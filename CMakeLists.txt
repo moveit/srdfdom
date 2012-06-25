@@ -40,6 +40,8 @@ include_directories(SYSTEM ${console_bridge_INCLUDE_DIRS})
 
 add_library(${PROJECT_NAME} SHARED src/model.cpp)
 target_link_libraries(${PROJECT_NAME} ${tinyxml_libraries} ${console_bridge_LIBRARIES})
+install(TARGETS ${PROJECT_NAME} DESTINATION lib/)
+install(DIRECTORY include/srdfdom DESTINATION include/)
 
 find_package(urdfdom)
 if (urdfdom_FOUND)

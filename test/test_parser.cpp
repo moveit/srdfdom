@@ -34,7 +34,7 @@
 
 /* Author: Ioan Sucan */
 
-#include <srdf/model.h>
+#include <srdfdom/model.h>
 #include <urdf_parser/urdf_parser.h>
 #include <fstream>
 #include <stdexcept>
