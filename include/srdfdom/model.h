@@ -132,6 +132,10 @@ public:
     /// The name of the link this end effector connects to
     std::string parent_link_;
     
+    /// The name of the group to be considered the parent (this group should contain parent_link_)
+    /// If not specified, this member is empty.
+    std::string parent_group_;
+    
     /// The name of the group that includes the joints & links this end effector consists of
     std::string component_group_;
   };
