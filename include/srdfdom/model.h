@@ -206,6 +206,12 @@ public:
     return group_states_;
   }
   
+  /// Get the list of known passive joints
+  const std::vector<std::string>& getPassiveJoints(void) const
+  {
+    return passive_joints_;
+  }
+  
   /// Clear the model
   void clear(void);
   
@@ -216,13 +222,15 @@ private:
   void loadGroupStates(const urdf::ModelInterface &urdf_model, TiXmlElement *robot_xml);
   void loadEndEffectors(const urdf::ModelInterface &urdf_model, TiXmlElement *robot_xml);
   void loadDisabledCollisions(const urdf::ModelInterface &urdf_model, TiXmlElement *robot_xml);
-
+  void loadPassiveJoints(const urdf::ModelInterface &urdf_model, TiXmlElement *robot_xml);
+  
   std::string                    name_;
   std::vector<Group>             groups_;
   std::vector<GroupState>        group_states_;
   std::vector<VirtualJoint>      virtual_joints_;
   std::vector<EndEffector>       end_effectors_;
   std::vector<DisabledCollision> disabled_collisions_;
+  std::vector<std::string>       passive_joints_;
 };
 
 }
