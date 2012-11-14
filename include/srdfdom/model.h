@@ -166,6 +166,13 @@ public:
     std::string reason_;
   };
   
+  // Some joints can be passive (not actuated). This structure specifies information about such joints
+  struct PassiveJoint
+  {   
+    /// The name of the new joint
+    std::string name_;
+  };
+      
   /// Get the name of this model
   const std::string& getName(void) const
   {
@@ -207,7 +214,7 @@ public:
   }
   
   /// Get the list of known passive joints
-  const std::vector<std::string>& getPassiveJoints(void) const
+  const std::vector<PassiveJoint>& getPassiveJoints(void) const
   {
     return passive_joints_;
   }
@@ -230,7 +237,7 @@ private:
   std::vector<VirtualJoint>      virtual_joints_;
   std::vector<EndEffector>       end_effectors_;
   std::vector<DisabledCollision> disabled_collisions_;
-  std::vector<std::string>       passive_joints_;
+  std::vector<PassiveJoint>      passive_joints_;
 };
 
 }

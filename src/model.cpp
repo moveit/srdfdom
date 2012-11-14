@@ -444,14 +444,15 @@ void srdf::Model::loadPassiveJoints(const urdf::ModelInterface &urdf_model, TiXm
       logError("No name specified for passive joint. Ignoring.");
       continue;
     }
-    std::string name_s = boost::trim_copy(std::string(name));
-
-    if (!urdf_model.getJoint(name_s))
+    PassiveJoint pj;
+    pj.name_ = boost::trim_copy(std::string(name));
+    
+    if (!urdf_model.getJoint(pj.name_))
     {
       logError("Joint '%s' marked as passive is not known to the URDF. Ignoring.", name);
       continue;
     }
-    passive_joints_.push_back(name_s);
+    passive_joints_.push_back(pj);
   }
 }
 
