@@ -446,8 +446,14 @@ void srdf::Model::loadPassiveJoints(const urdf::ModelInterface &urdf_model, TiXm
     }
     PassiveJoint pj;
     pj.name_ = boost::trim_copy(std::string(name));
+
+    // see if a virtual joint was marked as passive
+    bool vjoint = false;
+    for (std::size_t i = 0 ; !vjoint && i < virtual_joints_.size() ; ++i)
+      if (virtual_joints_[i].name_ == pj.name_)
+        vjoint = true;
     
-    if (!urdf_model.getJoint(pj.name_))
+    if (!vjoint && !urdf_model.getJoint(pj.name_))
     {
       logError("Joint '%s' marked as passive is not known to the URDF. Ignoring.", name);
       continue;
