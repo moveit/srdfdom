@@ -7,7 +7,8 @@
   <license>BSD</license>
   <url type="website">http://ros.org/wiki/srdf</url>
   
-  <build_depend>catkin</build_depend>
+  <buildtool_depend>catkin</buildtool_depend>
+
   <build_depend>boost</build_depend>
   <build_depend>pkg-config</build_depend>
   <build_depend>tinyxml</build_depend>
