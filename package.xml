@@ -8,9 +8,9 @@
   <url type="website">http://ros.org/wiki/srdf</url>
   
   <buildtool_depend>catkin</buildtool_depend>
+  <buildtool_depend>pkg-config</buildtool_depend>
 
   <build_depend>boost</build_depend>
-  <build_depend>pkg-config</build_depend>
   <build_depend>tinyxml</build_depend>
   <build_depend>urdfdom_headers</build_depend>
   <build_depend>console_bridge</build_depend>
