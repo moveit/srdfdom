@@ -153,6 +153,29 @@ public:
     std::map<std::string, std::vector<double> > joint_values_;
   };
   
+  /// The definition of a sphere
+  struct CollisionSphere
+  {
+    /// The id of the sphere.  Each sphere is uniquely identified by its link and id.
+    std::string id_;
+
+    /// The center of the sphere in the link collision frame
+    double center_[3];
+
+    /// The radius of the sphere
+    double radius_;
+  };
+
+  /// The definition of a list of collision spheres for a link.
+  struct LinkCollisionSpheres
+  {
+    /// The name of the link (as in URDF) which is represented by this sphere
+    std::string link_;
+
+    /// The spheres that represent the link.
+    std::vector<CollisionSphere> spheres_;
+  };
+  
   /// The definition of a disabled collision between two links
   struct DisabledCollision
   {
@@ -219,6 +242,15 @@ public:
     return passive_joints_;
   }
   
+  /// Get the collision spheres list
+  const std::vector<LinkCollisionSpheres>& getLinkCollisionSpheres(void) const
+  {
+    return link_collision_spheres_;
+  }
+  
+  /// Get the collision spheres for a link.  NULL if none found.
+  const LinkCollisionSpheres* getLinkCollisionSpheres(const std::string& link) const;
+  
   /// Clear the model
   void clear(void);
   
@@ -228,16 +260,18 @@ private:
   void loadGroups(const urdf::ModelInterface &urdf_model, TiXmlElement *robot_xml);
   void loadGroupStates(const urdf::ModelInterface &urdf_model, TiXmlElement *robot_xml);
   void loadEndEffectors(const urdf::ModelInterface &urdf_model, TiXmlElement *robot_xml);
+  void loadLinkCollisionSpheres(const urdf::ModelInterface &urdf_model, TiXmlElement *robot_xml);
   void loadDisabledCollisions(const urdf::ModelInterface &urdf_model, TiXmlElement *robot_xml);
   void loadPassiveJoints(const urdf::ModelInterface &urdf_model, TiXmlElement *robot_xml);
   
-  std::string                    name_;
-  std::vector<Group>             groups_;
-  std::vector<GroupState>        group_states_;
-  std::vector<VirtualJoint>      virtual_joints_;
-  std::vector<EndEffector>       end_effectors_;
-  std::vector<DisabledCollision> disabled_collisions_;
-  std::vector<PassiveJoint>      passive_joints_;
+  std::string                       name_;
+  std::vector<Group>                groups_;
+  std::vector<GroupState>           group_states_;
+  std::vector<VirtualJoint>         virtual_joints_;
+  std::vector<EndEffector>          end_effectors_;
+  std::vector<LinkCollisionSpheres> link_collision_spheres_;
+  std::vector<DisabledCollision>    disabled_collisions_;
+  std::vector<PassiveJoint>         passive_joints_;
 };
 
 }

@@ -403,6 +403,112 @@ void srdf::Model::loadEndEffectors(const urdf::ModelInterface &urdf_model, TiXml
   }
 }
 
+static bool doubleFromString(std::string str, double& val)
+{
+  std::string str_stripped = boost::trim_copy(str);
+  const char *s = str_stripped.c_str();
+  char *e = 0;
+  val = std::strtod(s, &e);
+  return e && e!=s && *e == 0;
+}
+
+const srdf::Model::LinkCollisionSpheres* srdf::Model::getLinkCollisionSpheres(const std::string& link) const
+{
+  for (std::vector<LinkCollisionSpheres>::const_iterator it = link_collision_spheres_.begin() ; it != link_collision_spheres_.end() ; ++it)
+  {
+    if (it->link_ == link)
+      return &(*it);
+  }
+  return NULL;
+}
+
+void srdf::Model::loadLinkCollisionSpheres(const urdf::ModelInterface &urdf_model, TiXmlElement *robot_xml)
+{
+  for (TiXmlElement* cslink_xml = robot_xml->FirstChildElement("link_collision_spheres"); cslink_xml; cslink_xml = cslink_xml->NextSiblingElement("link_collision_spheres"))
+  {
+    const char *link_name = cslink_xml->Attribute("link");
+    if (!link_name)
+    {
+      logError("Name of link is not specified in link_collision_spheres");
+      continue;
+    }
+    
+    LinkCollisionSpheres cslink;
+    cslink.link_ = boost::trim_copy(std::string(link_name));
+    if (!urdf_model.getLink(cslink.link_))
+    {
+      logError("Link '%s' is not known to URDF. Cannot disable collisons.", link_name);
+      continue;
+    }
+    
+
+    // get the spheres
+    int cnt = 0;
+    for (TiXmlElement* sphere_xml = cslink_xml->FirstChildElement("sphere"); sphere_xml; sphere_xml = sphere_xml->NextSiblingElement("sphere"), cnt++)
+    {
+      const char *s_cx = sphere_xml->Attribute("center_x");
+      const char *s_cy = sphere_xml->Attribute("center_y");
+      const char *s_cz = sphere_xml->Attribute("center_z");
+      const char *s_r = sphere_xml->Attribute("radius");
+      if (!s_cx || !s_cy || !s_cz || !s_r)
+      {
+        logError("Link collision sphere %d for link '%s' does not have all of center_x, center_y, center_z, and radius.", cnt, link_name);
+        continue;
+      }
+
+      CollisionSphere sphere;
+      if (!doubleFromString(s_cx, sphere.center_[0]) ||
+          !doubleFromString(s_cx, sphere.center_[0]) ||
+          !doubleFromString(s_cx, sphere.center_[0]) ||
+          !doubleFromString(s_r, sphere.radius_))
+      {
+        logError("Link collision sphere %d for link '%s' has invalid double value.", cnt, link_name);
+        continue;
+      }
+
+      const char *s_id = sphere_xml->Attribute("id");
+      if (s_id)
+        sphere.id_ = boost::trim_copy(std::string(s_id));
+
+      // ignore radius==0 spheres unless there is only 1 of them
+      if (sphere.radius_ == 0.0 && !cslink.spheres_.empty())
+        continue;
+      else if (cslink.spheres_.size() == 1 && cslink.spheres_[0].radius_ == 0.0)
+        cslink.spheres_.clear();
+
+      cslink.spheres_.push_back(sphere);
+    }
+
+    // Check for empty or duplicate ids.
+    // Assign new id if empty or duplicate.
+    int id = 0;
+    for (std::vector<CollisionSphere>::iterator sphere_it = cslink.spheres_.begin() ; sphere_it != cslink.spheres_.end() ; ++sphere_it)
+    {
+      bool empty = sphere_it->id_.empty();
+      for (std::vector<CollisionSphere>::const_iterator sphere2_it = sphere_it + 1 ; sphere2_it != cslink.spheres_.end() ; ++sphere2_it)
+      {
+        if (sphere_it == sphere2_it)
+          continue;
+        if (sphere_it->id_.empty() || sphere_it->id_ == sphere2_it->id_)
+        {
+          if (!empty)
+            logError("Link '%s' has 2 collision spheres with id %d.", link_name, sphere2_it->id_.c_str());
+          empty = true;
+
+          std::stringstream ss;
+          ss << id++;
+          sphere_it->id_ = ss.str();
+          
+          sphere2_it = cslink.spheres_.begin(); // restart the check for unique id
+        }
+      }
+    }
+
+    if (!cslink.spheres_.empty())
+      link_collision_spheres_.push_back(cslink);
+  }
+}
+
 void srdf::Model::loadDisabledCollisions(const urdf::ModelInterface &urdf_model, TiXmlElement *robot_xml)
 {
   for (TiXmlElement* c_xml = robot_xml->FirstChildElement("disable_collisions"); c_xml; c_xml = c_xml->NextSiblingElement("disable_collisions"))
@@ -486,6 +592,7 @@ bool srdf::Model::initXml(const urdf::ModelInterface &urdf_model, TiXmlElement *
   loadGroups(urdf_model, robot_xml);
   loadGroupStates(urdf_model, robot_xml);
   loadEndEffectors(urdf_model, robot_xml); 
+  loadLinkCollisionSpheres(urdf_model, robot_xml);
   loadDisabledCollisions(urdf_model, robot_xml);
   loadPassiveJoints(urdf_model, robot_xml);
   
@@ -542,6 +649,7 @@ void srdf::Model::clear(void)
   group_states_.clear();
   virtual_joints_.clear();
   end_effectors_.clear();
+  link_collision_spheres_.clear();
   disabled_collisions_.clear();
   passive_joints_.clear();
 }
