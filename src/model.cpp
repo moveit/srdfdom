@@ -42,6 +42,7 @@
 #include <fstream>
 #include <sstream>
 #include <set>
+#include <limits>
 
 void srdf::Model::loadVirtualJoints(const urdf::ModelInterface &urdf_model, TiXmlElement *robot_xml)
 {
@@ -403,29 +404,11 @@ void srdf::Model::loadEndEffectors(const urdf::ModelInterface &urdf_model, TiXml
   }
 }
 
-static bool doubleFromString(std::string str, double& val)
-{
-  std::string str_stripped = boost::trim_copy(str);
-  const char *s = str_stripped.c_str();
-  char *e = 0;
-  val = std::strtod(s, &e);
-  return e && e!=s && *e == 0;
-}
-
-const srdf::Model::LinkCollisionSpheres* srdf::Model::getLinkCollisionSpheres(const std::string& link) const
-{
-  for (std::vector<LinkCollisionSpheres>::const_iterator it = link_collision_spheres_.begin() ; it != link_collision_spheres_.end() ; ++it)
-  {
-    if (it->link_ == link)
-      return &(*it);
-  }
-  return NULL;
-}
-
-void srdf::Model::loadLinkCollisionSpheres(const urdf::ModelInterface &urdf_model, TiXmlElement *robot_xml)
+void srdf::Model::loadLinkSphereApproximations(const urdf::ModelInterface &urdf_model, TiXmlElement *robot_xml)
 {
   for (TiXmlElement* cslink_xml = robot_xml->FirstChildElement("link_collision_spheres"); cslink_xml; cslink_xml = cslink_xml->NextSiblingElement("link_collision_spheres"))
   {
+    int non_0_radius_sphere_cnt = 0;
     const char *link_name = cslink_xml->Attribute("link");
     if (!link_name)
     {
@@ -433,79 +416,78 @@ void srdf::Model::loadLinkCollisionSpheres(const urdf::ModelInterface &urdf_mode
       continue;
     }
     
-    LinkCollisionSpheres cslink;
-    cslink.link_ = boost::trim_copy(std::string(link_name));
-    if (!urdf_model.getLink(cslink.link_))
+    LinkSpheres link_spheres;
+    link_spheres.link_ = boost::trim_copy(std::string(link_name));
+    if (!urdf_model.getLink(link_spheres.link_))
     {
       logError("Link '%s' is not known to URDF. Cannot disable collisons.", link_name);
       continue;
     }
     
 
-    // get the spheres
+    // get the spheres for this link
     int cnt = 0;
     for (TiXmlElement* sphere_xml = cslink_xml->FirstChildElement("sphere"); sphere_xml; sphere_xml = sphere_xml->NextSiblingElement("sphere"), cnt++)
     {
-      const char *s_cx = sphere_xml->Attribute("center_x");
-      const char *s_cy = sphere_xml->Attribute("center_y");
-      const char *s_cz = sphere_xml->Attribute("center_z");
+      const char *s_center = sphere_xml->Attribute("center");
       const char *s_r = sphere_xml->Attribute("radius");
-      if (!s_cx || !s_cy || !s_cz || !s_r)
+      if (!s_center || !s_r)
       {
-        logError("Link collision sphere %d for link '%s' does not have all of center_x, center_y, center_z, and radius.", cnt, link_name);
+        logError("Link collision sphere %d for link '%s' does not have both center and radius.", cnt, link_name);
         continue;
       }
 
-      CollisionSphere sphere;
-      if (!doubleFromString(s_cx, sphere.center_[0]) ||
-          !doubleFromString(s_cx, sphere.center_[0]) ||
-          !doubleFromString(s_cx, sphere.center_[0]) ||
-          !doubleFromString(s_r, sphere.radius_))
+      Sphere sphere;
+      try
       {
-        logError("Link collision sphere %d for link '%s' has invalid double value.", cnt, link_name);
+        std::stringstream center(s_center);
+        center.exceptions(std::stringstream::failbit | std::stringstream::badbit);
+        center >> sphere.center_x_ >> sphere.center_y_ >> sphere.center_z_;
+        sphere.radius_ = boost::lexical_cast<double>(s_r);
+      }
+      catch (std::stringstream::failure &e)
+      {
+        logError("Link collision sphere %d for link '%s' has bad center attribute value.", cnt, link_name);
         continue;
       }
-
-      const char *s_id = sphere_xml->Attribute("id");
-      if (s_id)
-        sphere.id_ = boost::trim_copy(std::string(s_id));
+      catch (boost::bad_lexical_cast &e)
+      {
+        logError("Link collision sphere %d for link '%s' has bad radius attribute value.", cnt, link_name);
+        continue;
+      }
 
       // ignore radius==0 spheres unless there is only 1 of them
-      if (sphere.radius_ == 0.0 && !cslink.spheres_.empty())
-        continue;
-      else if (cslink.spheres_.size() == 1 && cslink.spheres_[0].radius_ == 0.0)
-        cslink.spheres_.clear();
-
-      cslink.spheres_.push_back(sphere);
-    }
-
-    // Check for empty or duplicate ids.
-    // Assign new id if empty or duplicate.
-    int id = 0;
-    for (std::vector<CollisionSphere>::iterator sphere_it = cslink.spheres_.begin() ; sphere_it != cslink.spheres_.end() ; ++sphere_it)
-    {
-      bool empty = sphere_it->id_.empty();
-      for (std::vector<CollisionSphere>::const_iterator sphere2_it = sphere_it + 1 ; sphere2_it != cslink.spheres_.end() ; ++sphere2_it)
+      //
+      // NOTE:
+      //  - If a link has no sphere_approximation then one will be generated
+      //     automatically containing a single sphere which encloses the entire
+      //     collision geometry.  Internally this is represented by not having
+      //     a link_sphere_approximations_ entry for this link.
+      //  - If a link has only spheres with radius 0 then it will not be
+      //     considered for collision detection.  In this case the internal
+      //     representation is a single radius=0 sphere.
+      //  - If a link has at least one sphere with radius>0 then those spheres
+      //     are used.  Any radius=0 spheres are eliminated.
+      if (sphere.radius_ > std::numeric_limits<double>::max())
       {
-        if (sphere_it == sphere2_it)
-          continue;
-        if (sphere_it->id_.empty() || sphere_it->id_ == sphere2_it->id_)
-        {
-          if (!empty)
-            logError("Link '%s' has 2 collision spheres with id %d.", link_name, sphere2_it->id_.c_str());
-          empty = true;
-
-          std::stringstream ss;
-          ss << id++;
-          sphere_it->id_ = ss.str();
-          
-          sphere2_it = cslink.spheres_.begin(); // restart the check for unique id
-        }
+        if (non_0_radius_sphere_cnt == 0)
+          link_spheres.spheres_.clear();
+        link_spheres.spheres_.push_back(sphere);
+        non_0_radius_sphere_cnt++;
+      }
+      else if (non_0_radius_sphere_cnt == 0)
+      {
+        sphere.center_x_ = 0.0;
+        sphere.center_y_ = 0.0;
+        sphere.center_z_ = 0.0;
+        sphere.radius_ = 0.0;
+        link_spheres.spheres_.clear();
+        link_spheres.spheres_.push_back(sphere);
       }
     }
 
-    if (!cslink.spheres_.empty())
-      link_collision_spheres_.push_back(cslink);
+    if (!link_spheres.spheres_.empty())
+      link_sphere_approximations_.push_back(link_spheres);
   }
 }
 
@@ -592,7 +574,7 @@ bool srdf::Model::initXml(const urdf::ModelInterface &urdf_model, TiXmlElement *
   loadGroups(urdf_model, robot_xml);
   loadGroupStates(urdf_model, robot_xml);
   loadEndEffectors(urdf_model, robot_xml); 
-  loadLinkCollisionSpheres(urdf_model, robot_xml);
+  loadLinkSphereApproximations(urdf_model, robot_xml);
   loadDisabledCollisions(urdf_model, robot_xml);
   loadPassiveJoints(urdf_model, robot_xml);
   
@@ -649,7 +631,7 @@ void srdf::Model::clear(void)
   group_states_.clear();
   virtual_joints_.clear();
   end_effectors_.clear();
-  link_collision_spheres_.clear();
+  link_sphere_approximations_.clear();
   disabled_collisions_.clear();
   passive_joints_.clear();
 }
