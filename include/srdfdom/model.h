@@ -53,11 +53,11 @@ class Model
 {
 public:
   
-  Model(void)
+  Model()
   {
   }
   
-  ~Model(void)
+  ~Model()
   {
   }
   
@@ -196,59 +196,59 @@ public:
   };
       
   /// Get the name of this model
-  const std::string& getName(void) const
+  const std::string& getName() const
   {
     return name_;
   }
   
   /// Get the list of pairs of links that need not be checked for collisions (because they can never touch given the geometry and kinematics of the robot)
-  const std::vector<DisabledCollision>& getDisabledCollisionPairs(void) const
+  const std::vector<DisabledCollision>& getDisabledCollisionPairs() const
   {
     return disabled_collisions_;
   }
   
   /// \deprecated{ Use the version returning DisabledCollision }
   __attribute__ ((deprecated)) 
-  std::vector<std::pair<std::string, std::string> > getDisabledCollisions(void) const;
+  std::vector<std::pair<std::string, std::string> > getDisabledCollisions() const;
   
   /// Get the list of groups defined for this model
-  const std::vector<Group>& getGroups(void) const
+  const std::vector<Group>& getGroups() const
   {
     return groups_;
   }
   
   /// Get the list of virtual joints defined for this model
-  const std::vector<VirtualJoint>& getVirtualJoints(void) const
+  const std::vector<VirtualJoint>& getVirtualJoints() const
   {
     return virtual_joints_;
   }
   
   /// Get the list of end effectors defined for this model
-  const std::vector<EndEffector>& getEndEffectors(void) const
+  const std::vector<EndEffector>& getEndEffectors() const
   {
     return end_effectors_;
   }
   
   /// Get the list of group states defined for this model
-  const std::vector<GroupState>& getGroupStates(void) const
+  const std::vector<GroupState>& getGroupStates() const
   {
     return group_states_;
   }
   
   /// Get the list of known passive joints
-  const std::vector<PassiveJoint>& getPassiveJoints(void) const
+  const std::vector<PassiveJoint>& getPassiveJoints() const
   {
     return passive_joints_;
   }
   
   /// Get the collision spheres list
-  const std::vector<LinkSpheres>& getLinkSphereApproximations(void) const
+  const std::vector<LinkSpheres>& getLinkSphereApproximations() const
   {
     return link_sphere_approximations_;
   }
   
   /// Clear the model
-  void clear(void);
+  void clear();
   
 private:
   

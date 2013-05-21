@@ -624,7 +624,7 @@ bool srdf::Model::initString(const urdf::ModelInterface &urdf_model, const std::
 }
 
 
-void srdf::Model::clear(void)
+void srdf::Model::clear()
 {
   name_ = "";
   groups_.clear();
@@ -636,7 +636,7 @@ void srdf::Model::clear(void)
   passive_joints_.clear();
 }
 
-std::vector<std::pair<std::string, std::string> > srdf::Model::getDisabledCollisions(void) const
+std::vector<std::pair<std::string, std::string> > srdf::Model::getDisabledCollisions() const
 {
   std::vector<std::pair<std::string, std::string> > result;
   for (std::size_t i = 0 ; i < disabled_collisions_.size() ; ++i)
