@@ -468,7 +468,7 @@ void srdf::Model::loadLinkSphereApproximations(const urdf::ModelInterface &urdf_
       //     representation is a single radius=0 sphere.
       //  - If a link has at least one sphere with radius>0 then those spheres
       //     are used.  Any radius=0 spheres are eliminated.
-      if (sphere.radius_ > std::numeric_limits<double>::max())
+      if (sphere.radius_ > std::numeric_limits<double>::epsilon())
       {
         if (non_0_radius_sphere_cnt == 0)
           link_spheres.spheres_.clear();
