@@ -42,6 +42,7 @@
 #include <fstream>
 #include <sstream>
 #include <set>
+#include <limits>
 
 void srdf::Model::loadVirtualJoints(const urdf::ModelInterface &urdf_model, TiXmlElement *robot_xml)
 {
@@ -403,6 +404,93 @@ void srdf::Model::loadEndEffectors(const urdf::ModelInterface &urdf_model, TiXml
   }
 }
 
+void srdf::Model::loadLinkSphereApproximations(const urdf::ModelInterface &urdf_model, TiXmlElement *robot_xml)
+{
+  for (TiXmlElement* cslink_xml = robot_xml->FirstChildElement("link_collision_spheres"); cslink_xml; cslink_xml = cslink_xml->NextSiblingElement("link_collision_spheres"))
+  {
+    int non_0_radius_sphere_cnt = 0;
+    const char *link_name = cslink_xml->Attribute("link");
+    if (!link_name)
+    {
+      logError("Name of link is not specified in link_collision_spheres");
+      continue;
+    }
+    
+    LinkSpheres link_spheres;
+    link_spheres.link_ = boost::trim_copy(std::string(link_name));
+    if (!urdf_model.getLink(link_spheres.link_))
+    {
+      logError("Link '%s' is not known to URDF. Cannot disable collisons.", link_name);
+      continue;
+    }
+    
+
+    // get the spheres for this link
+    int cnt = 0;
+    for (TiXmlElement* sphere_xml = cslink_xml->FirstChildElement("sphere"); sphere_xml; sphere_xml = sphere_xml->NextSiblingElement("sphere"), cnt++)
+    {
+      const char *s_center = sphere_xml->Attribute("center");
+      const char *s_r = sphere_xml->Attribute("radius");
+      if (!s_center || !s_r)
+      {
+        logError("Link collision sphere %d for link '%s' does not have both center and radius.", cnt, link_name);
+        continue;
+      }
+
+      Sphere sphere;
+      try
+      {
+        std::stringstream center(s_center);
+        center.exceptions(std::stringstream::failbit | std::stringstream::badbit);
+        center >> sphere.center_x_ >> sphere.center_y_ >> sphere.center_z_;
+        sphere.radius_ = boost::lexical_cast<double>(s_r);
+      }
+      catch (std::stringstream::failure &e)
+      {
+        logError("Link collision sphere %d for link '%s' has bad center attribute value.", cnt, link_name);
+        continue;
+      }
+      catch (boost::bad_lexical_cast &e)
+      {
+        logError("Link collision sphere %d for link '%s' has bad radius attribute value.", cnt, link_name);
+        continue;
+      }
+
+      // ignore radius==0 spheres unless there is only 1 of them
+      //
+      // NOTE:
+      //  - If a link has no sphere_approximation then one will be generated
+      //     automatically containing a single sphere which encloses the entire
+      //     collision geometry.  Internally this is represented by not having
+      //     a link_sphere_approximations_ entry for this link.
+      //  - If a link has only spheres with radius 0 then it will not be
+      //     considered for collision detection.  In this case the internal
+      //     representation is a single radius=0 sphere.
+      //  - If a link has at least one sphere with radius>0 then those spheres
+      //     are used.  Any radius=0 spheres are eliminated.
+      if (sphere.radius_ > std::numeric_limits<double>::epsilon())
+      {
+        if (non_0_radius_sphere_cnt == 0)
+          link_spheres.spheres_.clear();
+        link_spheres.spheres_.push_back(sphere);
+        non_0_radius_sphere_cnt++;
+      }
+      else if (non_0_radius_sphere_cnt == 0)
+      {
+        sphere.center_x_ = 0.0;
+        sphere.center_y_ = 0.0;
+        sphere.center_z_ = 0.0;
+        sphere.radius_ = 0.0;
+        link_spheres.spheres_.clear();
+        link_spheres.spheres_.push_back(sphere);
+      }
+    }
+
+    if (!link_spheres.spheres_.empty())
+      link_sphere_approximations_.push_back(link_spheres);
+  }
+}
+
 void srdf::Model::loadDisabledCollisions(const urdf::ModelInterface &urdf_model, TiXmlElement *robot_xml)
 {
   for (TiXmlElement* c_xml = robot_xml->FirstChildElement("disable_collisions"); c_xml; c_xml = c_xml->NextSiblingElement("disable_collisions"))
@@ -486,6 +574,7 @@ bool srdf::Model::initXml(const urdf::ModelInterface &urdf_model, TiXmlElement *
   loadGroups(urdf_model, robot_xml);
   loadGroupStates(urdf_model, robot_xml);
   loadEndEffectors(urdf_model, robot_xml); 
+  loadLinkSphereApproximations(urdf_model, robot_xml);
   loadDisabledCollisions(urdf_model, robot_xml);
   loadPassiveJoints(urdf_model, robot_xml);
   
@@ -535,18 +624,19 @@ bool srdf::Model::initString(const urdf::ModelInterface &urdf_model, const std::
 }
 
 
-void srdf::Model::clear(void)
+void srdf::Model::clear()
 {
   name_ = "";
   groups_.clear();
   group_states_.clear();
   virtual_joints_.clear();
   end_effectors_.clear();
+  link_sphere_approximations_.clear();
   disabled_collisions_.clear();
   passive_joints_.clear();
 }
 
-std::vector<std::pair<std::string, std::string> > srdf::Model::getDisabledCollisions(void) const
+std::vector<std::pair<std::string, std::string> > srdf::Model::getDisabledCollisions() const
 {
   std::vector<std::pair<std::string, std::string> > result;
   for (std::size_t i = 0 ; i < disabled_collisions_.size() ; ++i)

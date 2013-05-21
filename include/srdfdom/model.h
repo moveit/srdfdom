@@ -53,11 +53,11 @@ class Model
 {
 public:
   
-  Model(void)
+  Model()
   {
   }
   
-  ~Model(void)
+  ~Model()
   {
   }
   
@@ -153,6 +153,28 @@ public:
     std::map<std::string, std::vector<double> > joint_values_;
   };
   
+  /// The definition of a sphere
+  struct Sphere
+  {
+    /// The center of the sphere in the link collision frame
+    double center_x_;
+    double center_y_;
+    double center_z_;
+
+    /// The radius of the sphere
+    double radius_;
+  };
+
+  /// The definition of a list of spheres for a link.
+  struct LinkSpheres
+  {
+    /// The name of the link (as in URDF).
+    std::string link_;
+
+    /// The spheres for the link.
+    std::vector<Sphere> spheres_;
+  };
+  
   /// The definition of a disabled collision between two links
   struct DisabledCollision
   {
@@ -174,53 +196,59 @@ public:
   };
       
   /// Get the name of this model
-  const std::string& getName(void) const
+  const std::string& getName() const
   {
     return name_;
   }
   
   /// Get the list of pairs of links that need not be checked for collisions (because they can never touch given the geometry and kinematics of the robot)
-  const std::vector<DisabledCollision>& getDisabledCollisionPairs(void) const
+  const std::vector<DisabledCollision>& getDisabledCollisionPairs() const
   {
     return disabled_collisions_;
   }
   
   /// \deprecated{ Use the version returning DisabledCollision }
   __attribute__ ((deprecated)) 
-  std::vector<std::pair<std::string, std::string> > getDisabledCollisions(void) const;
+  std::vector<std::pair<std::string, std::string> > getDisabledCollisions() const;
   
   /// Get the list of groups defined for this model
-  const std::vector<Group>& getGroups(void) const
+  const std::vector<Group>& getGroups() const
   {
     return groups_;
   }
   
   /// Get the list of virtual joints defined for this model
-  const std::vector<VirtualJoint>& getVirtualJoints(void) const
+  const std::vector<VirtualJoint>& getVirtualJoints() const
   {
     return virtual_joints_;
   }
   
   /// Get the list of end effectors defined for this model
-  const std::vector<EndEffector>& getEndEffectors(void) const
+  const std::vector<EndEffector>& getEndEffectors() const
   {
     return end_effectors_;
   }
   
   /// Get the list of group states defined for this model
-  const std::vector<GroupState>& getGroupStates(void) const
+  const std::vector<GroupState>& getGroupStates() const
   {
     return group_states_;
   }
   
   /// Get the list of known passive joints
-  const std::vector<PassiveJoint>& getPassiveJoints(void) const
+  const std::vector<PassiveJoint>& getPassiveJoints() const
   {
     return passive_joints_;
   }
   
+  /// Get the collision spheres list
+  const std::vector<LinkSpheres>& getLinkSphereApproximations() const
+  {
+    return link_sphere_approximations_;
+  }
+  
   /// Clear the model
-  void clear(void);
+  void clear();
   
 private:
   
@@ -228,6 +256,7 @@ private:
   void loadGroups(const urdf::ModelInterface &urdf_model, TiXmlElement *robot_xml);
   void loadGroupStates(const urdf::ModelInterface &urdf_model, TiXmlElement *robot_xml);
   void loadEndEffectors(const urdf::ModelInterface &urdf_model, TiXmlElement *robot_xml);
+  void loadLinkSphereApproximations(const urdf::ModelInterface &urdf_model, TiXmlElement *robot_xml);
   void loadDisabledCollisions(const urdf::ModelInterface &urdf_model, TiXmlElement *robot_xml);
   void loadPassiveJoints(const urdf::ModelInterface &urdf_model, TiXmlElement *robot_xml);
   
@@ -236,6 +265,7 @@ private:
   std::vector<GroupState>        group_states_;
   std::vector<VirtualJoint>      virtual_joints_;
   std::vector<EndEffector>       end_effectors_;
+  std::vector<LinkSpheres>       link_sphere_approximations_;
   std::vector<DisabledCollision> disabled_collisions_;
   std::vector<PassiveJoint>      passive_joints_;
 };
