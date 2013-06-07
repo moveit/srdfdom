@@ -406,7 +406,7 @@ void srdf::Model::loadEndEffectors(const urdf::ModelInterface &urdf_model, TiXml
 
 void srdf::Model::loadLinkSphereApproximations(const urdf::ModelInterface &urdf_model, TiXmlElement *robot_xml)
 {
-  for (TiXmlElement* cslink_xml = robot_xml->FirstChildElement("link_collision_spheres"); cslink_xml; cslink_xml = cslink_xml->NextSiblingElement("link_collision_spheres"))
+  for (TiXmlElement* cslink_xml = robot_xml->FirstChildElement("link_sphere_approximation"); cslink_xml; cslink_xml = cslink_xml->NextSiblingElement("link_sphere_approximation"))
   {
     int non_0_radius_sphere_cnt = 0;
     const char *link_name = cslink_xml->Attribute("link");
@@ -420,7 +420,7 @@ void srdf::Model::loadLinkSphereApproximations(const urdf::ModelInterface &urdf_
     link_spheres.link_ = boost::trim_copy(std::string(link_name));
     if (!urdf_model.getLink(link_spheres.link_))
     {
-      logError("Link '%s' is not known to URDF. Cannot disable collisons.", link_name);
+      logError("Link '%s' is not known to URDF.", link_name);
       continue;
     }
     
