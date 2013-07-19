@@ -1,6 +1,6 @@
 <package>
   <name>srdfdom</name>
-  <version>0.2.5</version>
+  <version>0.2.6</version>
   <description>Parser for Semantic Robot Description Format (SRDF).</description>
   <author email="isucan@willowgarage.edu">Ioan Sucan</author>
   <maintainer email="isucan@willowgarage.com">Ioan Sucan</maintainer>
