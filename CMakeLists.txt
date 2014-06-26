@@ -4,11 +4,14 @@ project(srdfdom)
 find_package(Boost REQUIRED)
 include_directories(SYSTEM ${Boost_INCLUDE_DIR})
 
-find_package(catkin REQUIRED COMPONENTS console_bridge urdfdom_headers cmake_modules)
+find_package(console_bridge REQUIRED)
+find_package(urdfdom_header REQUIRED)
+
+find_package(catkin REQUIRED COMPONENTS cmake_modules)
 
 find_package(TinyXML REQUIRED)
 
-include_directories(include ${TinyXML_INCLUDE_DIRS} ${catkin_INCLUDE_DIRS})
+include_directories(include ${TinyXML_INCLUDE_DIRS} ${catkin_INCLUDE_DIRS} ${console_bridge_INCLUDE_DIRS} ${urdfdom_headers_INCLUDE_DIRS})
 link_directories(${catkin_LIBRARY_DIRS})
 
 catkin_package(
@@ -18,7 +21,7 @@ catkin_package(
 )
 
 add_library(${PROJECT_NAME} src/model.cpp)
-target_link_libraries(${PROJECT_NAME} ${TinyXML_LIBRARIES} ${catkin_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} ${TinyXML_LIBRARIES} ${catkin_LIBRARIES} ${console_bridge_LIBRARIES} ${urdfdom_headers_LIBRARIES})
 
 install(TARGETS ${PROJECT_NAME}
   DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
