@@ -2,8 +2,8 @@
 Changelog for package srdfdom
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.2.7 (2014-07-01)
+------------------
 * fixing dependencies for https://github.com/ros/rosdistro/issues/4633
 * added travis build status indicator in README.md
 * added travis support
