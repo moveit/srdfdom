@@ -1,0 +1,4 @@
+<launch>
+  <param name="string"  value="mystring" />
+  <test test-name="test_srdf_parser" pkg="srdfdom" type="test.py" />
+</launch>
