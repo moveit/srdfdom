@@ -26,14 +26,17 @@ add_library(${PROJECT_NAME} src/model.cpp)
 target_link_libraries(${PROJECT_NAME} ${TinyXML_LIBRARIES} ${catkin_LIBRARIES} ${console_bridge_LIBRARIES} ${urdfdom_headers_LIBRARIES})
 
 
-
-
 install(TARGETS ${PROJECT_NAME}
   DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 )
 install(DIRECTORY include/${PROJECT_NAME}/
   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
   FILES_MATCHING PATTERN "*.h"
+)
+
+install(PROGRAMS 
+  scripts/display_srdf
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
 if(CATKIN_ENABLE_TESTING)
