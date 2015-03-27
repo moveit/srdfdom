@@ -4,8 +4,6 @@
   <description>Parser for Semantic Robot Description Format (SRDF).</description>
   <author email="isucan@willowgarage.edu">Ioan Sucan</author>
   <author email="gwalck@techfak.uni-bielefeld.de">Guillaume Walck</author>
-  <author>Wim Meeussen</author>
-  <author>John Hsu</author>
   <maintainer email="isucan@willowgarage.com">Ioan Sucan</maintainer>
   <license>BSD</license>
   <url type="website">http://ros.org/wiki/srdf</url>
