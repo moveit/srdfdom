@@ -2,6 +2,7 @@
 PKG = 'srdfdom'
 
 import sys
+import rospkg
 import unittest
 from srdfdom.srdf import SRDF
 from xml.dom.minidom import parseString
@@ -146,7 +147,8 @@ class TestSRDFParser(unittest.TestCase):
         self.assertTrue( xml_matches(robot.to_xml_string(),expected))
         
   def test_simple_srdf(self):
-        stream = open('res/pr2_desc.1.srdf', 'r')
+        datadir=rospkg.RosPack().get_path('srdfdom')+"/test/res/"
+        stream = open(datadir+'pr2_desc.1.srdf', 'r')
         robot = SRDF.from_xml_string(stream.read())
         stream.close()
         self.assertTrue(len(robot.virtual_joints)==0)
@@ -155,7 +157,7 @@ class TestSRDFParser(unittest.TestCase):
         self.assertTrue(len(robot.disable_collisionss)==0)
         self.assertTrue(len(robot.end_effectors)==0)
         
-        stream = open('res/pr2_desc.2.srdf', 'r')
+        stream = open(datadir+'pr2_desc.2.srdf', 'r')
         robot = SRDF.from_xml_string(stream.read())
         stream.close()
         self.assertTrue(len(robot.virtual_joints)==1)
@@ -165,7 +167,8 @@ class TestSRDFParser(unittest.TestCase):
         self.assertTrue(len(robot.end_effectors)==0)
         
   def test_complex_srdf(self):
-        stream = open('res/pr2_desc.3.srdf', 'r')
+        datadir=rospkg.RosPack().get_path('srdfdom')+"/test/res/"
+        stream = open(datadir+'pr2_desc.3.srdf', 'r')
         robot = SRDF.from_xml_string(stream.read())
         stream.close()
         self.assertTrue(len(robot.virtual_joints)==1)

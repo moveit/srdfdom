@@ -35,4 +35,9 @@ if an output option (-o <filename>) is provided, dumps the xml (re-generated fro
 example :
 rosrun srdfdom display_srdf test/res/pr2_desc.3.srdf
 
+## Test
+
+catkin_make run_tests_srdfdom
+
+
 
