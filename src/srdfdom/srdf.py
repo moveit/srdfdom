@@ -25,13 +25,13 @@ xmlr.reflect(Joint, params = [
   ])
 
 class JointVal(xmlr.Object):
-  def __init__(self, name = None, value = 0.0):
+  def __init__(self, name = None, value = []):
     self.name = name
     self.value = value
 
 xmlr.reflect(JointVal, params = [
    name_attribute,
-   xmlr.Attribute('value', float)
+   xmlr.Attribute('value', "vector")
   ])
 
 class Sphere(xmlr.Object):
@@ -119,19 +119,20 @@ xmlr.reflect(DisableCollisions, params = [
 
 
 class Group(xmlr.Object):
-  def __init__(self, name = None, chain = None):
+  def __init__(self, name = None):
     self.aggregate_init()
     self.name = name
     self.links = []
     self.joints = []
-    self.chain = chain
+    self.chains = []
     self.groups = []
+    self.subgroups = self.groups
 
 xmlr.reflect(Group, params = [
   name_attribute,
   xmlr.AggregateElement('link', Link),
   xmlr.AggregateElement('joint', Joint),
-  xmlr.Element('chain', Chain, False),
+  xmlr.AggregateElement('chain', Chain),
   xmlr.AggregateElement('group', Group)
   ])
 
