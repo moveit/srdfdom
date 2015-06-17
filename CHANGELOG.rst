@@ -2,6 +2,18 @@
 Changelog for package srdfdom
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Removed unwanted python compiled file
+* Fixed path to resource in python test to work for rostest
+* Fixed authors, added doc
+* Fixed group_state parsing and changed chain as an aggregate
+* Renamed groups as subgroups when integrated in a group
+* Added the cpp tests in the python test
+* Fixed missing install
+* Added a python parser based on urdf_parser_py and using its reflection interface
+* Contributors: Dave Coleman, Guillaume Walck
+
 0.2.7 (2014-07-01)
 ------------------
 * fixing dependencies for https://github.com/ros/rosdistro/issues/4633
