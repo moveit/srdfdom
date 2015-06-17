@@ -2,8 +2,8 @@
 Changelog for package srdfdom
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.3.0 (2015-06-16)
+------------------
 * Removed unwanted python compiled file
 * Fixed path to resource in python test to work for rostest
 * Fixed authors, added doc
