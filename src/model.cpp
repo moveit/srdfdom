@@ -507,12 +507,12 @@ void srdf::Model::loadDisabledCollisions(const urdf::ModelInterface &urdf_model,
     dc.link2_ = boost::trim_copy(std::string(link2));
     if (!urdf_model.getLink(dc.link1_))
     {
-      logError("Link '%s' is not known to URDF. Cannot disable collisons.", link1);
+      logWarn("Link '%s' is not known to URDF. Cannot disable collisons.", link1);
       continue;
     }
     if (!urdf_model.getLink(dc.link2_))
     {
-      logError("Link '%s' is not known to URDF. Cannot disable collisons.", link2);
+      logWarn("Link '%s' is not known to URDF. Cannot disable collisons.", link2);
       continue;
     }
     const char *reason = c_xml->Attribute("reason");
