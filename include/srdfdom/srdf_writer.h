@@ -34,8 +34,8 @@
 
 /* Author: Dave Coleman */
 
-#ifndef MOVEIT_MOVEIT_SETUP_ASSISTANT_TOOLS_SRDF_WRITER_
-#define MOVEIT_MOVEIT_SETUP_ASSISTANT_TOOLS_SRDF_WRITER_
+#ifndef _SRDFDOM_SRDF_WRITER_
+#define _SRDFDOM_SRDF_WRITER_
 
 
 #include <boost/shared_ptr.hpp>
