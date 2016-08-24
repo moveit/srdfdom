@@ -22,7 +22,10 @@ catkin_package(
   DEPENDS console_bridge urdfdom_headers urdfdom_py
 )
 
-add_library(${PROJECT_NAME} src/model.cpp)
+add_library(${PROJECT_NAME} 
+  src/model.cpp
+  src/srdf_writer.cpp
+)
 target_link_libraries(${PROJECT_NAME} ${TinyXML_LIBRARIES} ${catkin_LIBRARIES} ${console_bridge_LIBRARIES} ${urdfdom_headers_LIBRARIES})
 
 
