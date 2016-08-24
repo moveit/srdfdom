@@ -35,7 +35,6 @@
 /* Author: Dave Coleman */
 
 #include <tinyxml.h>
-#include <ros/console.h>
 #include <srdfdom/srdf_writer.h>
 
 namespace srdf
@@ -109,8 +108,7 @@ void SRDFWriter::updateSRDFModel( const urdf::ModelInterface &robot_model )
   // Error check
   if( !srdf_model_->initString( robot_model, srdf_string ) )
   {
-    ROS_ERROR( "Unable to update the SRDF Model" );
-    exit(1);
+    throw std::runtime_error( "Unable to update the SRDF Model" );
   }
 }
 
