@@ -2,8 +2,8 @@
 Changelog for package srdfdom
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.3.2 (2016-08-25)
+------------------
 * [feat] Move SRDF-specific commands from moveit package `#14 <https://github.com/ros-planning/srdfdom/issues/14>`_
 * [sys] remove ROS-dependent logging.
 * [sys] Much cleanup in package.xml. `#12 <https://github.com/ros-planning/srdfdom/issues/12>`_ pkg-config is no longer used after https://github.com/ros-planning/srdfdom/commit/19b23e5900e9c179089e99caae52023f95d2fec8#diff-af3b638bc2a3e6c650974192a53c7291
