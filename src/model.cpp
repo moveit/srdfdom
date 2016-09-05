@@ -179,7 +179,7 @@ void srdf::Model::loadGroups(const urdf::ModelInterface &urdf_model, TiXmlElemen
         continue;
       }
       bool found = false;
-      boost::shared_ptr<const urdf::Link> l = urdf_model.getLink(tip_str);
+      urdf::LinkConstSharedPtr l = urdf_model.getLink(tip_str);
       std::set<std::string> seen;
       while (!found && l)
       {
