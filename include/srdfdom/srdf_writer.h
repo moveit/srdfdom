@@ -37,8 +37,6 @@
 #ifndef _SRDFDOM_SRDF_WRITER_
 #define _SRDFDOM_SRDF_WRITER_
 
-
-#include <boost/shared_ptr.hpp>
 #include <srdfdom/model.h> // use their struct datastructures
 
 namespace srdf
@@ -175,7 +173,7 @@ public:
   std::vector<srdf::Model::PassiveJoint>      passive_joints_;
 
   // Store the SRDF Model for updating the kinematic_model
-  boost::shared_ptr<srdf::Model>                 srdf_model_;
+  srdf::ModelSharedPtr                        srdf_model_;
 
   // Robot name
   std::string robot_name_;
@@ -185,8 +183,6 @@ public:
 // ******************************************************************************************
 // Typedef
 // ******************************************************************************************
-
-/// Create a shared pointer for passing this data object between widgets
 typedef boost::shared_ptr<SRDFWriter> SRDFWriterPtr;
 
 

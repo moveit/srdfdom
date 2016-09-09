@@ -40,13 +40,18 @@
 #include <stdexcept>
 #include <boost/lexical_cast.hpp>
 
+namespace urdf
+{
+typedef boost::shared_ptr<const ::urdf::ModelInterface> ModelInterfaceSharedPtr;
+}
+
 #define EXPECT_TRUE(arg) if (!(arg)) throw std::runtime_error("Assertion failed at line " + boost::lexical_cast<std::string>(__LINE__))
 
 #ifndef TEST_RESOURCE_LOCATION
 #  define TEST_RESOURCE_LOCATION "."
 #endif
 
-boost::shared_ptr<urdf::ModelInterface> loadURDF(const std::string& filename)
+urdf::ModelInterfaceSharedPtr loadURDF(const std::string& filename)
 {
   // get the entire file
   std::string xml_string;
@@ -65,14 +70,14 @@ boost::shared_ptr<urdf::ModelInterface> loadURDF(const std::string& filename)
   else
   {
     throw std::runtime_error("Could not open file " + filename + " for parsing.");
-    return boost::shared_ptr<urdf::ModelInterface>();
+    return urdf::ModelInterfaceSharedPtr();
   }
 }
 
 void testSimple(void)
 {
   srdf::Model s;
-  boost::shared_ptr<urdf::ModelInterface> u = loadURDF(std::string(TEST_RESOURCE_LOCATION) + "/pr2_desc.urdf");
+  urdf::ModelInterfaceSharedPtr u = loadURDF(std::string(TEST_RESOURCE_LOCATION) + "/pr2_desc.urdf");
   EXPECT_TRUE(u != NULL);
   
   EXPECT_TRUE(s.initFile(*u, std::string(TEST_RESOURCE_LOCATION) + "/pr2_desc.1.srdf"));
@@ -100,7 +105,7 @@ void testSimple(void)
 void testComplex(void)
 {
   srdf::Model s;
-  boost::shared_ptr<urdf::ModelInterface> u = loadURDF(std::string(TEST_RESOURCE_LOCATION) + "/pr2_desc.urdf");
+  urdf::ModelInterfaceSharedPtr u = loadURDF(std::string(TEST_RESOURCE_LOCATION) + "/pr2_desc.urdf");
   EXPECT_TRUE(u != NULL);
 
   EXPECT_TRUE(s.initFile(*u, std::string(TEST_RESOURCE_LOCATION) + "/pr2_desc.3.srdf"));
