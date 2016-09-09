@@ -42,6 +42,7 @@
 #include <vector>
 #include <utility>
 #include <urdf_model/model.h>
+#include <boost/shared_ptr.hpp>
 #include <tinyxml.h>
 
 /// Main namespace
@@ -269,6 +270,9 @@ private:
   std::vector<DisabledCollision> disabled_collisions_;
   std::vector<PassiveJoint>      passive_joints_;
 };
+typedef boost::shared_ptr<Model> ModelSharedPtr;
+typedef boost::shared_ptr<const Model> ModelConstSharedPtr;
+
 
 }
 #endif
