@@ -2,6 +2,11 @@
 Changelog for package srdfdom
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* [fix] Define shared_ptr typedef (adjusting to the recent change in urdfdom) `#18 <https://github.com/ros-planning/srdfdom/issues/18>`_
+* Contributors: Dave Coleman, Robert Haschke
+
 0.3.2 (2016-08-25)
 ------------------
 * [feat] Move SRDF-specific commands from moveit package `#14 <https://github.com/ros-planning/srdfdom/issues/14>`_
