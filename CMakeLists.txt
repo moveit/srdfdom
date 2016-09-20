@@ -5,7 +5,7 @@ find_package(Boost REQUIRED)
 include_directories(SYSTEM ${Boost_INCLUDE_DIR})
 
 find_package(console_bridge REQUIRED)
-find_package(urdfdom_headers 0.4 REQUIRED)
+find_package(urdfdom_headers REQUIRED)
 
 find_package(catkin REQUIRED COMPONENTS cmake_modules urdfdom_py)
 
