@@ -37,6 +37,7 @@
 #ifndef _SRDFDOM_SRDF_WRITER_
 #define _SRDFDOM_SRDF_WRITER_
 
+#include <boost/shared_ptr.hpp>
 #include <srdfdom/model.h> // use their struct datastructures
 
 namespace srdf
