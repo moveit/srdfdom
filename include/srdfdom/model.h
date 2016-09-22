@@ -42,6 +42,7 @@
 #include <vector>
 #include <utility>
 #include <urdf_model/model.h>
+#include <srdfdom/urdfdom_compatibility.h>
 #include <boost/shared_ptr.hpp>
 #include <tinyxml.h>
 
