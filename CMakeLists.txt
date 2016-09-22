@@ -16,19 +16,10 @@ link_directories(${catkin_LIBRARY_DIRS})
 
 
 ### Maintain compatibility to old urdfdom_headers (version < 4.0)
-# check for existence of type urdf::LinkSharedPtr
-include(CheckCXXSourceCompiles)
-check_cxx_source_compiles("
-#include <urdf_model/model.h>
-
-int main(int argc, char** argv)
-{
-  urdf::LinkSharedPtr l;
-  return 0;
-}
-" HAVE_URDFDOM_4)
-if(NOT HAVE_URDFDOM_4)
-  set(HAVE_URDFDOM_4 "0")
+if( "0.4.0" VERSION_GREATER "${urdfdom_headers_VERSION}")
+  set(HAVE_URDFDOM_4 0)
+else()
+  set(HAVE_URDFDOM_4 1)
 endif()
 set(generated_compat_header "${CATKIN_DEVEL_PREFIX}/include/${PROJECT_NAME}/urdfdom_compatibility.h")
 include_directories("${CATKIN_DEVEL_PREFIX}/include")
