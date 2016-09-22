@@ -2,8 +2,8 @@
 Changelog for package srdfdom
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.4.1 (2016-09-22)
+------------------
 * [fix][system] Build failure for Ubuntu Wily and Debian Jesie (urdfdom compatibility `#25 <https://github.com/ros-planning/srdfdom/issues/25>`_)
   * test for existence of urdf typedef
   * if not existing, activate compatibility header
