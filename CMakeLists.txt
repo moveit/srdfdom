@@ -14,6 +14,7 @@ find_package(TinyXML REQUIRED)
 include_directories(include ${TinyXML_INCLUDE_DIRS} ${catkin_INCLUDE_DIRS} ${console_bridge_INCLUDE_DIRS} ${urdfdom_headers_INCLUDE_DIRS})
 link_directories(${catkin_LIBRARY_DIRS})
 
+add_compile_options(-std=c++11)
 
 ### Maintain compatibility to old urdfdom_headers (version < 4.0)
 if( "0.4.0" VERSION_GREATER "${urdfdom_headers_VERSION}")
