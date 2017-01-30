@@ -7,12 +7,14 @@ include_directories(SYSTEM ${Boost_INCLUDE_DIR})
 find_package(console_bridge REQUIRED)
 find_package(urdfdom_headers REQUIRED)
 
-find_package(catkin REQUIRED COMPONENTS cmake_modules urdfdom_py)
+find_package(catkin REQUIRED COMPONENTS cmake_modules urdf urdfdom_py)
 
 find_package(TinyXML REQUIRED)
 
 include_directories(include ${TinyXML_INCLUDE_DIRS} ${catkin_INCLUDE_DIRS} ${console_bridge_INCLUDE_DIRS} ${urdfdom_headers_INCLUDE_DIRS})
 link_directories(${catkin_LIBRARY_DIRS})
+
+add_compile_options(-std=c++11)
 
 catkin_python_setup()
 

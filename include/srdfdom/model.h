@@ -41,7 +41,7 @@
 #include <string>
 #include <vector>
 #include <utility>
-#include <urdf_model/model.h>
+#include <urdf/model.h> // TODO: replace with urdf_model/types.h in Lunar
 #include <boost/shared_ptr.hpp>
 #include <tinyxml.h>
 
