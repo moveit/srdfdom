@@ -2,6 +2,13 @@
 Changelog for package srdfdom
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* [fix] gcc6 build error `#28 <https://github.com/ros-planning/srdfdom/issues/28>`_
+* [fix] Compile with -std=c++11 (`#29 <https://github.com/ros-planning/srdfdom/issues/29>`_)
+* [enhancement] cleanup urdfdom compatibility (`#27 <https://github.com/ros-planning/srdfdom/issues/27>`_)
+* Contributors: Dmitry Rozhkov, Isaac I.Y. Saito, Robert Haschke, Victor Matare
+
 0.4.1 (2016-09-22)
 ------------------
 * [fix][system] Build failure for Ubuntu Wily and Debian Jesie (urdfdom compatibility `#25 <https://github.com/ros-planning/srdfdom/issues/25>`_)
