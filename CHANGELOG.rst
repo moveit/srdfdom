@@ -2,6 +2,11 @@
 Changelog for package srdfdom
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* [maintenance] re-add boost/shared_ptr.hpp include (`#26 <https://github.com/ros-planning/srdfdom/issues/26>`_)
+* Contributors: Michael Goerner
+
 0.3.3 (2016-09-09)
 ------------------
 * [fix] Define shared_ptr typedef (adjusting to the recent change in urdfdom) `#18 <https://github.com/ros-planning/srdfdom/issues/18>`_
