@@ -2,8 +2,8 @@
 Changelog for package srdfdom
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.3.4 (2017-01-30)
+------------------
 * [maintenance] re-add boost/shared_ptr.hpp include (`#26 <https://github.com/ros-planning/srdfdom/issues/26>`_)
 * Contributors: Michael Goerner
 
