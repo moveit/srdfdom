@@ -2,6 +2,11 @@
 Changelog for package srdfdom
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* [Indigo] cleanup urdfdom compatibility (cherry-picking `#27 <https://github.com/ros-planning/srdfdom/issues/27>`_) `#30 <https://github.com/ros-planning/srdfdom/issues/30>`_
+* Contributors: Isaac I.Y. Saito, Michael Goerner, Robert Haschke
+
 0.3.4 (2017-01-30)
 ------------------
 * [maintenance] re-add boost/shared_ptr.hpp include (`#26 <https://github.com/ros-planning/srdfdom/issues/26>`_)
