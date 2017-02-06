@@ -2,8 +2,8 @@
 Changelog for package srdfdom
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.3.5 (2017-02-06)
+------------------
 * [Indigo] cleanup urdfdom compatibility (cherry-picking `#27 <https://github.com/ros-planning/srdfdom/issues/27>`_) `#30 <https://github.com/ros-planning/srdfdom/issues/30>`_
 * Contributors: Isaac I.Y. Saito, Michael Goerner, Robert Haschke
 
