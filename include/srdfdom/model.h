@@ -41,9 +41,9 @@
 #include <string>
 #include <vector>
 #include <utility>
-#include <urdf/model.h>  // TODO: replace with urdf_model/types.h in Lunar
+#include <urdf/model.h>
 #include <memory>
-#include <tinyxml.h>
+#include <tinyxml2.h>
 
 /// Main namespace
 namespace srdf
@@ -60,10 +60,10 @@ public:
   {
   }
 
-  /// \brief Load Model from TiXMLElement
-  bool initXml(const urdf::ModelInterface& urdf_model, TiXmlElement* xml);
-  /// \brief Load Model from TiXMLDocument
-  bool initXml(const urdf::ModelInterface& urdf_model, TiXmlDocument* xml);
+  /// \brief Load Model from XMLElement
+  bool initXml(const urdf::ModelInterface& urdf_model, tinyxml2::XMLElement* xml);
+  /// \brief Load Model from XMLDocument
+  bool initXml(const urdf::ModelInterface& urdf_model, tinyxml2::XMLDocument* xml);
   /// \brief Load Model given a filename
   bool initFile(const urdf::ModelInterface& urdf_model, const std::string& filename);
   /// \brief Load Model from a XML-string
@@ -251,13 +251,13 @@ public:
   void clear();
 
 private:
-  void loadVirtualJoints(const urdf::ModelInterface& urdf_model, TiXmlElement* robot_xml);
-  void loadGroups(const urdf::ModelInterface& urdf_model, TiXmlElement* robot_xml);
-  void loadGroupStates(const urdf::ModelInterface& urdf_model, TiXmlElement* robot_xml);
-  void loadEndEffectors(const urdf::ModelInterface& urdf_model, TiXmlElement* robot_xml);
-  void loadLinkSphereApproximations(const urdf::ModelInterface& urdf_model, TiXmlElement* robot_xml);
-  void loadDisabledCollisions(const urdf::ModelInterface& urdf_model, TiXmlElement* robot_xml);
-  void loadPassiveJoints(const urdf::ModelInterface& urdf_model, TiXmlElement* robot_xml);
+  void loadVirtualJoints(const urdf::ModelInterface& urdf_model, tinyxml2::XMLElement* robot_xml);
+  void loadGroups(const urdf::ModelInterface& urdf_model, tinyxml2::XMLElement* robot_xml);
+  void loadGroupStates(const urdf::ModelInterface& urdf_model, tinyxml2::XMLElement* robot_xml);
+  void loadEndEffectors(const urdf::ModelInterface& urdf_model, tinyxml2::XMLElement* robot_xml);
+  void loadLinkSphereApproximations(const urdf::ModelInterface& urdf_model, tinyxml2::XMLElement* robot_xml);
+  void loadDisabledCollisions(const urdf::ModelInterface& urdf_model, tinyxml2::XMLElement* robot_xml);
+  void loadPassiveJoints(const urdf::ModelInterface& urdf_model, tinyxml2::XMLElement* robot_xml);
 
   std::string name_;
   std::vector<Group> groups_;

@@ -43,9 +43,11 @@
 #include <set>
 #include <limits>
 
-void srdf::Model::loadVirtualJoints(const urdf::ModelInterface& urdf_model, TiXmlElement* robot_xml)
+using namespace tinyxml2;
+
+void srdf::Model::loadVirtualJoints(const urdf::ModelInterface& urdf_model, XMLElement* robot_xml)
 {
-  for (TiXmlElement* vj_xml = robot_xml->FirstChildElement("virtual_joint"); vj_xml;
+  for (XMLElement* vj_xml = robot_xml->FirstChildElement("virtual_joint"); vj_xml;
        vj_xml = vj_xml->NextSiblingElement("virtual_joint"))
   {
     const char* jname = vj_xml->Attribute("name");
@@ -98,9 +100,9 @@ void srdf::Model::loadVirtualJoints(const urdf::ModelInterface& urdf_model, TiXm
   }
 }
 
-void srdf::Model::loadGroups(const urdf::ModelInterface& urdf_model, TiXmlElement* robot_xml)
+void srdf::Model::loadGroups(const urdf::ModelInterface& urdf_model, XMLElement* robot_xml)
 {
-  for (TiXmlElement* group_xml = robot_xml->FirstChildElement("group"); group_xml;
+  for (XMLElement* group_xml = robot_xml->FirstChildElement("group"); group_xml;
        group_xml = group_xml->NextSiblingElement("group"))
   {
     const char* gname = group_xml->Attribute("name");
@@ -114,7 +116,7 @@ void srdf::Model::loadGroups(const urdf::ModelInterface& urdf_model, TiXmlElemen
     boost::trim(g.name_);
 
     // get the links in the groups
-    for (TiXmlElement* link_xml = group_xml->FirstChildElement("link"); link_xml;
+    for (XMLElement* link_xml = group_xml->FirstChildElement("link"); link_xml;
          link_xml = link_xml->NextSiblingElement("link"))
     {
       const char* lname = link_xml->Attribute("name");
@@ -133,7 +135,7 @@ void srdf::Model::loadGroups(const urdf::ModelInterface& urdf_model, TiXmlElemen
     }
 
     // get the joints in the groups
-    for (TiXmlElement* joint_xml = group_xml->FirstChildElement("joint"); joint_xml;
+    for (XMLElement* joint_xml = group_xml->FirstChildElement("joint"); joint_xml;
          joint_xml = joint_xml->NextSiblingElement("joint"))
     {
       const char* jname = joint_xml->Attribute("name");
@@ -162,7 +164,7 @@ void srdf::Model::loadGroups(const urdf::ModelInterface& urdf_model, TiXmlElemen
     }
 
     // get the chains in the groups
-    for (TiXmlElement* chain_xml = group_xml->FirstChildElement("chain"); chain_xml;
+    for (XMLElement* chain_xml = group_xml->FirstChildElement("chain"); chain_xml;
          chain_xml = chain_xml->NextSiblingElement("chain"))
     {
       const char* base = chain_xml->Attribute("base_link");
@@ -221,7 +223,7 @@ void srdf::Model::loadGroups(const urdf::ModelInterface& urdf_model, TiXmlElemen
     }
 
     // get the subgroups in the groups
-    for (TiXmlElement* subg_xml = group_xml->FirstChildElement("group"); subg_xml;
+    for (XMLElement* subg_xml = group_xml->FirstChildElement("group"); subg_xml;
          subg_xml = subg_xml->NextSiblingElement("group"))
     {
       const char* sub = subg_xml->Attribute("name");
@@ -280,9 +282,9 @@ void srdf::Model::loadGroups(const urdf::ModelInterface& urdf_model, TiXmlElemen
   }
 }
 
-void srdf::Model::loadGroupStates(const urdf::ModelInterface& urdf_model, TiXmlElement* robot_xml)
+void srdf::Model::loadGroupStates(const urdf::ModelInterface& urdf_model, XMLElement* robot_xml)
 {
-  for (TiXmlElement* gstate_xml = robot_xml->FirstChildElement("group_state"); gstate_xml;
+  for (XMLElement* gstate_xml = robot_xml->FirstChildElement("group_state"); gstate_xml;
        gstate_xml = gstate_xml->NextSiblingElement("group_state"))
   {
     const char* sname = gstate_xml->Attribute("name");
@@ -316,7 +318,7 @@ void srdf::Model::loadGroupStates(const urdf::ModelInterface& urdf_model, TiXmlE
     }
 
     // get the joint values in the group state
-    for (TiXmlElement* joint_xml = gstate_xml->FirstChildElement("joint"); joint_xml;
+    for (XMLElement* joint_xml = gstate_xml->FirstChildElement("joint"); joint_xml;
          joint_xml = joint_xml->NextSiblingElement("joint"))
     {
       const char* jname = joint_xml->Attribute("name");
@@ -376,9 +378,9 @@ void srdf::Model::loadGroupStates(const urdf::ModelInterface& urdf_model, TiXmlE
   }
 }
 
-void srdf::Model::loadEndEffectors(const urdf::ModelInterface& urdf_model, TiXmlElement* robot_xml)
+void srdf::Model::loadEndEffectors(const urdf::ModelInterface& urdf_model, XMLElement* robot_xml)
 {
-  for (TiXmlElement* eef_xml = robot_xml->FirstChildElement("end_effector"); eef_xml;
+  for (XMLElement* eef_xml = robot_xml->FirstChildElement("end_effector"); eef_xml;
        eef_xml = eef_xml->NextSiblingElement("end_effector"))
   {
     const char* ename = eef_xml->Attribute("name");
@@ -434,9 +436,9 @@ void srdf::Model::loadEndEffectors(const urdf::ModelInterface& urdf_model, TiXml
   }
 }
 
-void srdf::Model::loadLinkSphereApproximations(const urdf::ModelInterface& urdf_model, TiXmlElement* robot_xml)
+void srdf::Model::loadLinkSphereApproximations(const urdf::ModelInterface& urdf_model, XMLElement* robot_xml)
 {
-  for (TiXmlElement* cslink_xml = robot_xml->FirstChildElement("link_sphere_approximation"); cslink_xml;
+  for (XMLElement* cslink_xml = robot_xml->FirstChildElement("link_sphere_approximation"); cslink_xml;
        cslink_xml = cslink_xml->NextSiblingElement("link_sphere_approximation"))
   {
     int non_0_radius_sphere_cnt = 0;
@@ -457,7 +459,7 @@ void srdf::Model::loadLinkSphereApproximations(const urdf::ModelInterface& urdf_
 
     // get the spheres for this link
     int cnt = 0;
-    for (TiXmlElement* sphere_xml = cslink_xml->FirstChildElement("sphere"); sphere_xml;
+    for (XMLElement* sphere_xml = cslink_xml->FirstChildElement("sphere"); sphere_xml;
          sphere_xml = sphere_xml->NextSiblingElement("sphere"), cnt++)
     {
       const char* s_center = sphere_xml->Attribute("center");
@@ -531,9 +533,9 @@ void srdf::Model::loadLinkSphereApproximations(const urdf::ModelInterface& urdf_
   }
 }
 
-void srdf::Model::loadDisabledCollisions(const urdf::ModelInterface& urdf_model, TiXmlElement* robot_xml)
+void srdf::Model::loadDisabledCollisions(const urdf::ModelInterface& urdf_model, XMLElement* robot_xml)
 {
-  for (TiXmlElement* c_xml = robot_xml->FirstChildElement("disable_collisions"); c_xml;
+  for (XMLElement* c_xml = robot_xml->FirstChildElement("disable_collisions"); c_xml;
        c_xml = c_xml->NextSiblingElement("disable_collisions"))
   {
     const char* link1 = c_xml->Attribute("link1");
@@ -563,10 +565,14 @@ void srdf::Model::loadDisabledCollisions(const urdf::ModelInterface& urdf_model,
   }
 }
 
-void srdf::Model::loadPassiveJoints(const urdf::ModelInterface& urdf_model, TiXmlElement* robot_xml)
+void srdf::Model::loadPassiveJoints(const urdf::ModelInterface& urdf_model, XMLElement* robot_xml)
 {
-  for (TiXmlElement* c_xml = robot_xml->FirstChildElement("passive_joint"); c_xml;
-       c_xml = c_xml->NextSiblingElement("passive_joint"))
+  for (XMLElement* c_xml = robot_xml->FirstChildElement("passive_joint"); c_xml; c_xml = c_xml->NextSiblingElement("pas"
+                                                                                                                   "siv"
+                                                                                                                   "e_"
+                                                                                                                   "joi"
+                                                                                                                   "n"
+                                                                                                                   "t"))
   {
     const char* name = c_xml->Attribute("name");
     if (!name)
@@ -592,10 +598,10 @@ void srdf::Model::loadPassiveJoints(const urdf::ModelInterface& urdf_model, TiXm
   }
 }
 
-bool srdf::Model::initXml(const urdf::ModelInterface& urdf_model, TiXmlElement* robot_xml)
+bool srdf::Model::initXml(const urdf::ModelInterface& urdf_model, XMLElement* robot_xml)
 {
   clear();
-  if (!robot_xml || robot_xml->ValueStr() != "robot")
+  if (!robot_xml || strcmp(robot_xml->Value(), "robot") != 0)
   {
     CONSOLE_BRIDGE_logError("Could not find the 'robot' element in the xml file");
     return false;
@@ -624,9 +630,9 @@ bool srdf::Model::initXml(const urdf::ModelInterface& urdf_model, TiXmlElement* 
   return true;
 }
 
-bool srdf::Model::initXml(const urdf::ModelInterface& urdf_model, TiXmlDocument* xml)
+bool srdf::Model::initXml(const urdf::ModelInterface& urdf_model, XMLDocument* xml)
 {
-  TiXmlElement* robot_xml = xml ? xml->FirstChildElement("robot") : NULL;
+  XMLElement* robot_xml = xml ? xml->FirstChildElement("robot") : NULL;
   if (!robot_xml)
   {
     CONSOLE_BRIDGE_logError("Could not find the 'robot' element in the xml file");
@@ -660,11 +666,11 @@ bool srdf::Model::initFile(const urdf::ModelInterface& urdf_model, const std::st
 
 bool srdf::Model::initString(const urdf::ModelInterface& urdf_model, const std::string& xmlstring)
 {
-  TiXmlDocument xml_doc;
+  XMLDocument xml_doc;
   xml_doc.Parse(xmlstring.c_str());
   if (xml_doc.Error())
   {
-    CONSOLE_BRIDGE_logError("Could not parse the SRDF XML File. %s", xml_doc.ErrorDesc());
+    CONSOLE_BRIDGE_logError("Could not parse the SRDF XML File. %s", xml_doc.ErrorStr());
     return false;
   }
   return initXml(urdf_model, &xml_doc);
