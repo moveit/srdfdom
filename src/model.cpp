@@ -35,9 +35,8 @@
 /* Author Ioan Sucan */
 
 #include "srdfdom/model.h"
+#include "trim.h"
 #include <console_bridge/console.h>
-#include <boost/lexical_cast.hpp>
-#include <boost/algorithm/string/trim.hpp>
 #include <algorithm>
 #include <fstream>
 #include <sstream>
@@ -62,7 +61,7 @@ void srdf::Model::loadVirtualJoints(const urdf::ModelInterface &urdf_model, TiXm
       logError("Child link of virtual joint is not specified");
       continue;
     }
-    if (!urdf_model.getLink(boost::trim_copy(std::string(child))))
+    if (!urdf_model.getLink(srdf::trim_copy(std::string(child))))
     {
       logError("Virtual joint does not attach to a link on the robot (link '%s' is not known)", child);
       continue;
@@ -78,16 +77,16 @@ void srdf::Model::loadVirtualJoints(const urdf::ModelInterface &urdf_model, TiXm
       continue;
     }
     VirtualJoint vj;
-    vj.type_ = std::string(type); boost::trim(vj.type_);
+    vj.type_ = std::string(type); srdf::trim(vj.type_);
     std::transform(vj.type_.begin(), vj.type_.end(), vj.type_.begin(), ::tolower);
     if (vj.type_ != "planar" && vj.type_ != "floating" && vj.type_ != "fixed")
     {
       logError("Unknown type of joint: '%s'. Assuming 'fixed' instead. Other known types are 'planar' and 'floating'.", type);
       vj.type_ = "fixed";
     }
-    vj.name_ = std::string(jname); boost::trim(vj.name_);        
-    vj.child_link_ = std::string(child); boost::trim(vj.child_link_);
-    vj.parent_frame_ = std::string(parent); boost::trim(vj.parent_frame_);
+    vj.name_ = std::string(jname); srdf::trim(vj.name_);
+    vj.child_link_ = std::string(child); srdf::trim(vj.child_link_);
+    vj.parent_frame_ = std::string(parent); srdf::trim(vj.parent_frame_);
     virtual_joints_.push_back(vj);
   }
 }
@@ -103,7 +102,7 @@ void srdf::Model::loadGroups(const urdf::ModelInterface &urdf_model, TiXmlElemen
       continue;
     }
     Group g;
-    g.name_ = std::string(gname); boost::trim(g.name_);
+    g.name_ = std::string(gname); srdf::trim(g.name_);
     
     // get the links in the groups
     for (TiXmlElement* link_xml = group_xml->FirstChildElement("link"); link_xml; link_xml = link_xml->NextSiblingElement("link"))
@@ -114,7 +113,7 @@ void srdf::Model::loadGroups(const urdf::ModelInterface &urdf_model, TiXmlElemen
         logError("Link name not specified");
         continue;
       }
-      std::string lname_str = boost::trim_copy(std::string(lname));
+      std::string lname_str = srdf::trim_copy(std::string(lname));
       if (!urdf_model.getLink(lname_str))
       {
         logError("Link '%s' declared as part of group '%s' is not known to the URDF", lname, gname);
@@ -132,7 +131,7 @@ void srdf::Model::loadGroups(const urdf::ModelInterface &urdf_model, TiXmlElemen
         logError("Joint name not specified");
         continue;
       }
-      std::string jname_str = boost::trim_copy(std::string(jname));
+      std::string jname_str = srdf::trim_copy(std::string(jname));
       if (!urdf_model.getJoint(jname_str))
       {
         bool missing = true;
@@ -166,8 +165,8 @@ void srdf::Model::loadGroups(const urdf::ModelInterface &urdf_model, TiXmlElemen
         logError("Tip link name not specified for chain");
         continue;
       }
-      std::string base_str = boost::trim_copy(std::string(base));
-      std::string tip_str = boost::trim_copy(std::string(tip));
+      std::string base_str = srdf::trim_copy(std::string(base));
+      std::string tip_str = srdf::trim_copy(std::string(tip));
       if (!urdf_model.getLink(base_str))
       {
         logError("Link '%s' declared as part of a chain in group '%s' is not known to the URDF", base, gname);
@@ -215,7 +214,7 @@ void srdf::Model::loadGroups(const urdf::ModelInterface &urdf_model, TiXmlElemen
         logError("Group name not specified when included as subgroup");
         continue;
       }
-      g.subgroups_.push_back(boost::trim_copy(std::string(sub)));
+      g.subgroups_.push_back(srdf::trim_copy(std::string(sub)));
     }
     if (g.links_.empty() && g.joints_.empty() && g.chains_.empty() && g.subgroups_.empty())
       logWarn("Group '%s' is empty.", gname);
@@ -283,8 +282,8 @@ void srdf::Model::loadGroupStates(const urdf::ModelInterface &urdf_model, TiXmlE
     }
     
     GroupState gs;
-    gs.name_ = boost::trim_copy(std::string(sname));
-    gs.group_ = boost::trim_copy(std::string(gname));
+    gs.name_ = srdf::trim_copy(std::string(sname));
+    gs.group_ = srdf::trim_copy(std::string(gname));
     
     bool found = false;
     for (std::size_t k = 0 ; k < groups_.size() ; ++k)
@@ -314,7 +313,7 @@ void srdf::Model::loadGroupStates(const urdf::ModelInterface &urdf_model, TiXmlE
         logError("Joint name not specified for joint '%s' in group state '%s'", jname, sname);
         continue;
       }
-      std::string jname_str = boost::trim_copy(std::string(jname));
+      std::string jname_str = srdf::trim_copy(std::string(jname));
       if (!urdf_model.getJoint(jname_str))
       {
         bool missing = true;
@@ -337,12 +336,16 @@ void srdf::Model::loadGroupStates(const urdf::ModelInterface &urdf_model, TiXmlE
         while (ss.good() && !ss.eof())
         {
           std::string val; ss >> val >> std::ws;
-          gs.joint_values_[jname_str].push_back(boost::lexical_cast<double>(val));
+          gs.joint_values_[jname_str].push_back(std::stod(val));
         }
       }
-      catch (boost::bad_lexical_cast &e)
+      catch (const std::invalid_argument &e)
       {
         logError("Unable to parse joint value '%s'", jval);
+      }
+      catch (const std::out_of_range &e)
+      {
+        logError("Unable to parse joint value '%s' (out of range)", jval);
       }
       
       if (gs.joint_values_.empty())
@@ -371,8 +374,8 @@ void srdf::Model::loadEndEffectors(const urdf::ModelInterface &urdf_model, TiXml
       continue;
     }
     EndEffector e;
-    e.name_ = std::string(ename); boost::trim(e.name_);
-    e.component_group_ = std::string(gname); boost::trim(e.component_group_);
+    e.name_ = std::string(ename); srdf::trim(e.name_);
+    e.component_group_ = std::string(gname); srdf::trim(e.component_group_);
     bool found = false;
     for (std::size_t k = 0 ; k < groups_.size() ; ++k)
       if (groups_[k].name_ == e.component_group_)
@@ -390,7 +393,7 @@ void srdf::Model::loadEndEffectors(const urdf::ModelInterface &urdf_model, TiXml
       logError("Parent link not specified for end effector '%s'", ename);
       continue;
     }
-    e.parent_link_ = std::string(parent); boost::trim(e.parent_link_);
+    e.parent_link_ = std::string(parent); srdf::trim(e.parent_link_);
     if (!urdf_model.getLink(e.parent_link_))
     {
       logError("Link '%s' specified as parent for end effector '%s' is not known to the URDF", parent, ename);
@@ -398,7 +401,7 @@ void srdf::Model::loadEndEffectors(const urdf::ModelInterface &urdf_model, TiXml
     }
     if (parent_group)
     {
-      e.parent_group_ = std::string(parent_group); boost::trim(e.parent_group_);
+      e.parent_group_ = std::string(parent_group); srdf::trim(e.parent_group_);
     }
     end_effectors_.push_back(e);
   }
@@ -417,7 +420,7 @@ void srdf::Model::loadLinkSphereApproximations(const urdf::ModelInterface &urdf_
     }
     
     LinkSpheres link_spheres;
-    link_spheres.link_ = boost::trim_copy(std::string(link_name));
+    link_spheres.link_ = srdf::trim_copy(std::string(link_name));
     if (!urdf_model.getLink(link_spheres.link_))
     {
       logError("Link '%s' is not known to URDF.", link_name);
@@ -443,16 +446,21 @@ void srdf::Model::loadLinkSphereApproximations(const urdf::ModelInterface &urdf_
         std::stringstream center(s_center);
         center.exceptions(std::stringstream::failbit | std::stringstream::badbit);
         center >> sphere.center_x_ >> sphere.center_y_ >> sphere.center_z_;
-        sphere.radius_ = boost::lexical_cast<double>(s_r);
+        sphere.radius_ = std::stod(s_r);
       }
       catch (std::stringstream::failure &e)
       {
         logError("Link collision sphere %d for link '%s' has bad center attribute value.", cnt, link_name);
         continue;
       }
-      catch (boost::bad_lexical_cast &e)
+      catch (const std::invalid_argument &e)
       {
         logError("Link collision sphere %d for link '%s' has bad radius attribute value.", cnt, link_name);
+        continue;
+      }
+      catch (const std::out_of_range &e)
+      {
+        logError("Link collision sphere %d for link '%s' has an out of range radius attribute value.", cnt, link_name);
         continue;
       }
 
@@ -503,8 +511,8 @@ void srdf::Model::loadDisabledCollisions(const urdf::ModelInterface &urdf_model,
       continue;
     }
     DisabledCollision dc;
-    dc.link1_ = boost::trim_copy(std::string(link1));
-    dc.link2_ = boost::trim_copy(std::string(link2));
+    dc.link1_ = srdf::trim_copy(std::string(link1));
+    dc.link2_ = srdf::trim_copy(std::string(link2));
     if (!urdf_model.getLink(dc.link1_))
     {
       logWarn("Link '%s' is not known to URDF. Cannot disable collisons.", link1);
@@ -533,7 +541,7 @@ void srdf::Model::loadPassiveJoints(const urdf::ModelInterface &urdf_model, TiXm
       continue;
     }
     PassiveJoint pj;
-    pj.name_ = boost::trim_copy(std::string(name));
+    pj.name_ = srdf::trim_copy(std::string(name));
 
     // see if a virtual joint was marked as passive
     bool vjoint = false;
@@ -565,7 +573,7 @@ bool srdf::Model::initXml(const urdf::ModelInterface &urdf_model, TiXmlElement *
     logError("No name given for the robot.");
   else
   {
-    name_ = std::string(name); boost::trim(name_);
+    name_ = std::string(name); srdf::trim(name_);
     if (name_ != urdf_model.getName())
       logError("Semantic description is not specified for the same robot as the URDF");
   }

@@ -13,7 +13,6 @@
   
   <buildtool_depend>catkin</buildtool_depend>
 
-  <build_depend>boost</build_depend>
   <build_depend>cmake_modules</build_depend>
   <build_depend>libconsole-bridge-dev</build_depend>
   <build_depend>urdf</build_depend>
@@ -21,7 +20,6 @@
   <build_depend>urdfdom_py</build_depend>
   <build_depend>tinyxml</build_depend>
 
-  <run_depend>boost</run_depend>
   <run_depend>libconsole-bridge-dev</run_depend>
   <run_depend>liburdfdom-headers-dev</run_depend>
   <run_depend>tinyxml</run_depend>

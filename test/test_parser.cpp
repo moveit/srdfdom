@@ -38,9 +38,8 @@
 #include <urdf_parser/urdf_parser.h>
 #include <fstream>
 #include <stdexcept>
-#include <boost/lexical_cast.hpp>
 
-#define EXPECT_TRUE(arg) if (!(arg)) throw std::runtime_error("Assertion failed at line " + boost::lexical_cast<std::string>(__LINE__))
+#define EXPECT_TRUE(arg) if (!(arg)) throw std::runtime_error("Assertion failed at line " + std::to_string(__LINE__))
 
 #ifndef TEST_RESOURCE_LOCATION
 #  define TEST_RESOURCE_LOCATION "."
