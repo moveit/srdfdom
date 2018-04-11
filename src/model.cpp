@@ -36,7 +36,6 @@
 
 #include "srdfdom/model.h"
 #include <console_bridge/console.h>
-#include <boost/lexical_cast.hpp>
 #include <boost/algorithm/string/trim.hpp>
 #include <algorithm>
 #include <fstream>
@@ -85,7 +84,7 @@ void srdf::Model::loadVirtualJoints(const urdf::ModelInterface &urdf_model, TiXm
       CONSOLE_BRIDGE_logError("Unknown type of joint: '%s'. Assuming 'fixed' instead. Other known types are 'planar' and 'floating'.", type);
       vj.type_ = "fixed";
     }
-    vj.name_ = std::string(jname); boost::trim(vj.name_);        
+    vj.name_ = std::string(jname); boost::trim(vj.name_);
     vj.child_link_ = std::string(child); boost::trim(vj.child_link_);
     vj.parent_frame_ = std::string(parent); boost::trim(vj.parent_frame_);
     virtual_joints_.push_back(vj);
@@ -337,12 +336,16 @@ void srdf::Model::loadGroupStates(const urdf::ModelInterface &urdf_model, TiXmlE
         while (ss.good() && !ss.eof())
         {
           std::string val; ss >> val >> std::ws;
-          gs.joint_values_[jname_str].push_back(boost::lexical_cast<double>(val));
+          gs.joint_values_[jname_str].push_back(std::stod(val));
         }
       }
-      catch (boost::bad_lexical_cast &e)
+      catch (const std::invalid_argument &e)
       {
         CONSOLE_BRIDGE_logError("Unable to parse joint value '%s'", jval);
+      }
+      catch (const std::out_of_range &e)
+      {
+        logError("Unable to parse joint value '%s' (out of range)", jval);
       }
       
       if (gs.joint_values_.empty())
@@ -443,16 +446,21 @@ void srdf::Model::loadLinkSphereApproximations(const urdf::ModelInterface &urdf_
         std::stringstream center(s_center);
         center.exceptions(std::stringstream::failbit | std::stringstream::badbit);
         center >> sphere.center_x_ >> sphere.center_y_ >> sphere.center_z_;
-        sphere.radius_ = boost::lexical_cast<double>(s_r);
+        sphere.radius_ = std::stod(s_r);
       }
       catch (std::stringstream::failure &e)
       {
         CONSOLE_BRIDGE_logError("Link collision sphere %d for link '%s' has bad center attribute value.", cnt, link_name);
         continue;
       }
-      catch (boost::bad_lexical_cast &e)
+      catch (const std::invalid_argument &e)
       {
         CONSOLE_BRIDGE_logError("Link collision sphere %d for link '%s' has bad radius attribute value.", cnt, link_name);
+        continue;
+      }
+      catch (const std::out_of_range &e)
+      {
+        logError("Link collision sphere %d for link '%s' has an out of range radius attribute value.", cnt, link_name);
         continue;
       }
 

@@ -37,7 +37,7 @@
 #ifndef _SRDFDOM_SRDF_WRITER_
 #define _SRDFDOM_SRDF_WRITER_
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include <srdfdom/model.h> // use their struct datastructures
 
 namespace srdf
@@ -184,7 +184,7 @@ public:
 // ******************************************************************************************
 // Typedef
 // ******************************************************************************************
-typedef boost::shared_ptr<SRDFWriter> SRDFWriterPtr;
+typedef std::shared_ptr<SRDFWriter> SRDFWriterPtr;
 
 
 }

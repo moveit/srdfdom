@@ -42,7 +42,7 @@
 #include <vector>
 #include <utility>
 #include <urdf/model.h> // TODO: replace with urdf_model/types.h in Lunar
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include <tinyxml.h>
 
 /// Main namespace
@@ -270,8 +270,8 @@ private:
   std::vector<DisabledCollision> disabled_collisions_;
   std::vector<PassiveJoint>      passive_joints_;
 };
-typedef boost::shared_ptr<Model> ModelSharedPtr;
-typedef boost::shared_ptr<const Model> ModelConstSharedPtr;
+typedef std::shared_ptr<Model> ModelSharedPtr;
+typedef std::shared_ptr<const Model> ModelConstSharedPtr;
 
 
 }
