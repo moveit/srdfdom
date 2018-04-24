@@ -2,6 +2,12 @@
 Changelog for package srdfdom
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Switch to std::shared_ptr of C++11 (`#36 <https://github.com/ros-planning/srdfdom/issues/36>`_)
+* Change log{Error,Warn} -> CONSOLE_BRIDGE_log{Error,Warn} (`#37 <https://github.com/ros-planning/srdfdom/issues/37>`_)
+* Contributors: Chris Lalancette, Ian McMahon
+
 0.4.2 (2017-01-30)
 ------------------
 * [fix] gcc6 build error `#28 <https://github.com/ros-planning/srdfdom/issues/28>`_
