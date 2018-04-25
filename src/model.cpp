@@ -345,7 +345,7 @@ void srdf::Model::loadGroupStates(const urdf::ModelInterface &urdf_model, TiXmlE
       }
       catch (const std::out_of_range &e)
       {
-        logError("Unable to parse joint value '%s' (out of range)", jval);
+        CONSOLE_BRIDGE_logError("Unable to parse joint value '%s' (out of range)", jval);
       }
       
       if (gs.joint_values_.empty())
@@ -460,7 +460,7 @@ void srdf::Model::loadLinkSphereApproximations(const urdf::ModelInterface &urdf_
       }
       catch (const std::out_of_range &e)
       {
-        logError("Link collision sphere %d for link '%s' has an out of range radius attribute value.", cnt, link_name);
+        CONSOLE_BRIDGE_logError("Link collision sphere %d for link '%s' has an out of range radius attribute value.", cnt, link_name);
         continue;
       }
 
