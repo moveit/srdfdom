@@ -38,11 +38,10 @@
 #define _SRDFDOM_SRDF_WRITER_
 
 #include <memory>
-#include <srdfdom/model.h> // use their struct datastructures
+#include <srdfdom/model.h>  // use their struct datastructures
 
 namespace srdf
 {
-
 // ******************************************************************************************
 // ******************************************************************************************
 // Class
@@ -73,7 +72,7 @@ public:
    *
    * @return bool if initialization was successful
    */
-  bool initString( const urdf::ModelInterface &robot_model, const std::string &srdf_string );
+  bool initString(const urdf::ModelInterface& robot_model, const std::string& srdf_string);
 
   /**
    * Initialize the SRDF writer with an exisiting SRDF model (optional)
@@ -81,14 +80,14 @@ public:
    * @param urdf_model a preloaded urdf model reference
    * @param srdf_model a preloaded srdf model reference
    */
-  void initModel( const urdf::ModelInterface &robot_model, const srdf::Model &srdf_model );
+  void initModel(const urdf::ModelInterface& robot_model, const srdf::Model& srdf_model);
 
   /**
    * Update the SRDF Model class using a new SRDF string
    *
    * @param robot_model a loaded URDF model
    */
-  void updateSRDFModel( const urdf::ModelInterface &robot_model );
+  void updateSRDFModel(const urdf::ModelInterface& robot_model);
 
   /**
    * Generate SRDF XML of all contained data and save to file
@@ -96,7 +95,7 @@ public:
    * @param file_path - string path location to save SRDF
    * @return bool - true if save was successful
    */
-  bool writeSRDF( const std::string &file_path );
+  bool writeSRDF(const std::string& file_path);
 
   /**
    * Get a string of a generated SRDF document
@@ -117,76 +116,73 @@ public:
    *
    * @param root - TinyXML root element to attach sub elements to
    */
-  void createGroupsXML( TiXmlElement *root );
+  void createGroupsXML(TiXmlElement* root);
 
   /**
    * Generate XML for SRDF link collision spheres
    *
    * @param root  - TinyXML root element to attach sub elements to
    */
-  void createLinkSphereApproximationsXML( TiXmlElement *root );
+  void createLinkSphereApproximationsXML(TiXmlElement* root);
 
   /**
    * Generate XML for SRDF disabled collisions of robot link pairs
    *
    * @param root  - TinyXML root element to attach sub elements to
    */
-  void createDisabledCollisionsXML( TiXmlElement *root );
+  void createDisabledCollisionsXML(TiXmlElement* root);
 
   /**
    * Generate XML for SRDF group states of each joint's position
    *
    * @param root  - TinyXML root element to attach sub elements to
    */
-  void createGroupStatesXML( TiXmlElement *root );
+  void createGroupStatesXML(TiXmlElement* root);
 
   /**
    * Generate XML for SRDF end effectors
    *
    * @param root  - TinyXML root element to attach sub elements to
    */
-  void createEndEffectorsXML( TiXmlElement *root );
+  void createEndEffectorsXML(TiXmlElement* root);
 
   /**
    * Generate XML for SRDF virtual joints
    *
    * @param root  - TinyXML root element to attach sub elements to
    */
-  void createVirtualJointsXML( TiXmlElement *root );
+  void createVirtualJointsXML(TiXmlElement* root);
 
   /**
    * Generate XML for SRDF passive joints
    *
    * @param root  - TinyXML root element to attach sub elements to
    */
-  void createPassiveJointsXML( TiXmlElement *root );
+  void createPassiveJointsXML(TiXmlElement* root);
 
   // ******************************************************************************************
   // Group Datastructures
   // ******************************************************************************************
 
-  std::vector<srdf::Model::Group>             groups_;
-  std::vector<srdf::Model::GroupState>        group_states_;
-  std::vector<srdf::Model::VirtualJoint>      virtual_joints_;
-  std::vector<srdf::Model::EndEffector>       end_effectors_;
-  std::vector<srdf::Model::LinkSpheres>       link_sphere_approximations_;
+  std::vector<srdf::Model::Group> groups_;
+  std::vector<srdf::Model::GroupState> group_states_;
+  std::vector<srdf::Model::VirtualJoint> virtual_joints_;
+  std::vector<srdf::Model::EndEffector> end_effectors_;
+  std::vector<srdf::Model::LinkSpheres> link_sphere_approximations_;
   std::vector<srdf::Model::DisabledCollision> disabled_collisions_;
-  std::vector<srdf::Model::PassiveJoint>      passive_joints_;
+  std::vector<srdf::Model::PassiveJoint> passive_joints_;
 
   // Store the SRDF Model for updating the kinematic_model
-  srdf::ModelSharedPtr                        srdf_model_;
+  srdf::ModelSharedPtr srdf_model_;
 
   // Robot name
   std::string robot_name_;
-
 };
 
 // ******************************************************************************************
 // Typedef
 // ******************************************************************************************
 typedef std::shared_ptr<SRDFWriter> SRDFWriterPtr;
-
-
 }
 
 #endif
