@@ -39,10 +39,12 @@
 #include <fstream>
 #include <stdexcept>
 
-#define EXPECT_TRUE(arg) if (!(arg)) throw std::runtime_error("Assertion failed at line " + std::to_string(__LINE__))
+#define EXPECT_TRUE(arg)                                                                                               \
+  if (!(arg))                                                                                                          \
+  throw std::runtime_error("Assertion failed at line " + std::to_string(__LINE__))
 
 #ifndef TEST_RESOURCE_LOCATION
-#  define TEST_RESOURCE_LOCATION "."
+#define TEST_RESOURCE_LOCATION "."
 #endif
 
 urdf::ModelInterfaceSharedPtr loadURDF(const std::string& filename)
@@ -55,7 +57,7 @@ urdf::ModelInterfaceSharedPtr loadURDF(const std::string& filename)
     while (xml_file.good())
     {
       std::string line;
-      std::getline( xml_file, line);
+      std::getline(xml_file, line);
       xml_string += (line + "\n");
     }
     xml_file.close();
@@ -73,21 +75,21 @@ void testSimple(void)
   srdf::Model s;
   urdf::ModelInterfaceSharedPtr u = loadURDF(std::string(TEST_RESOURCE_LOCATION) + "/pr2_desc.urdf");
   EXPECT_TRUE(u != NULL);
-  
+
   EXPECT_TRUE(s.initFile(*u, std::string(TEST_RESOURCE_LOCATION) + "/pr2_desc.1.srdf"));
   EXPECT_TRUE(s.getVirtualJoints().size() == 0);
   EXPECT_TRUE(s.getGroups().size() == 0);
   EXPECT_TRUE(s.getGroupStates().size() == 0);
   EXPECT_TRUE(s.getDisabledCollisionPairs().empty());
   EXPECT_TRUE(s.getEndEffectors().size() == 0);
-  
+
   EXPECT_TRUE(s.initFile(*u, std::string(TEST_RESOURCE_LOCATION) + "/pr2_desc.2.srdf"));
   EXPECT_TRUE(s.getVirtualJoints().size() == 1);
   EXPECT_TRUE(s.getGroups().size() == 1);
   EXPECT_TRUE(s.getGroupStates().size() == 0);
   EXPECT_TRUE(s.getDisabledCollisionPairs().empty());
   EXPECT_TRUE(s.getEndEffectors().size() == 0);
-  
+
   EXPECT_TRUE(s.initFile(*u, std::string(TEST_RESOURCE_LOCATION) + "/pr2_desc.1.srdf"));
   EXPECT_TRUE(s.getVirtualJoints().size() == 0);
   EXPECT_TRUE(s.getGroups().size() == 0);
@@ -109,10 +111,10 @@ void testComplex(void)
   EXPECT_TRUE(s.getDisabledCollisionPairs().size() == 2);
   EXPECT_TRUE(s.getDisabledCollisionPairs()[0].reason_ == "adjacent");
   EXPECT_TRUE(s.getEndEffectors().size() == 2);
-  
+
   EXPECT_TRUE(s.getVirtualJoints()[0].name_ == "world_joint");
   EXPECT_TRUE(s.getVirtualJoints()[0].type_ == "planar");
-  for (std::size_t i = 0 ; i < s.getGroups().size() ; ++i)
+  for (std::size_t i = 0; i < s.getGroups().size(); ++i)
   {
     if (s.getGroups()[i].name_ == "left_arm" || s.getGroups()[i].name_ == "right_arm")
       EXPECT_TRUE(s.getGroups()[i].chains_.size() == 1);
@@ -134,28 +136,28 @@ void testComplex(void)
   int index = 0;
   if (s.getGroupStates()[0].group_ != "arms")
     index = 1;
-  
+
   EXPECT_TRUE(s.getGroupStates()[index].group_ == "arms");
   EXPECT_TRUE(s.getGroupStates()[index].name_ == "tuck_arms");
-  EXPECT_TRUE(s.getGroupStates()[1-index].group_ == "base");
-  EXPECT_TRUE(s.getGroupStates()[1-index].name_ == "home");
-  
-  const std::vector<double> &v = s.getGroupStates()[index].joint_values_.find("l_shoulder_pan_joint")->second;
+  EXPECT_TRUE(s.getGroupStates()[1 - index].group_ == "base");
+  EXPECT_TRUE(s.getGroupStates()[1 - index].name_ == "home");
+
+  const std::vector<double>& v = s.getGroupStates()[index].joint_values_.find("l_shoulder_pan_joint")->second;
   EXPECT_TRUE(v.size() == 1u);
   EXPECT_TRUE(v[0] == 0.2);
-  const std::vector<double> &w = s.getGroupStates()[1-index].joint_values_.find("world_joint")->second;
+  const std::vector<double>& w = s.getGroupStates()[1 - index].joint_values_.find("world_joint")->second;
   EXPECT_TRUE(w.size() == 3u);
   EXPECT_TRUE(w[0] == 0.4);
   EXPECT_TRUE(w[1] == 0);
   EXPECT_TRUE(w[2] == -1);
-  
+
   index = (s.getEndEffectors()[0].name_[0] == 'r') ? 0 : 1;
   EXPECT_TRUE(s.getEndEffectors()[index].name_ == "r_end_effector");
   EXPECT_TRUE(s.getEndEffectors()[index].component_group_ == "r_end_effector");
   EXPECT_TRUE(s.getEndEffectors()[index].parent_link_ == "r_wrist_roll_link");
 }
 
-int main(int argc, char **argv)
+int main(int argc, char** argv)
 {
   testSimple();
   testComplex();
