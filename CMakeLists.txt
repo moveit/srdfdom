@@ -10,8 +10,14 @@ find_package(catkin REQUIRED COMPONENTS cmake_modules urdf urdfdom_py)
 
 find_package(TinyXML REQUIRED)
 
-include_directories(include ${Boost_INCLUDE_DIR} ${TinyXML_INCLUDE_DIRS} ${catkin_INCLUDE_DIRS} ${console_bridge_INCLUDE_DIRS} ${urdfdom_headers_INCLUDE_DIRS})
-link_directories(${catkin_LIBRARY_DIRS})
+include_directories(
+  include
+  ${Boost_INCLUDE_DIR}
+  ${TinyXML_INCLUDE_DIRS}
+  ${catkin_INCLUDE_DIRS}
+  ${console_bridge_INCLUDE_DIRS}
+  ${urdfdom_headers_INCLUDE_DIRS}
+  )
 
 add_compile_options(-std=c++11)
 
@@ -19,8 +25,8 @@ catkin_python_setup()
 
 catkin_package(
   LIBRARIES ${PROJECT_NAME}
-  INCLUDE_DIRS include ${TinyXML_INCLUDE_DIRS}
-  DEPENDS console_bridge urdfdom_headers urdfdom_py
+  INCLUDE_DIRS include
+  DEPENDS TinyXML console_bridge urdfdom_headers
 )
 
 add_library(${PROJECT_NAME} 

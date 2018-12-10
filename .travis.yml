@@ -11,11 +11,15 @@ notifications:
     recipients:
       - 130s@2000.jukuin.keio.ac.jp
 env:
+  global:
+    - ROS_DISTRO=melodic
+    - ROS_REPO=ros
   matrix:
-    - ROS_DISTRO=melodic ROS_REPO=ros  TEST=clang-format
-    - ROS_DISTRO=melodic ROS_REPO=ros
+    - TEST="clang-format, catkin_lint"
+    - ROS_DISTRO=melodic
 
 before_script:
-  - git clone -q https://github.com/ros-planning/moveit_ci.git .moveit_ci
+  - git clone -q --depth=1 https://github.com/ros-planning/moveit_ci.git .moveit_ci
+
 script:
-  - source .moveit_ci/travis.sh
+  - .moveit_ci/travis.sh
