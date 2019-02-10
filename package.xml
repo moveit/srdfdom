@@ -1,18 +1,21 @@
-<package>
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
   <name>srdfdom</name>
   <version>0.5.1</version>
   <description>Parser for Semantic Robot Description Format (SRDF).</description>
   <author email="isucan@willowgarage.com">Ioan Sucan</author>
   <author email="gwalck@techfak.uni-bielefeld.de">Guillaume Walck</author>
+  <author email="vmayoral@acutronicrobotics.com">Víctor Mayoral Vilches</author>
+
   <maintainer email="dave@dav.ee">Dave Coleman</maintainer>maintainer>
   <maintainer email="130s@2000.jukuin.keio.ac.jp">Isaac I. Y. Saito</maintainer>maintainer>
   <license>BSD</license>
   <url type="website">http://ros.org/wiki/srdfdom</url>
   <url type="bugtracker">https://github.com/ros-planning/srdfdom/issues</url>
   <url type="repository">https://github.com/ros-planning/srdfdom</url>
-  
-  <buildtool_depend>catkin</buildtool_depend>
 
+  <buildtool_depend>ament_cmake</buildtool_depend>
   <build_depend>boost</build_depend>
   <build_depend>cmake_modules</build_depend>
   <build_depend>libconsole-bridge-dev</build_depend>
@@ -21,11 +24,11 @@
   <build_depend>urdfdom_py</build_depend>
   <build_depend>tinyxml</build_depend>
 
-  <run_depend>boost</run_depend>
-  <run_depend>libconsole-bridge-dev</run_depend>
-  <run_depend>liburdfdom-headers-dev</run_depend>
-  <run_depend>tinyxml</run_depend>
-  <run_depend>urdfdom_py</run_depend>
+  <exec_depend>boost</exec_depend>
+  <exec_depend>libconsole-bridge-dev</exec_depend>
+  <exec_depend>liburdfdom-headers-dev</exec_depend>
+  <exec_depend>tinyxml</exec_depend>
+  <exec_depend>urdfdom_py</exec_depend>
 
   <test_depend>rostest</test_depend>
 
