@@ -158,7 +158,7 @@ int main(int argc, char** argv)
 {
   // use the environment locale so that the unit test can be repeated with various locales easily
   setlocale(LC_ALL, "");
-  
+
   testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();
 }

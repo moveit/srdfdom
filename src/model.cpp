@@ -351,12 +351,12 @@ void srdf::Model::loadGroupStates(const urdf::ModelInterface& urdf_model, TiXmlE
       try
       {
         std::string jval_str = std::string(jval);
-        std::stringstream ss(jval_str);
+        std::istringstream ss(jval_str);
         while (ss.good() && !ss.eof())
         {
-          std::string val;
+          double val;
           ss >> val >> std::ws;
-          gs.joint_values_[jname_str].push_back(std::stod(val));
+          gs.joint_values_[jname_str].push_back(val);
         }
       }
       catch (const std::invalid_argument& e)
