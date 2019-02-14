@@ -14,8 +14,8 @@ find_package(Boost REQUIRED)
 find_package(console_bridge REQUIRED)
 find_package(urdfdom_headers REQUIRED)
 find_package(ament_cmake REQUIRED)
-# find_package(cmake_modules REQUIRED)
 find_package(urdf REQUIRED)
+# find_package(cmake_modules REQUIRED)
 # find_package(urdfdom_py REQUIRED)
 find_package(tinyxml_vendor REQUIRED)
 
@@ -35,7 +35,8 @@ add_library(${PROJECT_NAME}
 ament_target_dependencies(${PROJECT_NAME}
         ${TinyXML_LIBRARIES}
         ${console_bridge_LIBRARIES}
-      ${urdfdom_headers_LIBRARIES})
+        urdfdom_headers
+        urdf)
 # target_link_libraries(${PROJECT_NAME} ${TinyXML_LIBRARIES} ${catkin_LIBRARIES} ${console_bridge_LIBRARIES} ${urdfdom_headers_LIBRARIES})
 
 
@@ -52,9 +53,9 @@ install(PROGRAMS
   DESTINATION lib/${PROJECT_NAME}
 )
 
-if(CATKIN_ENABLE_TESTING)
-  find_package(rostest REQUIRED)
-  add_rostest(test/srdf_parser.test)
-endif()
+# if(CATKIN_ENABLE_TESTING)
+#   find_package(rostest REQUIRED)
+#   add_rostest(test/srdf_parser.test)
+# endif()
 
 ament_package()
