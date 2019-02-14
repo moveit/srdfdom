@@ -52,4 +52,7 @@ install(PROGRAMS
 if(CATKIN_ENABLE_TESTING)
   find_package(rostest REQUIRED)
   add_rostest(test/srdf_parser.test)
+  catkin_add_gtest(test_cpp test/test_parser.cpp)
+  add_definitions(-DTEST_RESOURCE_LOCATION="${CMAKE_SOURCE_DIR}/test/res")
+  target_link_libraries(test_cpp ${catkin_LIBRARIES} ${PROJECT_NAME})
 endif()
