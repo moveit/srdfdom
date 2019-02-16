@@ -44,8 +44,23 @@
 #define TEST_RESOURCE_LOCATION "."
 #endif
 
+struct ScopedLocale
+{
+  ScopedLocale(const char* name = "C")
+  {
+    backup_ = setlocale(LC_ALL, nullptr);  // store current locale
+    setlocale(LC_ALL, name);
+  }
+  ~ScopedLocale()
+  {
+    setlocale(LC_ALL, backup_.c_str());  // restore locale
+  }
+  std::string backup_;
+};
+
 urdf::ModelInterfaceSharedPtr loadURDF(const std::string& filename)
 {
+  ScopedLocale l("C");
   // get the entire file
   std::string xml_string;
   std::fstream xml_file(filename.c_str(), std::fstream::in);
@@ -71,7 +86,7 @@ TEST(TestCpp, testSimple)
 {
   srdf::Model s;
   urdf::ModelInterfaceSharedPtr u = loadURDF(std::string(TEST_RESOURCE_LOCATION) + "/pr2_desc.urdf");
-  EXPECT_TRUE(u != NULL);
+  ASSERT_TRUE(u != NULL);
 
   EXPECT_TRUE(s.initFile(*u, std::string(TEST_RESOURCE_LOCATION) + "/pr2_desc.1.srdf"));
   EXPECT_TRUE(s.getVirtualJoints().size() == 0);
@@ -158,6 +173,7 @@ int main(int argc, char** argv)
 {
   // use the environment locale so that the unit test can be repeated with various locales easily
   setlocale(LC_ALL, "");
+  std::cout << "Using locale: " << setlocale(LC_ALL, nullptr) << std::endl;
 
   testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();
