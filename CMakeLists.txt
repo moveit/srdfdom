@@ -53,7 +53,7 @@ if(CATKIN_ENABLE_TESTING)
   find_package(rostest REQUIRED)
   add_rostest(test/srdf_parser.test)
 
-  add_definitions(-DTEST_RESOURCE_LOCATION="${CMAKE_SOURCE_DIR}/test/res")
+  add_definitions(-DTEST_RESOURCE_LOCATION="${CMAKE_SOURCE_DIR}/test/resources")
 
   add_rostest_gtest(test_cpp test/srdf_parser_cpp.test test/test_parser.cpp)
   target_link_libraries(test_cpp ${catkin_LIBRARIES} ${PROJECT_NAME})
