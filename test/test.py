@@ -147,7 +147,7 @@ class TestSRDFParser(unittest.TestCase):
         self.assertTrue( xml_matches(robot.to_xml_string(),expected))
         
   def test_simple_srdf(self):
-        datadir=rospkg.RosPack().get_path('srdfdom')+"/test/res/"
+        datadir=rospkg.RosPack().get_path('srdfdom')+"/test/resources/"
         stream = open(datadir+'pr2_desc.1.srdf', 'r')
         robot = SRDF.from_xml_string(stream.read())
         stream.close()
@@ -167,7 +167,7 @@ class TestSRDFParser(unittest.TestCase):
         self.assertTrue(len(robot.end_effectors)==0)
         
   def test_complex_srdf(self):
-        datadir=rospkg.RosPack().get_path('srdfdom')+"/test/res/"
+        datadir=rospkg.RosPack().get_path('srdfdom')+"/test/resources/"
         stream = open(datadir+'pr2_desc.3.srdf', 'r')
         robot = SRDF.from_xml_string(stream.read())
         stream.close()
