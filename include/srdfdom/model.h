@@ -42,7 +42,6 @@
 #include <vector>
 #include <utility>
 #include <urdf/model.h>
-// #include <urdf_model/types.h>
 #include <memory>
 #include <tinyxml.h>
 

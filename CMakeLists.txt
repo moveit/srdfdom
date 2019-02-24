@@ -53,7 +53,7 @@ install(PROGRAMS
   DESTINATION lib/${PROJECT_NAME}
 )
 
-# if(CATKIN_ENABLE_TESTING)
+# if(BUILD_TESTING)
 #   find_package(rostest REQUIRED)
 #   add_rostest(test/srdf_parser.test)
 # endif()
