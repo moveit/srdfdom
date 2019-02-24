@@ -15,8 +15,6 @@ find_package(console_bridge REQUIRED)
 find_package(urdfdom_headers REQUIRED)
 find_package(ament_cmake REQUIRED)
 find_package(urdf REQUIRED)
-# find_package(cmake_modules REQUIRED)
-# find_package(urdfdom_py REQUIRED)
 find_package(tinyxml_vendor REQUIRED)
 
 include_directories(include ${rclcpp_INCLUDE_DIRS}
@@ -26,7 +24,6 @@ include_directories(include ${rclcpp_INCLUDE_DIRS}
                     ${console_bridge_INCLUDE_DIRS}
                     ${urdfdom_headers_INCLUDE_DIRS}
                     ${std_msgs_INCLUDE_DIRS})
-# link_directories(${catkin_LIBRARY_DIRS})
 
 add_library(${PROJECT_NAME}
   src/model.cpp
@@ -37,8 +34,6 @@ ament_target_dependencies(${PROJECT_NAME}
         ${console_bridge_LIBRARIES}
         urdfdom_headers
         urdf)
-# target_link_libraries(${PROJECT_NAME} ${TinyXML_LIBRARIES} ${catkin_LIBRARIES} ${console_bridge_LIBRARIES} ${urdfdom_headers_LIBRARIES})
-
 
 install(TARGETS ${PROJECT_NAME}
   DESTINATION lib
