@@ -209,7 +209,7 @@ public:
   }
 
   /// \deprecated{ Use the version returning DisabledCollision }
-  __attribute__((deprecated)) std::vector<std::pair<std::string, std::string> > getDisabledCollisions() const;
+  [[deprecated]] std::vector<std::pair<std::string, std::string> > getDisabledCollisions() const;
 
   /// Get the list of groups defined for this model
   const std::vector<Group>& getGroups() const
