@@ -49,16 +49,16 @@ link_element = xmlr.Element('link', Link, False)
 
 class VirtualJoint(xmlr.Object):
   TYPES = ['unknown', 'fixed', 'floating', 'planar']
-  
+
   def __init__(self, name = None, child_link = None, parent_frame = None, joint_type = None):
     self.name = name
     self.child_link = child_link
     self.parent_frame = parent_frame
     self.type = joint_type
-    
+
   def check_valid(self):
     assert self.type in self.TYPES, "Invalid joint type: {}".format(self.type)
-  
+
   # Aliases
   @property
   def joint_type(self): return self.type
@@ -94,7 +94,7 @@ xmlr.reflect(EndEffector, params = [
   name_attribute,
   xmlr.Attribute('group', str),
   xmlr.Attribute('parent_link', str),
-  xmlr.Attribute('parent_group', str, False)  
+  xmlr.Attribute('parent_group', str, False)
   ])
 
 class PassiveJoint(xmlr.Object):
@@ -148,8 +148,8 @@ xmlr.reflect(GroupState, params = [
   xmlr.AggregateElement('joint', JointVal),
   xmlr.Attribute('group', str)
   ])
-  
-  
+
+
 class LinkSphereApproximation(xmlr.Object):
   def __init__(self, link = None):
     self.aggregate_init()
@@ -160,11 +160,11 @@ xmlr.reflect(LinkSphereApproximation, params = [
   xmlr.Attribute('link', str),
   xmlr.AggregateElement('sphere', Sphere)
   ])
-  
+
 class Robot(xmlr.Object):
   def __init__(self, name = None):
     self.aggregate_init()
-    
+
     self.name = name
     self.groups = []
     self.group_states = []
@@ -175,10 +175,10 @@ class Robot(xmlr.Object):
     self.link_sphere_approximations = []
     self.group_map = {}
     self.group_state_map = {}
-    
+
   def add_aggregate(self, typeName, elem):
     xmlr.Object.add_aggregate(self, typeName, elem)
-    
+
     if typeName == 'group':
       group = elem
       self.group_map[group.name] = group
@@ -191,22 +191,22 @@ class Robot(xmlr.Object):
 
   def add_joint(self, joint):
     self.add_aggregate('joint', joint)
-  
+
   def add_chain(self, chain):
     self.add_aggregate('chain', chain)
-  
+
   def add_group(self, group):
     self.add_aggregate('group', group)
-    
+
   def add_passive_joint(self, joint):
     self.add_aggregate('passive_joint', joint)
-  
+
   def add_disable_collisions(self, col):
     self.add_aggregate('disable_collisions', col)
-  
+
   def add_link_sphere_approximation(self, link):
     self.add_aggregate('link_sphere_approximation', link)
-      
+
 
   @classmethod
   def from_parameter_server(cls, key = 'robot_description_semantic'):
@@ -219,7 +219,7 @@ class Robot(xmlr.Object):
     # Could move this into xml_reflection
     import rospy
     return cls.from_xml_string(rospy.get_param(key))
-  
+
 xmlr.reflect(Robot, tag = 'robot', params = [
 #   name_attribute,
   xmlr.Attribute('name', str, False), # Is 'name' a required attribute?

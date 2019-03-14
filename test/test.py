@@ -8,7 +8,7 @@ from srdfdom.srdf import SRDF
 from xml.dom.minidom import parseString
 import xml.dom
 
-# xml match code from test_xacro.py  
+# xml match code from test_xacro.py
 # by Stuart Glaser and William Woodall
 
 def first_child_element(elt):
@@ -18,7 +18,7 @@ def first_child_element(elt):
       return c
     c = c.nextSibling
   return None
-  
+
 def next_sibling_element(elt):
   c = elt.nextSibling
   while c:
@@ -85,7 +85,7 @@ def xml_matches(a, b):
     b.writexml(sys.stdout)
     return False
   return True
-  
+
 ## A python unit test for srdf
 class TestSRDFParser(unittest.TestCase):
     ## test valid srdf
@@ -145,7 +145,7 @@ class TestSRDFParser(unittest.TestCase):
         '''
         robot = SRDF.from_xml_string(srdf_data)
         self.assertTrue( xml_matches(robot.to_xml_string(),expected))
-        
+
   def test_simple_srdf(self):
         datadir=rospkg.RosPack().get_path('srdfdom')+"/test/resources/"
         stream = open(datadir+'pr2_desc.1.srdf', 'r')
@@ -156,7 +156,7 @@ class TestSRDFParser(unittest.TestCase):
         self.assertTrue(len(robot.group_states)==0)
         self.assertTrue(len(robot.disable_collisionss)==0)
         self.assertTrue(len(robot.end_effectors)==0)
-        
+
         stream = open(datadir+'pr2_desc.2.srdf', 'r')
         robot = SRDF.from_xml_string(stream.read())
         stream.close()
@@ -165,7 +165,7 @@ class TestSRDFParser(unittest.TestCase):
         self.assertTrue(len(robot.group_states)==0)
         self.assertTrue(len(robot.disable_collisionss)==0)
         self.assertTrue(len(robot.end_effectors)==0)
-        
+
   def test_complex_srdf(self):
         datadir=rospkg.RosPack().get_path('srdfdom')+"/test/resources/"
         stream = open(datadir+'pr2_desc.3.srdf', 'r')
@@ -177,10 +177,10 @@ class TestSRDFParser(unittest.TestCase):
         self.assertTrue(len(robot.disable_collisionss)==2)
         self.assertTrue(robot.disable_collisionss[0].reason=="adjacent")
         self.assertTrue(len(robot.end_effectors)==2)
-        
+
         self.assertTrue(robot.virtual_joints[0].name=="world_joint")
         self.assertTrue(robot.virtual_joints[0].type=="planar")
-        
+
         for group in robot.groups:
           if (group.name == "left_arm" or group.name == "right_arm" ):
             self.assertTrue(len(group.chains)==1)
@@ -194,31 +194,31 @@ class TestSRDFParser(unittest.TestCase):
           if group.name == "whole_body" :
             self.assertTrue(len(group.joints)==1)
             self.assertTrue(len(group.subgroups)==2)
-    
+
         index=0
         if robot.group_states[0].group !="arms":
           index=1
-          
+
         self.assertTrue(robot.group_states[index].group =="arms")
         self.assertTrue(robot.group_states[index].name =="tuck_arms")
         self.assertTrue(robot.group_states[1-index].group =="base")
         self.assertTrue(robot.group_states[1-index].name =="home")
-            
-        v=next((joint.value for joint in robot.group_states[index].joints if joint.name=="l_shoulder_pan_joint"),None)  
+
+        v=next((joint.value for joint in robot.group_states[index].joints if joint.name=="l_shoulder_pan_joint"),None)
         self.assertTrue(len(v) == 1)
         self.assertTrue(v[0] ==0.2)
-        
-        w=next((joint.value for joint in robot.group_states[1-index].joints if joint.name=="world_joint"),None)  
+
+        w=next((joint.value for joint in robot.group_states[1-index].joints if joint.name=="world_joint"),None)
         self.assertTrue(len(w) == 3)
         self.assertTrue(w[0] ==0.4)
         self.assertTrue(w[1] ==0)
         self.assertTrue(w[2] ==-1)
-        
+
         index = 0 if (robot.end_effectors[0].name[0] == 'r') else 1
         self.assertTrue(robot.end_effectors[index].name == 'r_end_effector')
         self.assertTrue(robot.end_effectors[index].group == 'r_end_effector')
         self.assertTrue(robot.end_effectors[index].parent_link == 'r_wrist_roll_link')
-      
+
 
 if __name__ == '__main__':
     import rostest

@@ -29,7 +29,7 @@ catkin_package(
   DEPENDS TinyXML console_bridge urdfdom_headers
 )
 
-add_library(${PROJECT_NAME} 
+add_library(${PROJECT_NAME}
   src/model.cpp
   src/srdf_writer.cpp
 )
@@ -44,7 +44,7 @@ install(DIRECTORY include/${PROJECT_NAME}/
   FILES_MATCHING PATTERN "*.h"
 )
 
-install(PROGRAMS 
+install(PROGRAMS
   scripts/display_srdf
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )

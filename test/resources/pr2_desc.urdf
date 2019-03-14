@@ -73,10 +73,10 @@
   <!-- Now we can start using the macros included above to define the actual PR2 -->
   <!-- The first use of a macro.  This one was defined in base.urdf.xacro above.
        A macro like this will expand to a set of link and joint definitions, and to additional
-       Gazebo-related extensions (sensor plugins, etc).  The macro takes an argument, name, 
-       that equals "base", and uses it to generate names for its component links and joints 
-       (e.g., base_link).  The included origin block is also an argument to the macro.  By convention, 
-       the origin block defines where the component is w.r.t its parent (in this case the parent 
+       Gazebo-related extensions (sensor plugins, etc).  The macro takes an argument, name,
+       that equals "base", and uses it to generate names for its component links and joints
+       (e.g., base_link).  The included origin block is also an argument to the macro.  By convention,
+       the origin block defines where the component is w.r.t its parent (in this case the parent
        is the world frame). For more, see http://www.ros.org/wiki/xacro -->
   <link name="base_link">
     <inertial>
