@@ -91,33 +91,33 @@ class TestSRDFParser(unittest.TestCase):
     ## test valid srdf
 
   def test_full_srdf(self):
-        srdf_data = '''
-        <robot name="myrobot">
-        <group name="body">
-          <joint name="J1" />
-          <joint name="J2" />
-          <joint name="J3" />
-          <chain base_link="robot_base" tip_link="robot_tip" />
-          <group name="arm" />
-        </group>
-        <group_state name="zero" group="body">
-        <joint name="J1" value="0" />
-        <joint name="J2" value="0" />
-        <joint name="J3" value="0" />
-        </group_state>
-        <end_effector name="tip_ee" parent_link="tip" group="arm" parent_group="body" />
-        <end_effector name="othertip_ee" parent_link="othertip" group="arm" />
-        <virtual_joint name="virtual_joint" type="floating" parent_frame="body_frame" child_link="arm" />
-        <disable_collisions link1="link1" link2="link3" />
-        <disable_collisions reason="Adjacent"  link1="link1" link2="link2" />
-        <link_sphere_approximation link="link1" />
-        <link_sphere_approximation link="link2" >
-            <sphere center="1.0 2.0 3.0" radius="1.0" />
-            <sphere center="1.0 2.0 4.0" radius="2.0" />
-        </link_sphere_approximation>
-        </robot>
-        '''
-        expected = '''
+    srdf_data = '''
+    <robot name="myrobot">
+    <group name="body">
+      <joint name="J1" />
+      <joint name="J2" />
+      <joint name="J3" />
+      <chain base_link="robot_base" tip_link="robot_tip" />
+      <group name="arm" />
+    </group>
+    <group_state name="zero" group="body">
+    <joint name="J1" value="0" />
+    <joint name="J2" value="0" />
+    <joint name="J3" value="0" />
+    </group_state>
+    <end_effector name="tip_ee" parent_link="tip" group="arm" parent_group="body" />
+    <end_effector name="othertip_ee" parent_link="othertip" group="arm" />
+    <virtual_joint name="virtual_joint" type="floating" parent_frame="body_frame" child_link="arm" />
+    <disable_collisions link1="link1" link2="link3" />
+    <disable_collisions reason="Adjacent"  link1="link1" link2="link2" />
+    <link_sphere_approximation link="link1" />
+    <link_sphere_approximation link="link2" >
+        <sphere center="1.0 2.0 3.0" radius="1.0" />
+        <sphere center="1.0 2.0 4.0" radius="2.0" />
+    </link_sphere_approximation>
+    </robot>
+    '''
+    expected = '''
 <robot name="myrobot">
   <group name="body">
     <joint name="J1" />
@@ -142,82 +142,82 @@ class TestSRDFParser(unittest.TestCase):
     <sphere center="1.0 2.0 4.0" radius="2.0" />
   </link_sphere_approximation>
 </robot>
-        '''
-        robot = SRDF.from_xml_string(srdf_data)
-        self.assertTrue( xml_matches(robot.to_xml_string(),expected))
+    '''
+    robot = SRDF.from_xml_string(srdf_data)
+    self.assertTrue( xml_matches(robot.to_xml_string(),expected))
 
   def test_simple_srdf(self):
-        datadir=rospkg.RosPack().get_path('srdfdom')+"/test/resources/"
-        stream = open(datadir+'pr2_desc.1.srdf', 'r')
-        robot = SRDF.from_xml_string(stream.read())
-        stream.close()
-        self.assertTrue(len(robot.virtual_joints)==0)
-        self.assertTrue(len(robot.groups)==0)
-        self.assertTrue(len(robot.group_states)==0)
-        self.assertTrue(len(robot.disable_collisionss)==0)
-        self.assertTrue(len(robot.end_effectors)==0)
+    datadir=rospkg.RosPack().get_path('srdfdom')+"/test/resources/"
+    stream = open(datadir+'pr2_desc.1.srdf', 'r')
+    robot = SRDF.from_xml_string(stream.read())
+    stream.close()
+    self.assertTrue(len(robot.virtual_joints)==0)
+    self.assertTrue(len(robot.groups)==0)
+    self.assertTrue(len(robot.group_states)==0)
+    self.assertTrue(len(robot.disable_collisionss)==0)
+    self.assertTrue(len(robot.end_effectors)==0)
 
-        stream = open(datadir+'pr2_desc.2.srdf', 'r')
-        robot = SRDF.from_xml_string(stream.read())
-        stream.close()
-        self.assertTrue(len(robot.virtual_joints)==1)
-        self.assertTrue(len(robot.groups)==1)
-        self.assertTrue(len(robot.group_states)==0)
-        self.assertTrue(len(robot.disable_collisionss)==0)
-        self.assertTrue(len(robot.end_effectors)==0)
+    stream = open(datadir+'pr2_desc.2.srdf', 'r')
+    robot = SRDF.from_xml_string(stream.read())
+    stream.close()
+    self.assertTrue(len(robot.virtual_joints)==1)
+    self.assertTrue(len(robot.groups)==1)
+    self.assertTrue(len(robot.group_states)==0)
+    self.assertTrue(len(robot.disable_collisionss)==0)
+    self.assertTrue(len(robot.end_effectors)==0)
 
   def test_complex_srdf(self):
-        datadir=rospkg.RosPack().get_path('srdfdom')+"/test/resources/"
-        stream = open(datadir+'pr2_desc.3.srdf', 'r')
-        robot = SRDF.from_xml_string(stream.read())
-        stream.close()
-        self.assertTrue(len(robot.virtual_joints)==1)
-        self.assertTrue(len(robot.groups)==7)
-        self.assertTrue(len(robot.group_states)==2)
-        self.assertTrue(len(robot.disable_collisionss)==2)
-        self.assertTrue(robot.disable_collisionss[0].reason=="adjacent")
-        self.assertTrue(len(robot.end_effectors)==2)
+    datadir=rospkg.RosPack().get_path('srdfdom')+"/test/resources/"
+    stream = open(datadir+'pr2_desc.3.srdf', 'r')
+    robot = SRDF.from_xml_string(stream.read())
+    stream.close()
+    self.assertTrue(len(robot.virtual_joints)==1)
+    self.assertTrue(len(robot.groups)==7)
+    self.assertTrue(len(robot.group_states)==2)
+    self.assertTrue(len(robot.disable_collisionss)==2)
+    self.assertTrue(robot.disable_collisionss[0].reason=="adjacent")
+    self.assertTrue(len(robot.end_effectors)==2)
 
-        self.assertTrue(robot.virtual_joints[0].name=="world_joint")
-        self.assertTrue(robot.virtual_joints[0].type=="planar")
+    self.assertTrue(robot.virtual_joints[0].name=="world_joint")
+    self.assertTrue(robot.virtual_joints[0].type=="planar")
 
-        for group in robot.groups:
-          if (group.name == "left_arm" or group.name == "right_arm" ):
-            self.assertTrue(len(group.chains)==1)
-          if group.name == "arms":
-            self.assertTrue(len(group.subgroups)==2)
-          if group.name == "base":
-            self.assertTrue(len(group.joints)==1)
-          if (group.name == "l_end_effector" or group.name == "r_end_effector" ):
-            self.assertTrue(len(group.links)==1)
-            self.assertTrue(len(group.joints)==9)
-          if group.name == "whole_body" :
-            self.assertTrue(len(group.joints)==1)
-            self.assertTrue(len(group.subgroups)==2)
+    for group in robot.groups:
+      if (group.name == "left_arm" or group.name == "right_arm" ):
+        self.assertTrue(len(group.chains)==1)
+      if group.name == "arms":
+        self.assertTrue(len(group.subgroups)==2)
+      if group.name == "base":
+        self.assertTrue(len(group.joints)==1)
+      if (group.name == "l_end_effector" or group.name == "r_end_effector" ):
+        self.assertTrue(len(group.links)==1)
+        self.assertTrue(len(group.joints)==9)
+      if group.name == "whole_body" :
+        self.assertTrue(len(group.joints)==1)
+        self.assertTrue(len(group.subgroups)==2)
 
-        index=0
-        if robot.group_states[0].group !="arms":
-          index=1
+    index=0
+    if robot.group_states[0].group !="arms":
+      index=1
 
-        self.assertTrue(robot.group_states[index].group =="arms")
-        self.assertTrue(robot.group_states[index].name =="tuck_arms")
-        self.assertTrue(robot.group_states[1-index].group =="base")
-        self.assertTrue(robot.group_states[1-index].name =="home")
+    self.assertTrue(robot.group_states[index].group =="arms")
+    self.assertTrue(robot.group_states[index].name =="tuck_arms")
+    self.assertTrue(robot.group_states[1-index].group =="base")
+    self.assertTrue(robot.group_states[1-index].name =="home")
 
-        v=next((joint.value for joint in robot.group_states[index].joints if joint.name=="l_shoulder_pan_joint"),None)
-        self.assertTrue(len(v) == 1)
-        self.assertTrue(v[0] ==0.2)
+    v=next((joint.value for joint in robot.group_states[index].joints if joint.name=="l_shoulder_pan_joint"),None)
+    self.assertTrue(len(v) == 1)
+    self.assertTrue(v[0] ==0.2)
 
-        w=next((joint.value for joint in robot.group_states[1-index].joints if joint.name=="world_joint"),None)
-        self.assertTrue(len(w) == 3)
-        self.assertTrue(w[0] ==0.4)
-        self.assertTrue(w[1] ==0)
-        self.assertTrue(w[2] ==-1)
+    w=next((joint.value for joint in robot.group_states[1-index].joints if joint.name=="world_joint"),None)
+    self.assertTrue(len(w) == 3)
+    self.assertTrue(w[0] ==0.4)
+    self.assertTrue(w[1] ==0)
+    self.assertTrue(w[2] ==-1)
 
-        index = 0 if (robot.end_effectors[0].name[0] == 'r') else 1
-        self.assertTrue(robot.end_effectors[index].name == 'r_end_effector')
-        self.assertTrue(robot.end_effectors[index].group == 'r_end_effector')
-        self.assertTrue(robot.end_effectors[index].parent_link == 'r_wrist_roll_link')
+    index = 0 if (robot.end_effectors[0].name[0] == 'r') else 1
+    self.assertTrue(robot.end_effectors[index].name == 'r_end_effector')
+    self.assertTrue(robot.end_effectors[index].group == 'r_end_effector')
+    self.assertTrue(robot.end_effectors[index].parent_link == 'r_wrist_roll_link')
 
 
 if __name__ == '__main__':
