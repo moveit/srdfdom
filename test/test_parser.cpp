@@ -36,17 +36,15 @@
 
 #include <srdfdom/model.h>
 #include <urdf_parser/urdf_parser.h>
+#include <ament_index_cpp/get_resource.hpp>
+
 #include <fstream>
 #include <stdexcept>
 #include <gtest/gtest.h>
 
-#ifndef TEST_RESOURCE_LOCATION
-#define TEST_RESOURCE_LOCATION "."
-#endif
-
 struct ScopedLocale
 {
-  ScopedLocale(const char* name = "C")
+  ScopedLocale(const char* name)
   {
     backup_ = setlocale(LC_ALL, nullptr);  // store current locale
     setlocale(LC_ALL, name);
@@ -58,9 +56,9 @@ struct ScopedLocale
   std::string backup_;
 };
 
-urdf::ModelInterfaceSharedPtr loadURDF(const std::string& filename)
+urdf::ModelInterfaceSharedPtr loadURDF(const std::string& filename, const char* locale_name)
 {
-  ScopedLocale l("C");
+  ScopedLocale l(locale_name);
   // get the entire file
   std::string xml_string;
   std::fstream xml_file(filename.c_str(), std::fstream::in);
@@ -82,27 +80,34 @@ urdf::ModelInterfaceSharedPtr loadURDF(const std::string& filename)
   }
 }
 
-TEST(TestCpp, testSimple)
+void testSimple(const char* locale_name)
 {
+  std::string package_name = "srdfdom";
   srdf::Model s;
-  urdf::ModelInterfaceSharedPtr u = loadURDF(std::string(TEST_RESOURCE_LOCATION) + "/pr2_desc.urdf");
+  std::string content;
+  std::string prefix_path;
+  EXPECT_TRUE(ament_index_cpp::get_resource("packages", package_name, content, &prefix_path));
+  std::string test_resource_location = prefix_path + "/share/" + package_name + "/resources/";
+
+  setlocale(LC_ALL, locale_name);
+  urdf::ModelInterfaceSharedPtr u = loadURDF(test_resource_location + "/pr2_desc.urdf", locale_name);
   ASSERT_TRUE(u != NULL);
 
-  EXPECT_TRUE(s.initFile(*u, std::string(TEST_RESOURCE_LOCATION) + "/pr2_desc.1.srdf"));
+  EXPECT_TRUE(s.initFile(*u, test_resource_location + "/pr2_desc.1.srdf"));
   EXPECT_TRUE(s.getVirtualJoints().size() == 0);
   EXPECT_TRUE(s.getGroups().size() == 0);
   EXPECT_TRUE(s.getGroupStates().size() == 0);
   EXPECT_TRUE(s.getDisabledCollisionPairs().empty());
   EXPECT_TRUE(s.getEndEffectors().size() == 0);
 
-  EXPECT_TRUE(s.initFile(*u, std::string(TEST_RESOURCE_LOCATION) + "/pr2_desc.2.srdf"));
+  EXPECT_TRUE(s.initFile(*u, test_resource_location + "/pr2_desc.2.srdf"));
   EXPECT_TRUE(s.getVirtualJoints().size() == 1);
   EXPECT_TRUE(s.getGroups().size() == 1);
   EXPECT_TRUE(s.getGroupStates().size() == 0);
   EXPECT_TRUE(s.getDisabledCollisionPairs().empty());
   EXPECT_TRUE(s.getEndEffectors().size() == 0);
 
-  EXPECT_TRUE(s.initFile(*u, std::string(TEST_RESOURCE_LOCATION) + "/pr2_desc.1.srdf"));
+  EXPECT_TRUE(s.initFile(*u, test_resource_location + "/pr2_desc.1.srdf"));
   EXPECT_TRUE(s.getVirtualJoints().size() == 0);
   EXPECT_TRUE(s.getGroups().size() == 0);
   EXPECT_TRUE(s.getGroupStates().size() == 0);
@@ -110,13 +115,31 @@ TEST(TestCpp, testSimple)
   EXPECT_TRUE(s.getEndEffectors().size() == 0);
 }
 
-TEST(TestCpp, testComplex)
+TEST(TestCpp, testSimpleC)
+{
+  testSimple("C");
+}
+
+TEST(TestCpp, testSimpleUTF)
+{
+  testSimple("nl_NL.UTF-8");
+}
+
+void testComplex(const char* locale_name)
 {
   srdf::Model s;
-  urdf::ModelInterfaceSharedPtr u = loadURDF(std::string(TEST_RESOURCE_LOCATION) + "/pr2_desc.urdf");
+
+  std::string package_name = "srdfdom";
+  std::string content;
+  std::string prefix_path;
+  EXPECT_TRUE(ament_index_cpp::get_resource("packages", package_name, content, &prefix_path));
+  std::string test_resource_location = prefix_path + "/share/" + package_name + "/resources/";
+
+  setlocale(LC_ALL, locale_name);
+  urdf::ModelInterfaceSharedPtr u = loadURDF(test_resource_location + "/pr2_desc.urdf", locale_name);
   EXPECT_TRUE(u != NULL);
 
-  EXPECT_TRUE(s.initFile(*u, std::string(TEST_RESOURCE_LOCATION) + "/pr2_desc.3.srdf"));
+  EXPECT_TRUE(s.initFile(*u, test_resource_location + "/pr2_desc.3.srdf"));
   EXPECT_TRUE(s.getVirtualJoints().size() == 1);
   EXPECT_TRUE(s.getGroups().size() == 7);
   EXPECT_TRUE(s.getGroupStates().size() == 2);
@@ -167,13 +190,23 @@ TEST(TestCpp, testComplex)
   EXPECT_TRUE(s.getEndEffectors()[index].name_ == "r_end_effector");
   EXPECT_TRUE(s.getEndEffectors()[index].component_group_ == "r_end_effector");
   EXPECT_TRUE(s.getEndEffectors()[index].parent_link_ == "r_wrist_roll_link");
+
+}
+
+TEST(TestCpp, testComplexC)
+{
+  testComplex("C");
+}
+
+
+TEST(TestCpp, testComplexUTF)
+{
+  testComplex("nl_NL.UTF-8");
 }
 
 int main(int argc, char** argv)
 {
   // use the environment locale so that the unit test can be repeated with various locales easily
-  setlocale(LC_ALL, "");
-  std::cout << "Using locale: " << setlocale(LC_ALL, nullptr) << std::endl;
 
   testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();
