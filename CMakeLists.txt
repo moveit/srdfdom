@@ -1,66 +1,91 @@
-cmake_minimum_required(VERSION 2.8.3)
+cmake_minimum_required(VERSION 3.5)
 project(srdfdom)
+
+if(NOT CMAKE_CXX_STANDARD)
+  set(CMAKE_CXX_STANDARD 14)
+endif()
+
+if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+  add_compile_options(-Wall -Wextra -Wpedantic)
+endif()
+
+find_package(ament_cmake REQUIRED)
+find_package(console_bridge_vendor REQUIRED) # Provides console_bridge 0.4.0 on platforms without it.
+find_package(console_bridge REQUIRED)
+find_package(urdfdom_headers REQUIRED)
+find_package(urdf REQUIRED)
+find_package(tinyxml_vendor REQUIRED)
+find_package(TinyXML REQUIRED)  # provided by tinyxml_vendor
+find_package(ament_index_cpp REQUIRED)
 
 find_package(Boost REQUIRED)
 
-find_package(console_bridge REQUIRED)
-find_package(urdfdom_headers REQUIRED)
-
-find_package(catkin REQUIRED COMPONENTS cmake_modules urdf urdfdom_py)
-
-find_package(TinyXML REQUIRED)
-
 include_directories(
   include
+  ${rclcpp_INCLUDE_DIRS}
+  ${rmw_implementation_INCLUDE_DIRS}
   ${Boost_INCLUDE_DIR}
   ${TinyXML_INCLUDE_DIRS}
-  ${catkin_INCLUDE_DIRS}
   ${console_bridge_INCLUDE_DIRS}
   ${urdfdom_headers_INCLUDE_DIRS}
-  )
-
-add_compile_options(-std=c++11)
-
-catkin_python_setup()
-
-catkin_package(
-  LIBRARIES ${PROJECT_NAME}
-  INCLUDE_DIRS include
-  DEPENDS TinyXML console_bridge urdfdom_headers
+  ${std_msgs_INCLUDE_DIRS}
 )
+
+ament_python_install_package(${PROJECT_NAME}
+  PACKAGE_DIR src/${PROJECT_NAME})
 
 add_library(${PROJECT_NAME}
   src/model.cpp
   src/srdf_writer.cpp
 )
-target_link_libraries(${PROJECT_NAME} ${TinyXML_LIBRARIES} ${catkin_LIBRARIES} ${console_bridge_LIBRARIES} ${urdfdom_headers_LIBRARIES})
 
-
-install(TARGETS ${PROJECT_NAME}
-  DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+ament_target_dependencies(${PROJECT_NAME}
+  ${TinyXML_LIBRARIES}
+  ${console_bridge_LIBRARIES}
+  ${urdfdom_headers_LIBRARIES}
+  ${urdf_LIBRARIES}
 )
+
+install(
+  TARGETS
+    ${PROJECT_NAME}
+  DESTINATION lib
+)
+
 install(DIRECTORY include/${PROJECT_NAME}/
-  DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
-  FILES_MATCHING PATTERN "*.h"
+  DESTINATION include/${PROJECT_NAME}
+)
+
+# Mark resources for installation
+install(DIRECTORY test/resources
+  DESTINATION share/${PROJECT_NAME}
 )
 
 install(PROGRAMS
   scripts/display_srdf
-  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+  DESTINATION lib/${PROJECT_NAME}
 )
 
-if(CATKIN_ENABLE_TESTING)
-  find_package(rostest REQUIRED)
-  add_rostest(test/srdf_parser.test)
+if(BUILD_TESTING)
+  find_package(ament_cmake_pytest REQUIRED)
+  find_package(ament_cmake_gtest REQUIRED)
 
-  add_definitions(-DTEST_RESOURCE_LOCATION="${CMAKE_SOURCE_DIR}/test/resources")
-  execute_process(COMMAND bash -c "locale -a | grep -q ^nl_NL"
-    RESULT_VARIABLE TEST_LOCALE
-    OUTPUT_QUIET ERROR_QUIET)
-  if (TEST_LOCALE)
-    message(WARNING "Locale nl_NL not available. Locale test will not be meaningful.")
-  endif()
+  ament_add_gtest(test_parser test/test_parser.cpp)
+  target_link_libraries(test_parser
+    ${PROJECT_NAME}
+    ${rclcpp_LIBRARIES}
+    ${TinyXML_LIBRARIES}
+    ${console_bridge_LIBRARIES}
+    ${urdfdom_headers_LIBRARIES}
+    ${urdf_LIBRARIES}
+    ament_index_cpp::ament_index_cpp
+  )
 
-  add_rostest_gtest(test_cpp test/srdf_parser_cpp.test test/test_parser.cpp)
-  target_link_libraries(test_cpp ${catkin_LIBRARIES} ${PROJECT_NAME})
+  # python tests with python interfaces of message filters
+  find_package(ament_cmake_pytest REQUIRED)
+  ament_add_pytest_test(test.py "test/test.py"
+    APPEND_ENV PYTHONPATH=${CMAKE_CURRENT_BINARY_DIR}
+    TIMEOUT 90)
 endif()
+
+ament_package()

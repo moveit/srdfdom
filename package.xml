@@ -1,4 +1,6 @@
-<package>
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
   <name>srdfdom</name>
   <version>0.5.1</version>
   <description>Parser for Semantic Robot Description Format (SRDF).</description>
@@ -11,22 +13,31 @@
   <url type="bugtracker">https://github.com/ros-planning/srdfdom/issues</url>
   <url type="repository">https://github.com/ros-planning/srdfdom</url>
 
-  <buildtool_depend>catkin</buildtool_depend>
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <buildtool_depend>python_cmake_module</buildtool_depend>
+
+  <depend>console_bridge_vendor</depend>
 
   <build_depend>boost</build_depend>
-  <build_depend>cmake_modules</build_depend>
+  <build_depend>python_cmake_module</build_depend>
   <build_depend>libconsole-bridge-dev</build_depend>
   <build_depend>urdf</build_depend>
   <build_depend>liburdfdom-headers-dev</build_depend>
   <build_depend>urdfdom_py</build_depend>
   <build_depend>tinyxml</build_depend>
 
-  <run_depend>boost</run_depend>
-  <run_depend>libconsole-bridge-dev</run_depend>
-  <run_depend>liburdfdom-headers-dev</run_depend>
-  <run_depend>tinyxml</run_depend>
-  <run_depend>urdfdom_py</run_depend>
+  <exec_depend>boost</exec_depend>
+  <exec_depend>libconsole-bridge-dev</exec_depend>
+  <exec_depend>liburdfdom-headers-dev</exec_depend>
+  <exec_depend>tinyxml</exec_depend>
+  <exec_depend>urdfdom_py</exec_depend>
 
-  <test_depend>rostest</test_depend>
+  <test_depend>ament_index_cpp</test_depend>
+  <test_depend>ament_cmake_pytest</test_depend>
+  <test_depend>python3-pytest</test_depend>
 
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
 </package>
