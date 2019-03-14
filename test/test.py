@@ -1,12 +1,15 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
+
 PKG = 'srdfdom'
 
+import os
 import sys
-import rospkg
 import unittest
 from srdfdom.srdf import SRDF
 from xml.dom.minidom import parseString
 import xml.dom
+
+from ament_index_python.resources import get_resource
 
 # xml match code from test_xacro.py
 # by Stuart Glaser and William Woodall
@@ -88,8 +91,8 @@ def xml_matches(a, b):
 
 ## A python unit test for srdf
 class TestSRDFParser(unittest.TestCase):
-    ## test valid srdf
 
+  ## test valid srdf
   def test_full_srdf(self):
     srdf_data = '''
     <robot name="myrobot">
@@ -117,6 +120,7 @@ class TestSRDFParser(unittest.TestCase):
     </link_sphere_approximation>
     </robot>
     '''
+
     expected = '''
 <robot name="myrobot">
   <group name="body">
@@ -144,11 +148,14 @@ class TestSRDFParser(unittest.TestCase):
 </robot>
     '''
     robot = SRDF.from_xml_string(srdf_data)
-    self.assertTrue( xml_matches(robot.to_xml_string(),expected))
+    self.assertTrue( xml_matches(robot.to_xml_string(False),expected))
+
 
   def test_simple_srdf(self):
-    datadir=rospkg.RosPack().get_path('srdfdom')+"/test/resources/"
-    stream = open(datadir+'pr2_desc.1.srdf', 'r')
+    _, package_path = get_resource("packages", PKG)
+    fname = os.path.join(
+        package_path, "share", PKG, "resources", "pr2_desc.1.srdf")
+    stream = open(fname, 'r')
     robot = SRDF.from_xml_string(stream.read())
     stream.close()
     self.assertTrue(len(robot.virtual_joints)==0)
@@ -157,7 +164,11 @@ class TestSRDFParser(unittest.TestCase):
     self.assertTrue(len(robot.disable_collisionss)==0)
     self.assertTrue(len(robot.end_effectors)==0)
 
-    stream = open(datadir+'pr2_desc.2.srdf', 'r')
+  def test_medium_srdf(self):
+    _, package_path = get_resource("packages", PKG)
+    fname = os.path.join(
+        package_path, "share", PKG, "resources", "pr2_desc.2.srdf")
+    stream = open(fname, 'r')
     robot = SRDF.from_xml_string(stream.read())
     stream.close()
     self.assertTrue(len(robot.virtual_joints)==1)
@@ -167,8 +178,10 @@ class TestSRDFParser(unittest.TestCase):
     self.assertTrue(len(robot.end_effectors)==0)
 
   def test_complex_srdf(self):
-    datadir=rospkg.RosPack().get_path('srdfdom')+"/test/resources/"
-    stream = open(datadir+'pr2_desc.3.srdf', 'r')
+    _, package_path = get_resource("packages", PKG)
+    fname = os.path.join(
+        package_path, "share", PKG, "resources", "pr2_desc.3.srdf")
+    stream = open(fname, 'r')
     robot = SRDF.from_xml_string(stream.read())
     stream.close()
     self.assertTrue(len(robot.virtual_joints)==1)
@@ -221,5 +234,4 @@ class TestSRDFParser(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    import rostest
-    rostest.rosrun(PKG, 'srdf_python_parser_test', TestSRDFParser)
+  unittest.main()
