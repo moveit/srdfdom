@@ -196,14 +196,12 @@ void testComplex(const char* locale_name)
   EXPECT_TRUE(s.getEndEffectors()[index].name_ == "r_end_effector");
   EXPECT_TRUE(s.getEndEffectors()[index].component_group_ == "r_end_effector");
   EXPECT_TRUE(s.getEndEffectors()[index].parent_link_ == "r_wrist_roll_link");
-
 }
 
 TEST(TestCpp, testComplexC)
 {
   testComplex("C");
 }
-
 
 TEST(TestCpp, testComplexUTF)
 {
