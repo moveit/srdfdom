@@ -35,6 +35,9 @@ ament_target_dependencies(${PROJECT_NAME}
         urdfdom_headers
         urdf)
 
+ament_export_libraries(${PROJECT_NAME})
+ament_export_include_directories(include)
+
 install(TARGETS ${PROJECT_NAME}
   DESTINATION lib
 )
