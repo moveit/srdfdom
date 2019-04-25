@@ -25,7 +25,7 @@ include_directories(include ${rclcpp_INCLUDE_DIRS}
                     ${urdfdom_headers_INCLUDE_DIRS}
                     ${std_msgs_INCLUDE_DIRS})
 
-add_library(${PROJECT_NAME}
+add_library(${PROJECT_NAME} SHARED
   src/model.cpp
   src/srdf_writer.cpp
 )
