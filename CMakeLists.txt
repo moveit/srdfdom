@@ -23,6 +23,7 @@ include_directories(include ${rclcpp_INCLUDE_DIRS}
                     ${TinyXML_INCLUDE_DIRS}
                     ${console_bridge_INCLUDE_DIRS}
                     ${urdfdom_headers_INCLUDE_DIRS}
+                    ${urdf_INCLUDE_DIRS}
                     ${std_msgs_INCLUDE_DIRS})
 
 add_library(${PROJECT_NAME} SHARED
@@ -51,9 +52,15 @@ install(PROGRAMS
   DESTINATION lib/${PROJECT_NAME}
 )
 
-# if(BUILD_TESTING)
-#   find_package(rostest REQUIRED)
-#   add_rostest(test/srdf_parser.test)
-# endif()
+if(BUILD_TESTING)
+  find_package(ament_cmake_gtest REQUIRED)
+  ament_add_gtest(test_parser test/srdf_parser.test)
+endif()
 
+ament_export_include_directories(include)
+ament_export_libraries(${PROJECT_NAME})
+ament_export_dependencies(tinyxml_vendor)
+ament_export_dependencies(console_bridge)
+ament_export_dependencies(urdfdom_headers)
+ament_export_dependencies(urdf)
 ament_package()

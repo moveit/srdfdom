@@ -23,7 +23,9 @@
   <!-- <build_depend>liburdfdom-headers-dev</build_depend> -->
   <build_depend>urdfdom_py</build_depend>
   <build_depend>tinyxml</build_depend>
+  <build_depend>urdf</build_depend>
 
+  <exec_depend>urdf</exec_depend>
   <exec_depend>boost</exec_depend>
   <exec_depend>libconsole-bridge-dev</exec_depend>
   <!-- <exec_depend>liburdfdom-headers-dev</exec_depend> -->
