@@ -18,23 +18,25 @@ find_package(urdf REQUIRED)
 find_package(tinyxml_vendor REQUIRED)
 
 include_directories(include ${rclcpp_INCLUDE_DIRS}
-                    ${rmw_implementation_INCLUDE_DIRS}
-                    ${Boost_INCLUDE_DIR}
-                    ${TinyXML_INCLUDE_DIRS}
-                    ${console_bridge_INCLUDE_DIRS}
-                    ${urdfdom_headers_INCLUDE_DIRS}
-                    ${urdf_INCLUDE_DIRS}
-                    ${std_msgs_INCLUDE_DIRS})
+  ${rmw_implementation_INCLUDE_DIRS}
+  ${Boost_INCLUDE_DIR}
+  ${TinyXML_INCLUDE_DIRS}
+  ${console_bridge_INCLUDE_DIRS}
+  ${urdfdom_headers_INCLUDE_DIRS}
+  ${urdf_INCLUDE_DIRS}
+  ${std_msgs_INCLUDE_DIRS}
+)
 
 add_library(${PROJECT_NAME} SHARED
   src/model.cpp
   src/srdf_writer.cpp
 )
 ament_target_dependencies(${PROJECT_NAME}
-        ${TinyXML_LIBRARIES}
-        ${console_bridge_LIBRARIES}
-        urdfdom_headers
-        urdf)
+  ${TinyXML_LIBRARIES}
+  ${console_bridge_LIBRARIES}
+  urdfdom_headers
+  urdf
+)
 
 ament_export_libraries(${PROJECT_NAME})
 ament_export_include_directories(include)
