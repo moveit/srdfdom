@@ -259,6 +259,7 @@ private:
   void loadDisabledCollisions(const urdf::ModelInterface& urdf_model, TiXmlElement* robot_xml);
   void loadPassiveJoints(const urdf::ModelInterface& urdf_model, TiXmlElement* robot_xml);
 
+public:
   std::string name_;
   std::vector<Group> groups_;
   std::vector<GroupState> group_states_;
