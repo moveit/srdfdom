@@ -6,7 +6,6 @@
   <description>Parser for Semantic Robot Description Format (SRDF).</description>
   <author email="isucan@willowgarage.com">Ioan Sucan</author>
   <author email="gwalck@techfak.uni-bielefeld.de">Guillaume Walck</author>
-  <author email="vmayoral@acutronicrobotics.com">Víctor Mayoral Vilches</author>
 
   <maintainer email="dave@dav.ee">Dave Coleman</maintainer>maintainer>
   <maintainer email="130s@2000.jukuin.keio.ac.jp">Isaac I. Y. Saito</maintainer>maintainer>
@@ -17,10 +16,8 @@
 
   <buildtool_depend>ament_cmake</buildtool_depend>
   <build_depend>boost</build_depend>
-  <!-- <build_depend>cmake_modules</build_depend> -->
   <build_depend>libconsole-bridge-dev</build_depend>
   <build_depend>urdfdom_headers</build_depend>
-  <!-- <build_depend>liburdfdom-headers-dev</build_depend> -->
   <build_depend>urdfdom_py</build_depend>
   <build_depend>tinyxml</build_depend>
   <build_depend>urdf</build_depend>
@@ -28,7 +25,6 @@
   <exec_depend>urdf</exec_depend>
   <exec_depend>boost</exec_depend>
   <exec_depend>libconsole-bridge-dev</exec_depend>
-  <!-- <exec_depend>liburdfdom-headers-dev</exec_depend> -->
   <exec_depend>tinyxml</exec_depend>
   <exec_depend>urdfdom_py</exec_depend>
 
