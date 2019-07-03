@@ -67,7 +67,7 @@ if(BUILD_TESTING)
     message(WARNING "Locale nl_NL not available. Locale test will not be meaningful.")
   endif()
 
-  add_rostest_gtest(test_cpp test/srdf_parser_cpp.test test/test_parser.cpp)
+  ament_add_gtest(test_cpp test/srdf_parser_cpp.test test/test_parser.cpp)
   target_link_libraries(test_cpp ${catkin_LIBRARIES} ${PROJECT_NAME})
 endif()
 
