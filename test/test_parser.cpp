@@ -38,17 +38,29 @@
 #include <urdf_parser/urdf_parser.h>
 #include <fstream>
 #include <stdexcept>
-
-#define EXPECT_TRUE(arg)                                                                                               \
-  if (!(arg))                                                                                                          \
-  throw std::runtime_error("Assertion failed at line " + std::to_string(__LINE__))
+#include <gtest/gtest.h>
 
 #ifndef TEST_RESOURCE_LOCATION
 #define TEST_RESOURCE_LOCATION "."
 #endif
 
+struct ScopedLocale
+{
+  ScopedLocale(const char* name = "C")
+  {
+    backup_ = setlocale(LC_ALL, nullptr);  // store current locale
+    setlocale(LC_ALL, name);
+  }
+  ~ScopedLocale()
+  {
+    setlocale(LC_ALL, backup_.c_str());  // restore locale
+  }
+  std::string backup_;
+};
+
 urdf::ModelInterfaceSharedPtr loadURDF(const std::string& filename)
 {
+  ScopedLocale l("C");
   // get the entire file
   std::string xml_string;
   std::fstream xml_file(filename.c_str(), std::fstream::in);
@@ -70,11 +82,11 @@ urdf::ModelInterfaceSharedPtr loadURDF(const std::string& filename)
   }
 }
 
-void testSimple(void)
+TEST(TestCpp, testSimple)
 {
   srdf::Model s;
   urdf::ModelInterfaceSharedPtr u = loadURDF(std::string(TEST_RESOURCE_LOCATION) + "/pr2_desc.urdf");
-  EXPECT_TRUE(u != NULL);
+  ASSERT_TRUE(u != NULL);
 
   EXPECT_TRUE(s.initFile(*u, std::string(TEST_RESOURCE_LOCATION) + "/pr2_desc.1.srdf"));
   EXPECT_TRUE(s.getVirtualJoints().size() == 0);
@@ -98,7 +110,7 @@ void testSimple(void)
   EXPECT_TRUE(s.getEndEffectors().size() == 0);
 }
 
-void testComplex(void)
+TEST(TestCpp, testComplex)
 {
   srdf::Model s;
   urdf::ModelInterfaceSharedPtr u = loadURDF(std::string(TEST_RESOURCE_LOCATION) + "/pr2_desc.urdf");
@@ -143,13 +155,13 @@ void testComplex(void)
   EXPECT_TRUE(s.getGroupStates()[1 - index].name_ == "home");
 
   const std::vector<double>& v = s.getGroupStates()[index].joint_values_.find("l_shoulder_pan_joint")->second;
-  EXPECT_TRUE(v.size() == 1u);
-  EXPECT_TRUE(v[0] == 0.2);
+  EXPECT_EQ(v.size(), 1u);
+  EXPECT_EQ(v[0], 0.2);
   const std::vector<double>& w = s.getGroupStates()[1 - index].joint_values_.find("world_joint")->second;
-  EXPECT_TRUE(w.size() == 3u);
-  EXPECT_TRUE(w[0] == 0.4);
-  EXPECT_TRUE(w[1] == 0);
-  EXPECT_TRUE(w[2] == -1);
+  EXPECT_EQ(w.size(), 3u);
+  EXPECT_EQ(w[0], 0.4);
+  EXPECT_EQ(w[1], 0);
+  EXPECT_EQ(w[2], -1);
 
   index = (s.getEndEffectors()[0].name_[0] == 'r') ? 0 : 1;
   EXPECT_TRUE(s.getEndEffectors()[index].name_ == "r_end_effector");
@@ -159,7 +171,10 @@ void testComplex(void)
 
 int main(int argc, char** argv)
 {
-  testSimple();
-  testComplex();
-  return 0;
+  // use the environment locale so that the unit test can be repeated with various locales easily
+  setlocale(LC_ALL, "");
+  std::cout << "Using locale: " << setlocale(LC_ALL, nullptr) << std::endl;
+
+  testing::InitGoogleTest(&argc, argv);
+  return RUN_ALL_TESTS();
 }
