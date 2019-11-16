@@ -20,6 +20,7 @@ env:
   matrix:
     - TEST="clang-format, catkin_lint"
     - ROS_DISTRO=melodic
+    - TEST=code-coverage
 
 before_script:
   - git clone -q --depth=1 -b p/tylerjw/codecov https://github.com/picknikrobotics/moveit_ci.git .moveit_ci
