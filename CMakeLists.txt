@@ -29,7 +29,7 @@ catkin_package(
   DEPENDS TinyXML console_bridge urdfdom_headers
 )
 
-add_library(${PROJECT_NAME} 
+add_library(${PROJECT_NAME}
   src/model.cpp
   src/srdf_writer.cpp
 )
@@ -44,10 +44,19 @@ install(DIRECTORY include/${PROJECT_NAME}/
   FILES_MATCHING PATTERN "*.h"
 )
 
-install(PROGRAMS 
+install(PROGRAMS
   scripts/display_srdf
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
+
+# to run: catkin_make -DENABLE_COVERAGE_TESTING=ON package_name_coverage
+if(CATKIN_ENABLE_TESTING AND ENABLE_COVERAGE_TESTING)
+  find_package(code_coverage REQUIRED)   # catkin package ros-*-code-coverage
+  include(CodeCoverage)
+  APPEND_COVERAGE_COMPILER_FLAGS()
+  set(COVERAGE_EXCLUDES "*/test/*")
+  add_code_coverage(NAME ${PROJECT_NAME}_coverage)
+endif()
 
 if(CATKIN_ENABLE_TESTING)
   find_package(rostest REQUIRED)

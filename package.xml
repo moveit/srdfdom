@@ -10,7 +10,7 @@
   <url type="website">http://ros.org/wiki/srdfdom</url>
   <url type="bugtracker">https://github.com/ros-planning/srdfdom/issues</url>
   <url type="repository">https://github.com/ros-planning/srdfdom</url>
-  
+
   <buildtool_depend>catkin</buildtool_depend>
 
   <build_depend>boost</build_depend>
@@ -28,5 +28,6 @@
   <run_depend>urdfdom_py</run_depend>
 
   <test_depend>rostest</test_depend>
+  <test_depend>code_coverage</test_depend>
 
 </package>
