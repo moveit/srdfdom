@@ -69,9 +69,9 @@ def elements_match(a, b):
   return True
 
 def xml_matches(a, b):
-  if isinstance(a, str):
+  if isinstance(a, str) or isinstance(a, unicode):
     return xml_matches(parseString(a).documentElement, b)
-  if isinstance(b, str):
+  if isinstance(b, str) or isinstance(b, unicode):
     return xml_matches(a, parseString(b).documentElement)
   if a.nodeType == xml.dom.Node.DOCUMENT_NODE:
     return xml_matches(a.documentElement, b)
@@ -144,7 +144,7 @@ class TestSRDFParser(unittest.TestCase):
 </robot>
         '''
         robot = SRDF.from_xml_string(srdf_data)
-        self.assertTrue( xml_matches(robot.to_xml_string(),expected))
+        self.assertTrue(xml_matches(robot.to_xml_string(),expected))
         
   def test_simple_srdf(self):
         datadir=rospkg.RosPack().get_path('srdfdom')+"/test/resources/"
