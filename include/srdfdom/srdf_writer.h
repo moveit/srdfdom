@@ -183,6 +183,6 @@ public:
 // Typedef
 // ******************************************************************************************
 typedef std::shared_ptr<SRDFWriter> SRDFWriterPtr;
-}
+}  // namespace srdf
 
 #endif

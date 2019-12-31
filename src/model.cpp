@@ -54,12 +54,12 @@ void srdf::Model::loadVirtualJoints(const urdf::ModelInterface& urdf_model, TiXm
     const char* type = vj_xml->Attribute("type");
     if (!jname)
     {
-      CONSOLE_BRIDGE_logError("Name of virtual joint is not specified");
+      CONSOLE_BRIDGE_logError("Name of virtual joint is not specified", NULL);
       continue;
     }
     if (!child)
     {
-      CONSOLE_BRIDGE_logError("Child link of virtual joint is not specified");
+      CONSOLE_BRIDGE_logError("Child link of virtual joint is not specified", NULL);
       continue;
     }
     if (!urdf_model.getLink(boost::trim_copy(std::string(child))))
@@ -69,12 +69,12 @@ void srdf::Model::loadVirtualJoints(const urdf::ModelInterface& urdf_model, TiXm
     }
     if (!parent)
     {
-      CONSOLE_BRIDGE_logError("Parent frame of virtual joint is not specified");
+      CONSOLE_BRIDGE_logError("Parent frame of virtual joint is not specified", NULL);
       continue;
     }
     if (!type)
     {
-      CONSOLE_BRIDGE_logError("Type of virtual joint is not specified");
+      CONSOLE_BRIDGE_logError("Type of virtual joint is not specified", NULL);
       continue;
     }
     VirtualJoint vj;
@@ -106,7 +106,7 @@ void srdf::Model::loadGroups(const urdf::ModelInterface& urdf_model, TiXmlElemen
     const char* gname = group_xml->Attribute("name");
     if (!gname)
     {
-      CONSOLE_BRIDGE_logError("Group name not specified");
+      CONSOLE_BRIDGE_logError("Group name not specified", NULL);
       continue;
     }
     Group g;
@@ -120,7 +120,7 @@ void srdf::Model::loadGroups(const urdf::ModelInterface& urdf_model, TiXmlElemen
       const char* lname = link_xml->Attribute("name");
       if (!lname)
       {
-        CONSOLE_BRIDGE_logError("Link name not specified");
+        CONSOLE_BRIDGE_logError("Link name not specified", NULL);
         continue;
       }
       std::string lname_str = boost::trim_copy(std::string(lname));
@@ -139,7 +139,7 @@ void srdf::Model::loadGroups(const urdf::ModelInterface& urdf_model, TiXmlElemen
       const char* jname = joint_xml->Attribute("name");
       if (!jname)
       {
-        CONSOLE_BRIDGE_logError("Joint name not specified");
+        CONSOLE_BRIDGE_logError("Joint name not specified", NULL);
         continue;
       }
       std::string jname_str = boost::trim_copy(std::string(jname));
@@ -169,12 +169,12 @@ void srdf::Model::loadGroups(const urdf::ModelInterface& urdf_model, TiXmlElemen
       const char* tip = chain_xml->Attribute("tip_link");
       if (!base)
       {
-        CONSOLE_BRIDGE_logError("Base link name not specified for chain");
+        CONSOLE_BRIDGE_logError("Base link name not specified for chain", NULL);
         continue;
       }
       if (!tip)
       {
-        CONSOLE_BRIDGE_logError("Tip link name not specified for chain");
+        CONSOLE_BRIDGE_logError("Tip link name not specified for chain", NULL);
         continue;
       }
       std::string base_str = boost::trim_copy(std::string(base));
@@ -227,7 +227,7 @@ void srdf::Model::loadGroups(const urdf::ModelInterface& urdf_model, TiXmlElemen
       const char* sub = subg_xml->Attribute("name");
       if (!sub)
       {
-        CONSOLE_BRIDGE_logError("Group name not specified when included as subgroup");
+        CONSOLE_BRIDGE_logError("Group name not specified when included as subgroup", NULL);
         continue;
       }
       g.subgroups_.push_back(boost::trim_copy(std::string(sub)));
@@ -289,7 +289,7 @@ void srdf::Model::loadGroupStates(const urdf::ModelInterface& urdf_model, TiXmlE
     const char* gname = gstate_xml->Attribute("group");
     if (!sname)
     {
-      CONSOLE_BRIDGE_logError("Name of group state is not specified");
+      CONSOLE_BRIDGE_logError("Name of group state is not specified", NULL);
       continue;
     }
     if (!gname)
@@ -387,7 +387,7 @@ void srdf::Model::loadEndEffectors(const urdf::ModelInterface& urdf_model, TiXml
     const char* parent_group = eef_xml->Attribute("parent_group");
     if (!ename)
     {
-      CONSOLE_BRIDGE_logError("Name of end effector is not specified");
+      CONSOLE_BRIDGE_logError("Name of end effector is not specified", NULL);
       continue;
     }
     if (!gname)
@@ -443,7 +443,7 @@ void srdf::Model::loadLinkSphereApproximations(const urdf::ModelInterface& urdf_
     const char* link_name = cslink_xml->Attribute("link");
     if (!link_name)
     {
-      CONSOLE_BRIDGE_logError("Name of link is not specified in link_collision_spheres");
+      CONSOLE_BRIDGE_logError("Name of link is not specified in link_collision_spheres", NULL);
       continue;
     }
 
@@ -540,7 +540,7 @@ void srdf::Model::loadDisabledCollisions(const urdf::ModelInterface& urdf_model,
     const char* link2 = c_xml->Attribute("link2");
     if (!link1 || !link2)
     {
-      CONSOLE_BRIDGE_logError("A pair of links needs to be specified to disable collisions");
+      CONSOLE_BRIDGE_logError("A pair of links needs to be specified to disable collisions", NULL);
       continue;
     }
     DisabledCollision dc;
@@ -571,7 +571,7 @@ void srdf::Model::loadPassiveJoints(const urdf::ModelInterface& urdf_model, TiXm
     const char* name = c_xml->Attribute("name");
     if (!name)
     {
-      CONSOLE_BRIDGE_logError("No name specified for passive joint. Ignoring.");
+      CONSOLE_BRIDGE_logError("No name specified for passive joint. Ignoring.", NULL);
       continue;
     }
     PassiveJoint pj;
@@ -597,20 +597,20 @@ bool srdf::Model::initXml(const urdf::ModelInterface& urdf_model, TiXmlElement* 
   clear();
   if (!robot_xml || robot_xml->ValueStr() != "robot")
   {
-    CONSOLE_BRIDGE_logError("Could not find the 'robot' element in the xml file");
+    CONSOLE_BRIDGE_logError("Could not find the 'robot' element in the xml file", NULL);
     return false;
   }
 
   // get the robot name
   const char* name = robot_xml->Attribute("name");
   if (!name)
-    CONSOLE_BRIDGE_logError("No name given for the robot.");
+    CONSOLE_BRIDGE_logError("No name given for the robot.", NULL);
   else
   {
     name_ = std::string(name);
     boost::trim(name_);
     if (name_ != urdf_model.getName())
-      CONSOLE_BRIDGE_logError("Semantic description is not specified for the same robot as the URDF");
+      CONSOLE_BRIDGE_logError("Semantic description is not specified for the same robot as the URDF", NULL);
   }
 
   loadVirtualJoints(urdf_model, robot_xml);
@@ -629,7 +629,7 @@ bool srdf::Model::initXml(const urdf::ModelInterface& urdf_model, TiXmlDocument*
   TiXmlElement* robot_xml = xml ? xml->FirstChildElement("robot") : NULL;
   if (!robot_xml)
   {
-    CONSOLE_BRIDGE_logError("Could not find the 'robot' element in the xml file");
+    CONSOLE_BRIDGE_logError("Could not find the 'robot' element in the xml file", NULL);
     return false;
   }
   return initXml(urdf_model, robot_xml);

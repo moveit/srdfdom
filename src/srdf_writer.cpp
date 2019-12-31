@@ -436,4 +436,4 @@ void SRDFWriter::createPassiveJointsXML(TiXmlElement* root)
     root->LinkEndChild(p_joint);
   }
 }
-}
+}  // namespace srdf
