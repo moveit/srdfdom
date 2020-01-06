@@ -1,0 +1,5 @@
+repositories:
+  urdf_parser_py:
+    type: git
+    url: https://github.com/ros/urdf_parser_py
+    version: ros2
