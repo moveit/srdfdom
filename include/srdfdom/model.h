@@ -41,7 +41,7 @@
 #include <string>
 #include <vector>
 #include <utility>
-#include <urdf/model.h>  // TODO: replace with urdf_model/types.h in Lunar
+#include <urdf/model.h>
 #include <memory>
 #include <tinyxml.h>
 
@@ -270,5 +270,5 @@ private:
 };
 typedef std::shared_ptr<Model> ModelSharedPtr;
 typedef std::shared_ptr<const Model> ModelConstSharedPtr;
-}
+}  // namespace srdf
 #endif

@@ -129,11 +129,17 @@ TEST(TestCpp, testComplex)
   for (std::size_t i = 0; i < s.getGroups().size(); ++i)
   {
     if (s.getGroups()[i].name_ == "left_arm" || s.getGroups()[i].name_ == "right_arm")
+    {
       EXPECT_TRUE(s.getGroups()[i].chains_.size() == 1);
+    }
     if (s.getGroups()[i].name_ == "arms")
+    {
       EXPECT_TRUE(s.getGroups()[i].subgroups_.size() == 2);
+    }
     if (s.getGroups()[i].name_ == "base")
+    {
       EXPECT_TRUE(s.getGroups()[i].joints_.size() == 1);
+    }
     if (s.getGroups()[i].name_ == "l_end_effector" || s.getGroups()[i].name_ == "r_end_effector")
     {
       EXPECT_TRUE(s.getGroups()[i].links_.size() == 1);
