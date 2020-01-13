@@ -17,8 +17,9 @@ env:
     - BEFORE_SCRIPT="sudo apt-get -qq install -y locales; sudo locale-gen nl_NL.UTF-8"
     - ROS_DISTRO=eloquent
     - ROS_REPO=ros
+    - UPSTREAM_WORKSPACE=srdfdom.repos
   matrix:
-    - TEST="clang-format, ament_lint"
+    - TEST="clang-format"
     - ROS_DISTRO=eloquent
 
 before_script:
