@@ -18,7 +18,6 @@
   <build_depend>boost</build_depend>
   <build_depend>libconsole-bridge-dev</build_depend>
   <build_depend>urdfdom_headers</build_depend>
-  <build_depend>urdfdom_py</build_depend>
   <build_depend>tinyxml2_vendor</build_depend>
   <build_depend>urdf</build_depend>
 
@@ -26,7 +25,6 @@
   <exec_depend>boost</exec_depend>
   <exec_depend>libconsole-bridge-dev</exec_depend>
   <exec_depend>tinyxml2_vendor</exec_depend>
-  <exec_depend>urdfdom_py</exec_depend>
 
   <test_depend>ament_cmake_gtest</test_depend>
   <export>
