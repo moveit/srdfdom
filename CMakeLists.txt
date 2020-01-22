@@ -17,6 +17,9 @@ find_package(ament_cmake REQUIRED)
 find_package(urdf REQUIRED)
 find_package(tinyxml2_vendor REQUIRED)
 
+#Made available by the vendor package
+find_package(TinyXML2 REQUIRED)
+
 include_directories(include ${rclcpp_INCLUDE_DIRS}
   ${rmw_implementation_INCLUDE_DIRS}
   ${Boost_INCLUDE_DIR}
@@ -31,15 +34,16 @@ add_library(${PROJECT_NAME} SHARED
   src/model.cpp
   src/srdf_writer.cpp
 )
-ament_target_dependencies(${PROJECT_NAME}
-  ${TinyXML2_LIBRARIES}
+
+#System dependencies
+target_link_libraries(${PROJECT_NAME} PUBLIC ${TinyXML2_LIBRARIES})
+
+#Ament dependencies
+ament_target_dependencies(${PROJECT_NAME} PUBLIC
   ${console_bridge_LIBRARIES}
   urdfdom_headers
   urdf
 )
-
-ament_export_libraries(${PROJECT_NAME})
-ament_export_include_directories(include)
 
 install(TARGETS ${PROJECT_NAME}
   DESTINATION lib
@@ -72,8 +76,7 @@ if(BUILD_TESTING)
 endif()
 
 ament_export_include_directories(include)
-ament_export_libraries(${PROJECT_NAME})
-ament_export_dependencies(tinyxml_vendor)
+ament_export_libraries(${PROJECT_NAME} ${TinyXML2_LIBRARIES})
 ament_export_dependencies(console_bridge)
 ament_export_dependencies(urdfdom_headers)
 ament_export_dependencies(urdf)
