@@ -8,6 +8,11 @@ from srdfdom.srdf import SRDF
 from xml.dom.minidom import parseString
 import xml.dom
 
+try:
+  string_types = (str, unicode)
+except NameError:
+  string_types = (str)
+
 # xml match code from test_xacro.py  
 # by Stuart Glaser and William Woodall
 
@@ -69,9 +74,9 @@ def elements_match(a, b):
   return True
 
 def xml_matches(a, b):
-  if isinstance(a, str) or isinstance(a, unicode):
+  if isinstance(a, string_types):
     return xml_matches(parseString(a).documentElement, b)
-  if isinstance(b, str) or isinstance(b, unicode):
+  if isinstance(b, string_types):
     return xml_matches(a, parseString(b).documentElement)
   if a.nodeType == xml.dom.Node.DOCUMENT_NODE:
     return xml_matches(a.documentElement, b)
