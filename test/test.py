@@ -69,9 +69,9 @@ def elements_match(a, b):
   return True
 
 def xml_matches(a, b):
-  if isinstance(a, str) or isinstance(a, bytes):
+  if isinstance(a, str):
     return xml_matches(parseString(a).documentElement, b)
-  if isinstance(b, str) or isinstance(b, bytes):
+  if isinstance(b, str):
     return xml_matches(a, parseString(b).documentElement)
   if a.nodeType == xml.dom.Node.DOCUMENT_NODE:
     return xml_matches(a.documentElement, b)
