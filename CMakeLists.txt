@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8.3)
+cmake_minimum_required(VERSION 3.0.2)
 project(srdfdom)
 
 find_package(Boost REQUIRED)
@@ -29,7 +29,7 @@ catkin_package(
   DEPENDS TinyXML console_bridge urdfdom_headers
 )
 
-add_library(${PROJECT_NAME} 
+add_library(${PROJECT_NAME}
   src/model.cpp
   src/srdf_writer.cpp
 )
@@ -44,7 +44,7 @@ install(DIRECTORY include/${PROJECT_NAME}/
   FILES_MATCHING PATTERN "*.h"
 )
 
-install(PROGRAMS 
+install(PROGRAMS
   scripts/display_srdf
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
