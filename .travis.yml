@@ -15,11 +15,11 @@ env:
   global:
     # generate "exotic" locale for parser test
     - BEFORE_SCRIPT="sudo apt-get -qq install -y locales; sudo locale-gen nl_NL.UTF-8"
-    - ROS_DISTRO=melodic
+    - ROS_DISTRO=noetic
     - ROS_REPO=ros
   matrix:
     - TEST="clang-format, catkin_lint"
-    - ROS_DISTRO=melodic
+    - ROS_DISTRO=noetic
 
 before_script:
   - git clone -q --depth=1 https://github.com/ros-planning/moveit_ci.git .moveit_ci
