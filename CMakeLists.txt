@@ -36,11 +36,10 @@ add_library(${PROJECT_NAME} SHARED
 )
 
 #System dependencies
-target_link_libraries(${PROJECT_NAME} PUBLIC ${TinyXML2_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} PUBLIC ${TinyXML2_LIBRARIES} ${console_bridge_LIBRARIES})
 
 #Ament dependencies
 ament_target_dependencies(${PROJECT_NAME} PUBLIC
-  ${console_bridge_LIBRARIES}
   urdfdom_headers
   urdf
 )
@@ -72,7 +71,7 @@ if(BUILD_TESTING)
   endif()
 
   ament_add_gtest(test_cpp test/srdf_parser_cpp.test test/test_parser.cpp)
-  target_link_libraries(test_cpp ${catkin_LIBRARIES} ${PROJECT_NAME})
+  target_link_libraries(test_cpp ${PROJECT_NAME})
 endif()
 
 ament_export_include_directories(include)
