@@ -6,7 +6,7 @@ find_package(Boost REQUIRED)
 find_package(console_bridge REQUIRED)
 find_package(urdfdom_headers REQUIRED)
 
-find_package(catkin REQUIRED COMPONENTS cmake_modules urdf urdfdom_py)
+find_package(catkin REQUIRED COMPONENTS cmake_modules urdf)
 
 find_package(TinyXML REQUIRED)
 
