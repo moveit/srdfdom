@@ -1,5 +1,5 @@
 # This config file for Travis CI utilizes https://github.com/davetcoleman/moveit_ci/ package.
-sudo: required
+os: linux
 dist: xenial  # distro used by Travis, moveit_ci uses the docker image's distro
 services:
   - docker
@@ -8,18 +8,18 @@ cache: ccache
 compiler: gcc
 
 notifications:
-  email:
-    recipients:
-      - 130s@2000.jukuin.keio.ac.jp
+  email: true
+
 env:
   global:
     # generate "exotic" locale for parser test
     - BEFORE_SCRIPT="sudo apt-get -qq install -y locales; sudo locale-gen nl_NL.UTF-8"
     - ROS_DISTRO=melodic
     - ROS_REPO=ros
-  matrix:
-    - TEST="clang-format, catkin_lint"
-    - ROS_DISTRO=melodic
+
+jobs:
+  - env: TEST="clang-format, catkin_lint"
+  - env: ROS_DISTRO=melodic
 
 before_script:
   - git clone -q --depth=1 https://github.com/ros-planning/moveit_ci.git .moveit_ci
