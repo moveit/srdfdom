@@ -19,7 +19,6 @@ env:
 
 jobs:
   - env: TEST="clang-format, catkin_lint"
-  - env: ROS_DISTRO=noetic
   - env: ROS_DISTRO=melodic
 
 before_script:
