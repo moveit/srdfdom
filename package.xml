@@ -16,11 +16,13 @@
 
   <buildtool_depend>ament_cmake</buildtool_depend>
   <build_depend>libboost-dev</build_depend>
+  <build_depend>console_bridge_vendor</build_depend>
   <build_depend>libconsole-bridge-dev</build_depend>
   <build_depend>tinyxml2_vendor</build_depend>
   <build_depend>urdf</build_depend>
   <build_depend>urdfdom_headers</build_depend>
 
+  <exec_depend>console_bridge_vendor</exec_depend>
   <exec_depend>libconsole-bridge-dev</exec_depend>
   <exec_depend>tinyxml2_vendor</exec_depend>
   <exec_depend>urdf</exec_depend>
