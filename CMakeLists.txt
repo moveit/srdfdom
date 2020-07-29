@@ -58,6 +58,7 @@ install(PROGRAMS
   DESTINATION lib/${PROJECT_NAME}
 )
 
+set_target_properties(${PROJECT_NAME} PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
 
 if(BUILD_TESTING)
   find_package(ament_cmake_gtest REQUIRED)
