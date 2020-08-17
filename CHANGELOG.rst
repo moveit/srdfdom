@@ -2,6 +2,21 @@
 Changelog for package srdfdom
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.5.2 (2020-06-30)
+------------------
+* [maint]  Modernize Travis config (`#57 <https://github.com/ros-planning/srdfdom/issues/57>`_)
+* [maint]  Modernize package.xml
+* [maint]  Modernize python (python2 / python3 compatibility)
+* [maint]  Modernize cmake and setup.py
+* [maint]  Fix unittest
+* [maint]  Use [[deprecated]] for better portability (`#47 <https://github.com/ros-planning/srdfdom/issues/47>`_)
+* [maint]  Travis: enable ccache
+* [maint]  Fix catkin_lint issues
+* [maint]  Format code with clang-format (`#42 <https://github.com/ros-planning/srdfdom/issues/42>`_, `#43 <https://github.com/ros-planning/srdfdom/issues/43>`_)
+* [bugfix] Parse group's robot states with C locale (`#44 <https://github.com/ros-planning/srdfdom/issues/44>`_)
+* [bugfix] Trigger error in case of SRDF syntax error (`#41 <https://github.com/ros-planning/srdfdom/issues/41>`_)
+* Contributors: Alejandro Hernández Cordero, Dave Coleman, Jonathan Binney, Michael Görner, Robert Haschke, Sean Yen, Simon Schmeisser, kkufieta
+
 0.5.0 (2018-04-24)
 ------------------
 * Switch to std::shared_ptr of C++11 (`#36 <https://github.com/ros-planning/srdfdom/issues/36>`_)
