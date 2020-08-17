@@ -66,7 +66,7 @@ if(BUILD_TESTING)
   execute_process(COMMAND bash -c "locale -a | grep -q ^en_US"
     RESULT_VARIABLE TEST_LOCALE
     OUTPUT_QUIET ERROR_QUIET)
-  if (TEST_LOCALE)
+  if(TEST_LOCALE)
     message(WARNING "Locale nl_NL not available. Locale test will not be meaningful.")
   endif()
 
