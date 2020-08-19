@@ -8,12 +8,12 @@ find_package(urdfdom_headers REQUIRED)
 
 find_package(catkin REQUIRED COMPONENTS cmake_modules urdf)
 
-find_package(TinyXML REQUIRED)
+find_package(TinyXML2 REQUIRED)
 
 include_directories(
   include
   ${Boost_INCLUDE_DIR}
-  ${TinyXML_INCLUDE_DIRS}
+  ${TinyXML2_INCLUDE_DIRS}
   ${catkin_INCLUDE_DIRS}
   ${console_bridge_INCLUDE_DIRS}
   ${urdfdom_headers_INCLUDE_DIRS}
@@ -26,7 +26,7 @@ catkin_python_setup()
 catkin_package(
   LIBRARIES ${PROJECT_NAME}
   INCLUDE_DIRS include
-  DEPENDS TinyXML console_bridge urdfdom_headers
+  DEPENDS TinyXML2 console_bridge urdfdom_headers
 )
 
 add_library(${PROJECT_NAME}
@@ -34,7 +34,7 @@ add_library(${PROJECT_NAME}
   src/srdf_writer.cpp
 )
 set_target_properties(${PROJECT_NAME} PROPERTIES VERSION ${${PROJECT_NAME}_VERSION})
-target_link_libraries(${PROJECT_NAME} ${TinyXML_LIBRARIES} ${catkin_LIBRARIES} ${console_bridge_LIBRARIES} ${urdfdom_headers_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} ${TinyXML2_LIBRARIES} ${catkin_LIBRARIES} ${console_bridge_LIBRARIES} ${urdfdom_headers_LIBRARIES})
 
 
 install(TARGETS ${PROJECT_NAME}

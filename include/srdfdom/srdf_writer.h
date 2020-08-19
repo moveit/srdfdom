@@ -109,56 +109,56 @@ public:
    *
    * @return TinyXML document that contains current SRDF data in this class
    */
-  TiXmlDocument generateSRDF();
+  void generateSRDF(tinyxml2::XMLDocument& document);
 
   /**
    * Generate XML for SRDF groups
    *
    * @param root - TinyXML root element to attach sub elements to
    */
-  void createGroupsXML(TiXmlElement* root);
+  void createGroupsXML(tinyxml2::XMLElement* root);
 
   /**
    * Generate XML for SRDF link collision spheres
    *
    * @param root  - TinyXML root element to attach sub elements to
    */
-  void createLinkSphereApproximationsXML(TiXmlElement* root);
+  void createLinkSphereApproximationsXML(tinyxml2::XMLElement* root);
 
   /**
    * Generate XML for SRDF disabled collisions of robot link pairs
    *
    * @param root  - TinyXML root element to attach sub elements to
    */
-  void createDisabledCollisionsXML(TiXmlElement* root);
+  void createDisabledCollisionsXML(tinyxml2::XMLElement* root);
 
   /**
    * Generate XML for SRDF group states of each joint's position
    *
    * @param root  - TinyXML root element to attach sub elements to
    */
-  void createGroupStatesXML(TiXmlElement* root);
+  void createGroupStatesXML(tinyxml2::XMLElement* root);
 
   /**
    * Generate XML for SRDF end effectors
    *
    * @param root  - TinyXML root element to attach sub elements to
    */
-  void createEndEffectorsXML(TiXmlElement* root);
+  void createEndEffectorsXML(tinyxml2::XMLElement* root);
 
   /**
    * Generate XML for SRDF virtual joints
    *
    * @param root  - TinyXML root element to attach sub elements to
    */
-  void createVirtualJointsXML(TiXmlElement* root);
+  void createVirtualJointsXML(tinyxml2::XMLElement* root);
 
   /**
    * Generate XML for SRDF passive joints
    *
    * @param root  - TinyXML root element to attach sub elements to
    */
-  void createPassiveJointsXML(TiXmlElement* root);
+  void createPassiveJointsXML(tinyxml2::XMLElement* root);
 
   // ******************************************************************************************
   // Group Datastructures
