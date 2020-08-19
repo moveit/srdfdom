@@ -2,6 +2,11 @@
 Changelog for package srdfdom
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.6.0 (2020-08-19)
+------------------
+* [maint] add soname to library (`#63 <https://github.com/ros-planning/srdfdom/issues/63>`_)
+* Contributors: Robert Haschke, Tyler Weaver
+
 0.5.2 (2020-06-30)
 ------------------
 * [maint]  Modernize Travis config (`#57 <https://github.com/ros-planning/srdfdom/issues/57>`_)
