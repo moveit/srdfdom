@@ -59,7 +59,7 @@ if(CATKIN_ENABLE_TESTING)
     RESULT_VARIABLE TEST_LOCALE
     OUTPUT_QUIET ERROR_QUIET)
   if (TEST_LOCALE)
-    message(WARNING "Locale nl_NL not available. Locale test will not be meaningful.")
+    message(STATUS "Locale nl_NL not available. Locale test will not be meaningful.")
   endif()
 
   add_rostest_gtest(test_cpp test/srdf_parser_cpp.test test/test_parser.cpp)
