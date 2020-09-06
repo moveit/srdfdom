@@ -161,6 +161,7 @@ void SRDFWriter::generateSRDF(XMLDocument& document)
   // Root
   XMLElement* robot_root = document.NewElement("robot");
   robot_root->SetAttribute("name", robot_name_.c_str());  // robot name
+  document.InsertEndChild(robot_root);
 
   // Add Groups
   createGroupsXML(robot_root);

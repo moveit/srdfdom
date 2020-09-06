@@ -35,6 +35,7 @@
 /* Author: Ioan Sucan */
 
 #include <srdfdom/model.h>
+#include <srdfdom/srdf_writer.h>
 #include <urdf_parser/urdf_parser.h>
 #include <fstream>
 #include <stdexcept>
@@ -167,6 +168,32 @@ TEST(TestCpp, testComplex)
   EXPECT_TRUE(s.getEndEffectors()[index].name_ == "r_end_effector");
   EXPECT_TRUE(s.getEndEffectors()[index].component_group_ == "r_end_effector");
   EXPECT_TRUE(s.getEndEffectors()[index].parent_link_ == "r_wrist_roll_link");
+}
+
+TEST(TestCpp, testReadWrite)
+{
+  srdf::Model s;
+  urdf::ModelInterfaceSharedPtr u = loadURDF(std::string(TEST_RESOURCE_LOCATION) + "/pr2_desc.urdf");
+  ASSERT_TRUE(u != nullptr);
+
+  ASSERT_TRUE(s.initFile(*u, std::string(TEST_RESOURCE_LOCATION) + "/pr2_desc.3.srdf"));
+  srdf::SRDFWriter writer;
+  writer.initModel(*u, s);
+
+  std::string filename = std::string(TEST_RESOURCE_LOCATION) + "/pr2_desc.3-normalized.srdf";
+  std::string xml_content;
+  std::fstream xml_file(filename.c_str(), std::fstream::in);
+  ASSERT_TRUE(xml_file.is_open());
+  while (xml_file.good())
+  {
+    std::string line;
+    std::getline(xml_file, line);
+    xml_content += (line + "\n");
+  }
+  xml_content.erase(xml_content.size() - 1, 1);  // remove extra newline
+  xml_file.close();
+
+  EXPECT_EQ(xml_content, writer.getSRDFString());
 }
 
 int main(int argc, char** argv)

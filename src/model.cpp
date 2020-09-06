@@ -633,11 +633,6 @@ bool srdf::Model::initXml(const urdf::ModelInterface& urdf_model, XMLElement* ro
 bool srdf::Model::initXml(const urdf::ModelInterface& urdf_model, XMLDocument* xml)
 {
   XMLElement* robot_xml = xml ? xml->FirstChildElement("robot") : NULL;
-  if (!robot_xml)
-  {
-    CONSOLE_BRIDGE_logError("Could not find the 'robot' element in the xml file");
-    return false;
-  }
   return initXml(urdf_model, robot_xml);
 }
 
