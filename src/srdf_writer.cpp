@@ -38,6 +38,19 @@
 
 using namespace tinyxml2;
 
+namespace
+{
+template <class T>
+std::string toString(const T& t)
+{
+  // convert to string using no locale
+  std::ostringstream oss;
+  oss.imbue(std::locale::classic());
+  oss << t;
+  return oss.str();
+}
+}  // namespace
+
 namespace srdf
 {
 // ******************************************************************************************
@@ -295,7 +308,7 @@ void SRDFWriter::createLinkSphereApproximationsXML(XMLElement* root)
       center.precision(20);
       center << sphere_it->center_x_ << " " << sphere_it->center_y_ << " " << sphere_it->center_z_;
       sphere->SetAttribute("center", center.str().c_str());
-      sphere->SetAttribute("radius", sphere_it->radius_);
+      sphere->SetAttribute("radius", toString(sphere_it->radius_).c_str());
       link->InsertEndChild(sphere);
     }
   }
@@ -359,8 +372,8 @@ void SRDFWriter::createGroupStatesXML(XMLElement* root)
          value_it != state_it->joint_values_.end(); ++value_it)
     {
       XMLElement* joint = doc->NewElement("joint");
-      joint->SetAttribute("name", value_it->first.c_str());  // joint name
-      joint->SetAttribute("value", value_it->second[0]);     // joint value
+      joint->SetAttribute("name", value_it->first.c_str());                 // joint name
+      joint->SetAttribute("value", toString(value_it->second[0]).c_str());  // joint value
 
       // TODO: use the vector to support multi-DOF joints
       state->InsertEndChild(joint);
