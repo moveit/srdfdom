@@ -135,7 +135,7 @@ bool SRDFWriter::writeSRDF(const std::string& file_path)
   generateSRDF(document);
 
   // Save to file
-  return document.SaveFile(file_path.c_str());
+  return document.SaveFile(file_path.c_str()) == XML_SUCCESS;
 }
 
 // ******************************************************************************************

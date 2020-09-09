@@ -662,8 +662,7 @@ bool srdf::Model::initFile(const urdf::ModelInterface& urdf_model, const std::st
 bool srdf::Model::initString(const urdf::ModelInterface& urdf_model, const std::string& xmlstring)
 {
   XMLDocument xml_doc;
-  xml_doc.Parse(xmlstring.c_str());
-  if (xml_doc.Error())
+  if (xml_doc.Parse(xmlstring.c_str()) != XML_SUCCESS)
   {
     CONSOLE_BRIDGE_logError("Could not parse the SRDF XML File. %s", xml_doc.ErrorStr());
     return false;
