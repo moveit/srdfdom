@@ -2,6 +2,11 @@
 Changelog for package srdfdom
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.6.2 (2020-09-09)
+------------------
+* [bugfix] Correctly return success in SRDFWriter::writeSRDF().
+* Contributors: Robert Haschke
+
 0.6.1 (2020-09-06)
 ------------------
 * [bugfix] SRDFWriter: Correctly populate XML document
