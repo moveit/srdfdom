@@ -20,11 +20,14 @@ find_package(tinyxml2_vendor REQUIRED)
 #Made available by the vendor package
 find_package(TinyXML2 REQUIRED)
 
+if(TARGET console_bridge::console_bridge)
+  set(console_bridge_TARGETS console_bridge::console_bridge)
+endif()
+
 include_directories(include ${rclcpp_INCLUDE_DIRS}
   ${rmw_implementation_INCLUDE_DIRS}
   ${Boost_INCLUDE_DIR}
   ${TinyXML2_INCLUDE_DIRS}
-  ${console_bridge_INCLUDE_DIRS}
   ${urdfdom_headers_INCLUDE_DIRS}
   ${urdf_INCLUDE_DIRS}
   ${std_msgs_INCLUDE_DIRS}
@@ -40,7 +43,7 @@ target_link_libraries(${PROJECT_NAME} PUBLIC ${TinyXML2_LIBRARIES})
 
 #Ament dependencies
 ament_target_dependencies(${PROJECT_NAME} PUBLIC
-  ${console_bridge_LIBRARIES}
+  console_bridge
   urdfdom_headers
   urdf
 )
