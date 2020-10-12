@@ -14,7 +14,7 @@ env:
   global:
     # generate "exotic" locale for parser test
     - BEFORE_SCRIPT="sudo apt-get -qq install -y locales; sudo locale-gen nl_NL.UTF-8"
-    - ROS_DISTRO=eloquent
+    - ROS_DISTRO=foxy
     - ROS_REPO=ros
 
 jobs:
