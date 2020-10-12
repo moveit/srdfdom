@@ -567,12 +567,8 @@ void srdf::Model::loadDisabledCollisions(const urdf::ModelInterface& urdf_model,
 
 void srdf::Model::loadPassiveJoints(const urdf::ModelInterface& urdf_model, XMLElement* robot_xml)
 {
-  for (XMLElement* c_xml = robot_xml->FirstChildElement("passive_joint"); c_xml; c_xml = c_xml->NextSiblingElement("pas"
-                                                                                                                   "siv"
-                                                                                                                   "e_"
-                                                                                                                   "joi"
-                                                                                                                   "n"
-                                                                                                                   "t"))
+  constexpr char JOINT[] = "passive_joint";
+  for (XMLElement* c_xml = robot_xml->FirstChildElement(JOINT); c_xml; c_xml = c_xml->NextSiblingElement(JOINT))
   {
     const char* name = c_xml->Attribute("name");
     if (!name)
