@@ -218,8 +218,7 @@ void srdf::Model::loadGroups(const urdf::ModelInterface& urdf_model, XMLElement*
       if (found)
         g.chains_.push_back(std::make_pair(base_str, tip_str));
       else
-        CONSOLE_BRIDGE_logError("Links '%s' and '%s' do not form a chain. Not included in group '%s'", base, tip,
-                                gname);
+        CONSOLE_BRIDGE_logError("Links '%s' and '%s' do not form a chain. Not included in group '%s'", base, tip, gname);
     }
 
     // get the subgroups in the groups
