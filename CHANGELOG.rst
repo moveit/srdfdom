@@ -2,6 +2,24 @@
 Changelog for package srdfdom
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.6.2 (2020-09-09)
+------------------
+* [bugfix] Correctly return success in SRDFWriter::writeSRDF().
+* Contributors: Robert Haschke
+
+0.6.1 (2020-09-06)
+------------------
+* [bugfix] SRDFWriter: Correctly populate XML document
+* [bugfix] SRDFWriter: Use locale independent conversion from double to string (`#67 <https://github.com/ros-planning/srdfdom/issues/67>`_)
+* [maint]  Silence cmake warning
+* Contributors: Robert Haschke
+
+0.6.0 (2020-08-19)
+------------------
+* [maint] Switch from TinyXML to TinyXML2 (`#60 <https://github.com/ros-planning/srdfdom/issues/60>`_)
+* [maint] add soname to library (`#63 <https://github.com/ros-planning/srdfdom/issues/63>`_)
+* Contributors: Robert Haschke, Tyler Weaver
+
 0.5.2 (2020-06-30)
 ------------------
 * [maint]  Modernize Travis config (`#57 <https://github.com/ros-planning/srdfdom/issues/57>`_)
