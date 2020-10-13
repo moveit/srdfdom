@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(srdfdom)
+project(srdfdom VERSION 1.0.0 LANGUAGES CXX)
 
 # Default to C++14
 if(NOT CMAKE_CXX_STANDARD)
