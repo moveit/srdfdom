@@ -17,7 +17,7 @@ find_package(ament_cmake REQUIRED)
 find_package(urdf REQUIRED)
 find_package(tinyxml2_vendor REQUIRED)
 
-#Made available by the vendor package
+# Made available by the vendor package
 find_package(TinyXML2 REQUIRED)
 
 include_directories(include ${rclcpp_INCLUDE_DIRS}
@@ -33,11 +33,13 @@ add_library(${PROJECT_NAME} SHARED
   src/model.cpp
   src/srdf_writer.cpp
 )
+set_target_properties(${PROJECT_NAME} PROPERTIES
+  VERSION ${${PROJECT_NAME}_VERSION})
 
-#System dependencies
+# System dependencies
 target_link_libraries(${PROJECT_NAME} PUBLIC ${TinyXML2_LIBRARIES})
 
-#Ament dependencies
+# Ament dependencies
 ament_target_dependencies(${PROJECT_NAME} PUBLIC
   console_bridge
   urdfdom_headers
@@ -68,7 +70,7 @@ if(BUILD_TESTING)
     RESULT_VARIABLE TEST_LOCALE
     OUTPUT_QUIET ERROR_QUIET)
   if(TEST_LOCALE)
-    message(WARNING "Locale nl_NL not available. Locale test will not be meaningful.")
+    message(STATUS "Locale nl_NL not available. Locale test will not be meaningful.")
   endif()
 
   ament_add_gtest(test_cpp test/srdf_parser_cpp.test test/test_parser.cpp)
