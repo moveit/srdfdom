@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(srdfdom VERSION 1.0.0 LANGUAGES CXX)
+project(srdfdom LANGUAGES CXX)
 
 # Default to C++14
 if(NOT CMAKE_CXX_STANDARD)
@@ -19,6 +19,9 @@ find_package(tinyxml2_vendor REQUIRED)
 
 # Made available by the vendor package
 find_package(TinyXML2 REQUIRED)
+
+# Set VERSION from package.xml
+ament_package_xml()
 
 include_directories(include ${rclcpp_INCLUDE_DIRS}
   ${rmw_implementation_INCLUDE_DIRS}
