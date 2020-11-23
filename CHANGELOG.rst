@@ -2,6 +2,19 @@
 Changelog for package srdfdom
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.0.0 (2020-11-23)
+------------------
+* [fix] Conflicting upstream dependency console_bridge
+  * Add console_bridge libs with ament_target_dependencies (`#59 <https://github.com/ros-planning/srdfdom/issues/59>`_)
+  * Use console_bridge_vendor dependency wrapper (`#61 <https://github.com/ros-planning/srdfdom/issues/61>`_)
+* [maint] Inherit package VERSION from package.xml (`#74 <https://github.com/ros-planning/srdfdom/issues/74>`_)
+* [maint] Symbol visibility for Windows support (`#69 <https://github.com/ros-planning/srdfdom/issues/69>`_)
+* [maint] Proper exporting of TinyXML2 library to dependent ament packages (`#54 <https://github.com/ros-planning/srdfdom/issues/54>`_)
+* [ros2-migration] Port to ROS 2 (`#52 <https://github.com/ros-planning/srdfdom/issues/52>`_)
+  * Apply initial port by AcutronicsRobotics (`AcutronicRobotics:srdfdom#1 <https://github.com/AcutronicRobotics/srdfdom/issues/1>`_, `AcutronicRobotics:srdfdom#2 <https://github.com/AcutronicRobotics/srdfdom/issues/2>`_, `AcutronicRobotics:srdfdom#3 <https://github.com/AcutronicRobotics/srdfdom/issues/3>`_, `AcutronicRobotics:srdfdom#4 <https://github.com/AcutronicRobotics/srdfdom/issues/4>`_)
+  * Enable Travis CI
+* Contributors: Alejandro Hernandez Cordero, Anas Mchichou El Harrak, Henning Kayser, Hunter L. Allen, Josh Langsfeld, Lior Lustgarten, Patrick Beeson, Robert Haschke
+
 0.6.2 (2020-09-09)
 ------------------
 * [bugfix] Correctly return success in SRDFWriter::writeSRDF().
