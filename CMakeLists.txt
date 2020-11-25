@@ -50,6 +50,7 @@ ament_target_dependencies(${PROJECT_NAME} PUBLIC
 )
 
 install(TARGETS ${PROJECT_NAME}
+  EXPORT ${PROJECT_NAME}
   DESTINATION lib
 )
 install(DIRECTORY include/${PROJECT_NAME}/
