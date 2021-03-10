@@ -83,10 +83,10 @@ void srdf::Model::loadVirtualJoints(const urdf::ModelInterface& urdf_model, XMLE
     vj.type_ = std::string(type);
     boost::trim(vj.type_);
     std::transform(vj.type_.begin(), vj.type_.end(), vj.type_.begin(), ::tolower);
-    if (vj.type_ != "planar" && vj.type_ != "floating" && vj.type_ != "fixed")
+    if (vj.type_ != "planar" && vj.type_ != "floating" && vj.type_ != "fixed" && vj.type_ != "diff_drive")
     {
-      CONSOLE_BRIDGE_logError("Unknown type of joint: '%s'. Assuming 'fixed' instead. Other known types are 'planar' "
-                              "and 'floating'.",
+      CONSOLE_BRIDGE_logError("Unknown type of joint: '%s'. Assuming 'fixed' instead. Other known types are 'planar', "
+                              "'diff_drive' and 'floating'.",
                               type);
       vj.type_ = "fixed";
     }
