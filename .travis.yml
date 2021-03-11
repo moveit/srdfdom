@@ -21,7 +21,6 @@ env:
 jobs:
   - env: TEST="clang-format, ament_lint"
   - env: ROS_DISTRO=foxy
-  - env: ROS_DISTRO=eloquent
 
 before_script:
   - git clone -q -b ros2 --depth=1 https://github.com/ros-planning/moveit_ci.git .moveit_ci
