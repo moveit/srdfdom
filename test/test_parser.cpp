@@ -174,6 +174,15 @@ TEST(TestCpp, testComplex)
   EXPECT_TRUE(s.getEndEffectors()[index].name_ == "r_end_effector");
   EXPECT_TRUE(s.getEndEffectors()[index].component_group_ == "r_end_effector");
   EXPECT_TRUE(s.getEndEffectors()[index].parent_link_ == "r_wrist_roll_link");
+
+  // Joint Properties
+  const std::vector<srdf::Model::JointProperty>& gripper_props = s.getJointProperties("r_gripper_tool_joint");
+  EXPECT_EQ(gripper_props.size(), 0u);
+
+  const std::vector<srdf::Model::JointProperty>& world_props = s.getJointProperties("world_joint");
+  ASSERT_EQ(world_props.size(), 1u);
+  EXPECT_EQ(world_props[0].property_name_, "angular_distance_weight");
+  EXPECT_EQ(world_props[0].value_, 0.5);
 }
 
 TEST(TestCpp, testReadWrite)
