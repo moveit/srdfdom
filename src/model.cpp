@@ -620,22 +620,7 @@ void srdf::Model::loadJointProperties(XMLElement* robot_xml)
     JointProperty jp;
     jp.joint_name_ = boost::trim_copy(std::string(jname));
     jp.property_name_ = boost::trim_copy(std::string(pname));
-
-    try
-    {
-      jp.value_ = std::stod(pval);
-    }
-    catch (const std::invalid_argument& e)
-    {
-      CONSOLE_BRIDGE_logError("Unable to parse value for property '%s' joint '%s'", pname, jname);
-      continue;
-    }
-    catch (const std::out_of_range& e)
-    {
-      CONSOLE_BRIDGE_logError("Unable to parse value for property '%s' joint '%s'", pname, jname);
-      continue;
-    }
-
+    jp.value_ = std::string(pval);
     joint_properties_[jp.joint_name_].push_back(jp);
   }
 }

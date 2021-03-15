@@ -182,7 +182,7 @@ TEST(TestCpp, testComplex)
   const std::vector<srdf::Model::JointProperty>& world_props = s.getJointProperties("world_joint");
   ASSERT_EQ(world_props.size(), 1u);
   EXPECT_EQ(world_props[0].property_name_, "angular_distance_weight");
-  EXPECT_EQ(world_props[0].value_, 0.5);
+  EXPECT_EQ(world_props[0].value_, "0.5");
 }
 
 TEST(TestCpp, testReadWrite)

@@ -204,8 +204,8 @@ public:
     /// The name of the property
     std::string property_name_;
 
-    /// The value of the property
-    double value_;
+    /// The value of the property. Type not specified.
+    std::string value_;
   };
 
   /// Get the name of this model
