@@ -277,6 +277,8 @@ public:
   void clear();
 
 private:
+  bool isValidJoint(const urdf::ModelInterface& urdf_model, const std::string& name) const;
+
   void loadVirtualJoints(const urdf::ModelInterface& urdf_model, tinyxml2::XMLElement* robot_xml);
   void loadGroups(const urdf::ModelInterface& urdf_model, tinyxml2::XMLElement* robot_xml);
   void loadGroupStates(const urdf::ModelInterface& urdf_model, tinyxml2::XMLElement* robot_xml);
@@ -284,7 +286,7 @@ private:
   void loadLinkSphereApproximations(const urdf::ModelInterface& urdf_model, tinyxml2::XMLElement* robot_xml);
   void loadDisabledCollisions(const urdf::ModelInterface& urdf_model, tinyxml2::XMLElement* robot_xml);
   void loadPassiveJoints(const urdf::ModelInterface& urdf_model, tinyxml2::XMLElement* robot_xml);
-  void loadJointProperties(tinyxml2::XMLElement* robot_xml);
+  void loadJointProperties(const urdf::ModelInterface& urdf_model, tinyxml2::XMLElement* robot_xml);
 
   std::string name_;
   std::vector<Group> groups_;
