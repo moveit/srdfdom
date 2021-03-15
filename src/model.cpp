@@ -677,9 +677,9 @@ void srdf::Model::clear()
   passive_joints_.clear();
 }
 
-std::vector<std::pair<std::string, std::string> > srdf::Model::getDisabledCollisions() const
+std::vector<std::pair<std::string, std::string>> srdf::Model::getDisabledCollisions() const
 {
-  std::vector<std::pair<std::string, std::string> > result;
+  std::vector<std::pair<std::string, std::string>> result;
   for (std::size_t i = 0; i < disabled_collisions_.size(); ++i)
     result.push_back(std::make_pair(disabled_collisions_[i].link1_, disabled_collisions_[i].link2_));
   return result;
