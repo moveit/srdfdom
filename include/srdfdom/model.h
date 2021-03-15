@@ -95,7 +95,7 @@ public:
     /// be added to the group. Each chain is specified as a
     /// pair of base link and tip link. It is checked that the
     /// chain is indeed a chain in the specified URDF.
-    std::vector<std::pair<std::string, std::string> > chains_;
+    std::vector<std::pair<std::string, std::string>> chains_;
 
     /// It is sometimes convenient to refer to the content of
     /// another group. A group can include the content of the
@@ -150,7 +150,7 @@ public:
 
     /// The values of joints for this state. Each joint can have a value. We use a vector for the 'value' to support
     /// multi-DOF joints
-    std::map<std::string, std::vector<double> > joint_values_;
+    std::map<std::string, std::vector<double>> joint_values_;
   };
 
   /// The definition of a sphere
@@ -209,7 +209,7 @@ public:
   }
 
   /// \deprecated{ Use the version returning DisabledCollision }
-  [[deprecated]] std::vector<std::pair<std::string, std::string> > getDisabledCollisions() const;
+  [[deprecated]] std::vector<std::pair<std::string, std::string>> getDisabledCollisions() const;
 
   /// Get the list of groups defined for this model
   const std::vector<Group>& getGroups() const
