@@ -299,7 +299,7 @@ private:
   std::map<std::string, std::vector<JointProperty>> joint_properties_;
 
   // Empty joint property vector
-  std::vector<JointProperty> empty_vector_;
+  static const std::vector<JointProperty> empty_vector_;
 };
 typedef std::shared_ptr<Model> ModelSharedPtr;
 typedef std::shared_ptr<const Model> ModelConstSharedPtr;

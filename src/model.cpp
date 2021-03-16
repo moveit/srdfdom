@@ -593,7 +593,7 @@ void srdf::Model::loadJointProperties(const urdf::ModelInterface& urdf_model, XM
     const char* pval = prop_xml->Attribute("value");
     if (!jname)
     {
-      CONSOLE_BRIDGE_logError("Joint name is not specified");
+      CONSOLE_BRIDGE_logError("joint_property is missing a joint name");
       continue;
     }
     if (!pname)
@@ -603,7 +603,7 @@ void srdf::Model::loadJointProperties(const urdf::ModelInterface& urdf_model, XM
     }
     if (!pval)
     {
-      CONSOLE_BRIDGE_logError("Value is not specified for property '%s' joint '%s'", pname, jname);
+      CONSOLE_BRIDGE_logError("Value is not specified for property '%s' of joint '%s'", pname, jname);
       continue;
     }
 
