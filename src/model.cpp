@@ -45,15 +45,17 @@
 
 using namespace tinyxml2;
 
+const std::vector<srdf::Model::JointProperty> srdf::Model::empty_vector_;
+
 bool srdf::Model::isValidJoint(const urdf::ModelInterface& urdf_model, const std::string& name) const
 {
   if (urdf_model.getJoint(name))
   {
     return true;
   }
-  for (std::size_t k = 0; k < virtual_joints_.size(); ++k)
+  for (const srdf::Model::VirtualJoint& vj : virtual_joints_)
   {
-    if (virtual_joints_[k].name_ == name)
+    if (vj.name_ == name)
     {
       return true;
     }
@@ -614,8 +616,8 @@ void srdf::Model::loadJointProperties(const urdf::ModelInterface& urdf_model, XM
 
     if (!isValidJoint(urdf_model, jp.joint_name_))
     {
-      CONSOLE_BRIDGE_logWarn("Property defined for a joint '%s' that is not known to the URDF. Ignoring.",
-                             jp.joint_name_.c_str());
+      CONSOLE_BRIDGE_logError("Property defined for a joint '%s' that is not known to the URDF. Ignoring.",
+                              jp.joint_name_.c_str());
       continue;
     }
     joint_properties_[jp.joint_name_].push_back(jp);

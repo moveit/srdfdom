@@ -179,7 +179,7 @@ TEST(TestCpp, testComplex)
   const std::vector<srdf::Model::JointProperty>& gripper_props = s.getJointProperties("r_gripper_tool_joint");
   EXPECT_EQ(gripper_props.size(), 0u);
 
-  // When parsing, this made up joint that is not present in the URDF is expected to print a warning
+  // When parsing, this made up joint that is not present in the URDF is expected to print an error
   // AND the property should not be made available in the srdf::Model
   const std::vector<srdf::Model::JointProperty>& made_up_props = s.getJointProperties("made_up_joint");
   EXPECT_EQ(made_up_props.size(), 0u);
