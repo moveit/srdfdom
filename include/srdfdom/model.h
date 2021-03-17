@@ -195,7 +195,7 @@ public:
     std::string name_;
   };
 
-  // Some joints may have additional numerical properties.
+  // Some joints may have additional properties.
   struct JointProperty
   {
     /// The name of the joint that this property belongs to
