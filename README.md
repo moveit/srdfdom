@@ -7,7 +7,7 @@ Includes a cpp and a python parser, as well as a cpp writer.
 
 ## GitHub Actions - Continuous Integration
 
-[![Format](https://github.com/ros-planning/srdfdom/actions/workflows/format.yml/badge.svg?branch=melodic-devel)](https://github.com/ros-planning/srdfdom/actions/workflows/format.yml?branch=melodic-devel) [![BuildAndTest](https://github.com/ros-planning/srdfdom/actions/workflows/industrial_ci_action.yml/badge.svg?branch=melodic-devel)](https://github.com/ros-planning/srdfdom/actions/workflows/industrial_ci_action.yml?branch=melodic-devel)
+[![Format](https://github.com/ros-planning/srdfdom/actions/workflows/format.yml/badge.svg?branch=noetic-devel)](https://github.com/ros-planning/srdfdom/actions/workflows/format.yml?branch=noetic-devel) [![BuildAndTest](https://github.com/ros-planning/srdfdom/actions/workflows/industrial_ci_action.yml/badge.svg?branch=noetic-devel)](https://github.com/ros-planning/srdfdom/actions/workflows/industrial_ci_action.yml?branch=noetic-devel)
 
 ## Authors
 
