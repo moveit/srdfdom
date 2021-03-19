@@ -150,10 +150,12 @@ TiXmlDocument SRDFWriter::generateSRDF()
   document.LinkEndChild(decl);
 
   // Convenience comments
-  TiXmlComment* comment =
-      new TiXmlComment("This does not replace URDF, and is not an extension of URDF.\n    This is a format for "
-                       "representing semantic information about the robot structure.\n    A URDF file must exist for "
-                       "this robot as well, where the joints and the links that are referenced are defined\n");
+  TiXmlComment* comment = new TiXmlComment("This does not replace URDF, and is not an extension of URDF.\n    This is "
+                                           "a format for "
+                                           "representing semantic information about the robot structure.\n    A URDF "
+                                           "file must exist for "
+                                           "this robot as well, where the joints and the links that are referenced are "
+                                           "defined\n");
   document.LinkEndChild(comment);
 
   // Root
@@ -436,4 +438,4 @@ void SRDFWriter::createPassiveJointsXML(TiXmlElement* root)
     root->LinkEndChild(p_joint);
   }
 }
-}
+}  // namespace srdf
