@@ -79,6 +79,10 @@ if(BUILD_TESTING)
 
   ament_add_gtest(test_cpp test/srdf_parser_cpp.test test/test_parser.cpp)
   target_link_libraries(test_cpp ${PROJECT_NAME})
+
+  # ament_lint
+  find_package(ament_lint_auto REQUIRED)
+  ament_lint_auto_find_test_dependencies()
 endif()
 
 ament_export_include_directories(include)
