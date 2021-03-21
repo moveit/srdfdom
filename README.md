@@ -5,11 +5,9 @@ Parser for the Semantic Robot Description Format (SRDF).
 
 Includes a cpp and a python parser, as well as a cpp writer.
 
-## Travis - Continuous Integration
+## GitHub Actions - Continuous Integration
 
-Indigo | Kinetic
------- | -------
-[![Build Status](https://travis-ci.org/ros-planning/srdfdom.svg?branch=indigo-devel)](https://travis-ci.org/ros-planning/srdfdom) | [![Build Status](https://travis-ci.org/ros-planning/srdfdom.svg?branch=kinetic-devel)](https://travis-ci.org/ros-planning/srdfdom)
+[![Format](https://github.com/ros-planning/srdfdom/actions/workflows/format.yml/badge.svg?branch=melodic-devel)](https://github.com/ros-planning/srdfdom/actions/workflows/format.yml?branch=melodic-devel) [![BuildAndTest](https://github.com/ros-planning/srdfdom/actions/workflows/industrial_ci_action.yml/badge.svg?branch=melodic-devel)](https://github.com/ros-planning/srdfdom/actions/workflows/industrial_ci_action.yml?branch=melodic-devel)
 
 ## Authors
 
