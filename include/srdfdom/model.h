@@ -273,6 +273,12 @@ public:
     return iter->second;
   }
 
+  /// Get the joint properties list
+  const std::map<std::string, std::vector<JointProperty>>& getJointProperties() const
+  {
+    return joint_properties_;
+  }
+
   /// Clear the model
   void clear();
 
