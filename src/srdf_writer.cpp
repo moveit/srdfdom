@@ -105,6 +105,7 @@ void SRDFWriter::initModel(const urdf::ModelInterface& robot_model, const srdf::
   end_effectors_ = srdf_model_->getEndEffectors();
   group_states_ = srdf_model_->getGroupStates();
   passive_joints_ = srdf_model_->getPassiveJoints();
+  joint_properties_ = srdf_model_->getJointProperties();
 
   // Copy the robot name b/c the root xml element requires this attribute
   robot_name_ = robot_model.getName();
@@ -190,6 +191,9 @@ void SRDFWriter::generateSRDF(XMLDocument& document)
 
   // Add Passive Joints
   createPassiveJointsXML(robot_root);
+
+  // Add Joint Properties
+  createJointPropertiesXML(robot_root);
 
   // Add Link Sphere approximations
   createLinkSphereApproximationsXML(robot_root);
@@ -456,6 +460,29 @@ void SRDFWriter::createPassiveJointsXML(XMLElement* root)
     XMLElement* p_joint = doc->NewElement("passive_joint");
     p_joint->SetAttribute("name", p_it->name_.c_str());
     root->InsertEndChild(p_joint);
+  }
+}
+
+void SRDFWriter::createJointPropertiesXML(tinyxml2::XMLElement* root)
+{
+  XMLDocument* doc = root->GetDocument();
+
+  if (!joint_properties_.empty())
+  {
+    XMLComment* comment = doc->NewComment(
+        "JOINT PROPERTIES: Purpose: Define a property for a particular joint (could be a virtual joint)");
+    root->InsertEndChild(comment);
+  }
+  for (const auto& joint_properties : joint_properties_)
+  {
+    for (const auto& joint_property : joint_properties.second)
+    {
+      XMLElement* p_joint = doc->NewElement("joint_property");
+      p_joint->SetAttribute("joint_name", joint_property.joint_name_.c_str());
+      p_joint->SetAttribute("property_name", joint_property.property_name_.c_str());
+      p_joint->SetAttribute("value", joint_property.value_.c_str());
+      root->InsertEndChild(p_joint);
+    }
   }
 }
 }  // namespace srdf
