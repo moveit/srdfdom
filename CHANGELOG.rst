@@ -2,6 +2,14 @@
 Changelog for package srdfdom
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.0.1 (2021-04-09)
+------------------
+* SRDFWriter: Add functionality to generate xml for the joint properties
+* Add a new JointProperties xml tag
+* Add diff_drive type to virtual joints
+* [fix] export cmake library install (`#76 <https://github.com/ros-planning/srdfdom/issues/76>`_)
+* Contributors: David V. Lu, Jafar Abdi, Mark Moll, Robert Haschke, Tyler Weaver
+
 2.0.0 (2020-11-23)
 ------------------
 * [fix] Conflicting upstream dependency console_bridge
