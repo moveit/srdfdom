@@ -7,7 +7,7 @@ Includes a cpp and a python parser, as well as a cpp writer.
 
 ## GitHub Actions - Continuous Integration
 
-[![Format](https://github.com/ros-planning/srdfdom/actions/workflows/format.yml/badge.svg?branch=ros2)](https://github.com/ros-planning/srdfdom/actions/workflows/format.yml?branch=ros2) [![BuildAndTest](https://github.com/ros-planning/srdfdom/actions/workflows/industrial_ci_action.yml/badge.svg?branch=ros2)](https://github.com/ros-planning/srdfdom/actions/workflows/industrial_ci_action.yml?branch=ros2) [![codecov](https://codecov.io/gh/ros-planning/srdfdom/branch/ros2/graph/badge.svg?token=W7uHKcY0ly)](https://codecov.io/gh/ros-planning/srdfdom)
+[![Formatting(pre-commit)](https://github.com/ros-planning/srdfdom/actions/workflows/format.yml/badge.svg?branch=ros2)](https://github.com/ros-planning/srdfdom/actions/workflows/format.yml?query=branch%3Aros2) [![BuildAndTest](https://github.com/ros-planning/srdfdom/actions/workflows/industrial_ci_action.yml/badge.svg?branch=ros2)](https://github.com/ros-planning/srdfdom/actions/workflows/industrial_ci_action.yml?query=branch%3Aros2) [![codecov](https://codecov.io/gh/ros-planning/srdfdom/branch/ros2/graph/badge.svg?token=W7uHKcY0ly)](https://codecov.io/gh/ros-planning/srdfdom)
 
 [![Code Coverage Grid](https://codecov.io/gh/ros-planning/srdfdom/branch/ros2/graphs/tree.svg)](https://codecov.io/gh/ros-planning/srdfdom/branch/ros2/graphs/tree.svg)
 
