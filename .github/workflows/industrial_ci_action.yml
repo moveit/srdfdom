@@ -17,7 +17,7 @@ jobs:
         env:
           - {
             ROS_DISTRO: foxy, ROS_REPO: main, CCOV_UPLOAD: true, 
-            CLANG_TIDY: pedatntic,
+            CLANG_TIDY: pedantic,
             CMAKE_ARGS: "-DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_FLAGS='--coverage' -DCMAKE_CXX_FLAGS='--coverage'",
             AFTER_RUN_TARGET_TEST: './.ci.prepare_codecov',
             ADDITIONAL_DEBS: 'lcov'
@@ -25,7 +25,7 @@ jobs:
           - {ROS_DISTRO: foxy, ROS_REPO: testing, CCOV_UPLOAD: false}
           - {
             ROS_DISTRO: rolling, ROS_REPO: main, CCOV_UPLOAD: true, 
-            CLANG_TIDY: pedatntic,
+            CLANG_TIDY: pedantic,
             CMAKE_ARGS: "-DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_FLAGS='--coverage' -DCMAKE_CXX_FLAGS='--coverage'",
             AFTER_RUN_TARGET_TEST: './.ci.prepare_codecov',
             ADDITIONAL_DEBS: 'lcov'
