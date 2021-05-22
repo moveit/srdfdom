@@ -35,6 +35,8 @@ jobs:
       CCACHE_DIR: /home/runner/.ccache
       BASEDIR: .base
       BEFORE_RUN_TARGET_TEST: "sudo apt-get -qq install -y locales; sudo locale-gen nl_NL.UTF-8"
+
+    name: ${{ matrix.env.ROS_DISTRO }}-${{ matrix.env.ROS_REPO }}${{ matrix.env.CCOV_UPLOAD && ' + ccov' || ''}}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
