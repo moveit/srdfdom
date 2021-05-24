@@ -2,6 +2,11 @@
 Changelog for package srdfdom
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.0.2 (2021-05-24)
+------------------
+* Support rolling CI (`#85 <https://github.com/ros-planning/srdfdom/issues/85>`_)
+* Contributors: Vatan Aksoy Tezer
+
 2.0.1 (2021-04-09)
 ------------------
 * SRDFWriter: Add functionality to generate xml for the joint properties
