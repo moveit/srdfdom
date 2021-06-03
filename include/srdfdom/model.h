@@ -45,11 +45,13 @@
 #include <memory>
 #include <tinyxml2.h>
 
+#include "visibility_control.h"
+
 /// Main namespace
 namespace srdf
 {
 /** \brief Representation of semantic information about the robot */
-class Model
+class SRDFDOM_PUBLIC Model
 {
 public:
   Model()

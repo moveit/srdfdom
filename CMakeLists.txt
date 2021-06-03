@@ -64,6 +64,7 @@ install(PROGRAMS
 )
 
 set_target_properties(${PROJECT_NAME} PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
+target_compile_definitions(${PROJECT_NAME} PRIVATE "SRDFDOM_BUILDING_DLL")
 
 if(BUILD_TESTING)
   find_package(ament_cmake_gtest REQUIRED)
