@@ -65,9 +65,12 @@ install(PROGRAMS
 
 set_target_properties(${PROJECT_NAME} PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
 
+ament_python_install_package(${PROJECT_NAME})
+
 if(BUILD_TESTING)
   find_package(ament_cmake_gtest REQUIRED)
-  ament_add_gtest(test_parser test/srdf_parser.test)
+  find_package(ament_cmake_pytest REQUIRED)
+  ament_add_pytest_test(self_parser_test "test/test.py")
 
   add_definitions(-DTEST_RESOURCE_LOCATION="${CMAKE_SOURCE_DIR}/test/resources")
   execute_process(COMMAND bash -c "locale -a | grep -q ^en_US"
@@ -77,8 +80,10 @@ if(BUILD_TESTING)
     message(STATUS "Locale nl_NL not available. Locale test will not be meaningful.")
   endif()
 
-  ament_add_gtest(test_cpp test/srdf_parser_cpp.test test/test_parser.cpp)
-  target_link_libraries(test_cpp ${PROJECT_NAME})
+  foreach(LOCALE IN ITEMS C nl_NL.UTF-8)
+    ament_add_gtest(test_cpp_${LOCALE} test/test_parser.cpp ENV LC_ALL=${LOCALE})
+    target_link_libraries(test_cpp_${LOCALE} ${PROJECT_NAME})
+  endforeach()
 
   # ament_lint
   find_package(ament_lint_auto REQUIRED)
