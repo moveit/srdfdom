@@ -251,9 +251,9 @@ class TestSRDFParser(unittest.TestCase):
         self.assertTrue(robot.end_effectors[index].parent_link == "r_wrist_roll_link")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     suite = unittest.TestSuite()
-    suite.addTest(TestSRDFParser('test_full_srdf'))
-    suite.addTest(TestSRDFParser('test_simple_srdf'))
-    suite.addTest(TestSRDFParser('test_complex_srdf'))
+    suite.addTest(TestSRDFParser("test_full_srdf"))
+    suite.addTest(TestSRDFParser("test_simple_srdf"))
+    suite.addTest(TestSRDFParser("test_complex_srdf"))
     unittest.TextTestRunner(verbosity=2).run(suite)
