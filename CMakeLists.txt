@@ -17,16 +17,12 @@ find_package(ament_cmake REQUIRED)
 find_package(urdf REQUIRED)
 find_package(tinyxml2_vendor REQUIRED)
 
-# Made available by the vendor package
-find_package(TinyXML2 REQUIRED)
-
 # Set VERSION from package.xml
 ament_package_xml()
 
 include_directories(include ${rclcpp_INCLUDE_DIRS}
   ${rmw_implementation_INCLUDE_DIRS}
   ${Boost_INCLUDE_DIR}
-  ${TinyXML2_INCLUDE_DIRS}
   ${urdfdom_headers_INCLUDE_DIRS}
   ${urdf_INCLUDE_DIRS}
   ${std_msgs_INCLUDE_DIRS}
@@ -38,9 +34,6 @@ add_library(${PROJECT_NAME} SHARED
 )
 set_target_properties(${PROJECT_NAME} PROPERTIES
   VERSION ${${PROJECT_NAME}_VERSION})
-
-# System dependencies
-target_link_libraries(${PROJECT_NAME} PUBLIC ${TinyXML2_LIBRARIES})
 
 # Ament dependencies
 ament_target_dependencies(${PROJECT_NAME} PUBLIC
@@ -89,9 +82,9 @@ if(BUILD_TESTING)
 endif()
 
 ament_export_include_directories(include)
-ament_export_libraries(${PROJECT_NAME} ${TinyXML2_LIBRARIES})
+ament_export_libraries(${PROJECT_NAME})
 ament_export_dependencies(console_bridge)
 ament_export_dependencies(urdfdom_headers)
 ament_export_dependencies(urdf)
-ament_export_dependencies(TinyXML2)
+ament_export_dependencies(tinyxml2_vendor)
 ament_package()
