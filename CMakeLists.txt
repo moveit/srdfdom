@@ -51,7 +51,9 @@ ament_target_dependencies(${PROJECT_NAME} PUBLIC
 
 install(TARGETS ${PROJECT_NAME}
   EXPORT ${PROJECT_NAME}
-  DESTINATION lib
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib
+  RUNTIME DESTINATION bin
 )
 install(DIRECTORY include/${PROJECT_NAME}/
   DESTINATION include/${PROJECT_NAME}
@@ -64,6 +66,7 @@ install(PROGRAMS
 )
 
 set_target_properties(${PROJECT_NAME} PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
+target_compile_definitions(${PROJECT_NAME} PRIVATE "SRDFDOM_BUILDING_DLL")
 
 if(BUILD_TESTING)
   find_package(ament_cmake_gtest REQUIRED)
@@ -90,4 +93,5 @@ ament_export_libraries(${PROJECT_NAME} ${TinyXML2_LIBRARIES})
 ament_export_dependencies(console_bridge)
 ament_export_dependencies(urdfdom_headers)
 ament_export_dependencies(urdf)
+ament_export_dependencies(TinyXML2)
 ament_package()
