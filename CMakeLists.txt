@@ -17,6 +17,9 @@ find_package(ament_cmake REQUIRED)
 find_package(urdf REQUIRED)
 find_package(tinyxml2_vendor REQUIRED)
 
+# Made available by the vendor package
+find_package(TinyXML2 REQUIRED)
+
 # Set VERSION from package.xml
 ament_package_xml()
 
@@ -37,7 +40,7 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 
 # Ament dependencies
 ament_target_dependencies(${PROJECT_NAME} PUBLIC
-  tinyxml2_vendor
+  TinyXML2
   console_bridge
   urdf
   urdfdom_headers
@@ -88,4 +91,5 @@ ament_export_dependencies(console_bridge)
 ament_export_dependencies(urdfdom_headers)
 ament_export_dependencies(urdf)
 ament_export_dependencies(tinyxml2_vendor)
+ament_export_dependencies(TinyXML2)
 ament_package()
