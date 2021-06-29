@@ -37,9 +37,10 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 
 # Ament dependencies
 ament_target_dependencies(${PROJECT_NAME} PUBLIC
+  tinyxml2_vendor
   console_bridge
-  urdfdom_headers
   urdf
+  urdfdom_headers
 )
 
 install(TARGETS ${PROJECT_NAME}
