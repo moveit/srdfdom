@@ -1,17 +1,12 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 PKG = "srdfdom"
 
 import sys
-import rospkg
+import os
 import unittest
 from srdfdom.srdf import SRDF
 from xml.dom.minidom import parseString
 import xml.dom
-
-try:
-    string_types = (str, unicode)
-except NameError:
-    string_types = str
 
 # xml match code from test_xacro.py
 # by Stuart Glaser and William Woodall
@@ -91,9 +86,9 @@ def elements_match(a, b):
 
 
 def xml_matches(a, b):
-    if isinstance(a, string_types):
+    if isinstance(a, str):
         return xml_matches(parseString(a).documentElement, b)
-    if isinstance(b, string_types):
+    if isinstance(b, str):
         return xml_matches(a, parseString(b).documentElement)
     if a.nodeType == xml.dom.Node.DOCUMENT_NODE:
         return xml_matches(a.documentElement, b)
@@ -102,7 +97,6 @@ def xml_matches(a, b):
     if not elements_match(a, b):
         print("Match failed:")
         a.writexml(sys.stdout)
-        print
         print("=" * 78)
         b.writexml(sys.stdout)
         return False
@@ -170,7 +164,7 @@ class TestSRDFParser(unittest.TestCase):
         self.assertTrue(xml_matches(robot.to_xml_string(), expected))
 
     def test_simple_srdf(self):
-        datadir = rospkg.RosPack().get_path("srdfdom") + "/test/resources/"
+        datadir = os.path.dirname(os.path.realpath(__file__)) + "/resources/"
         stream = open(datadir + "pr2_desc.1.srdf", "r")
         robot = SRDF.from_xml_string(stream.read())
         stream.close()
@@ -190,7 +184,7 @@ class TestSRDFParser(unittest.TestCase):
         self.assertTrue(len(robot.end_effectors) == 0)
 
     def test_complex_srdf(self):
-        datadir = rospkg.RosPack().get_path("srdfdom") + "/test/resources/"
+        datadir = os.path.dirname(os.path.realpath(__file__)) + "/resources/"
         stream = open(datadir + "pr2_desc.3.srdf", "r")
         robot = SRDF.from_xml_string(stream.read())
         stream.close()
@@ -258,6 +252,8 @@ class TestSRDFParser(unittest.TestCase):
 
 
 if __name__ == "__main__":
-    import rostest
-
-    rostest.rosrun(PKG, "srdf_python_parser_test", TestSRDFParser)
+    suite = unittest.TestSuite()
+    suite.addTest(TestSRDFParser("test_full_srdf"))
+    suite.addTest(TestSRDFParser("test_simple_srdf"))
+    suite.addTest(TestSRDFParser("test_complex_srdf"))
+    unittest.TextTestRunner(verbosity=2).run(suite)
