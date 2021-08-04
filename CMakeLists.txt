@@ -23,14 +23,6 @@ find_package(TinyXML2 REQUIRED)
 # Set VERSION from package.xml
 ament_package_xml()
 
-include_directories(include ${rclcpp_INCLUDE_DIRS}
-  ${rmw_implementation_INCLUDE_DIRS}
-  ${Boost_INCLUDE_DIR}
-  ${urdfdom_headers_INCLUDE_DIRS}
-  ${urdf_INCLUDE_DIRS}
-  ${std_msgs_INCLUDE_DIRS}
-)
-
 add_library(${PROJECT_NAME} SHARED
   src/model.cpp
   src/srdf_writer.cpp
@@ -38,6 +30,9 @@ add_library(${PROJECT_NAME} SHARED
 set_target_properties(${PROJECT_NAME} PROPERTIES
   VERSION ${${PROJECT_NAME}_VERSION})
 
+target_include_directories(${PROJECT_NAME}
+    PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+           $<INSTALL_INTERFACE:include>)
 # Ament dependencies
 ament_target_dependencies(${PROJECT_NAME} PUBLIC
   TinyXML2
@@ -47,10 +42,10 @@ ament_target_dependencies(${PROJECT_NAME} PUBLIC
 )
 
 install(TARGETS ${PROJECT_NAME}
-  EXPORT ${PROJECT_NAME}
+  EXPORT ${PROJECT_NAME}Targets
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
-  RUNTIME DESTINATION bin
+  RUNTIME DESTINATION lib/${PROJECT_NAME}
 )
 install(DIRECTORY include/${PROJECT_NAME}/
   DESTINATION include/${PROJECT_NAME}
@@ -90,8 +85,7 @@ if(BUILD_TESTING)
   ament_lint_auto_find_test_dependencies()
 endif()
 
-ament_export_include_directories(include)
-ament_export_libraries(${PROJECT_NAME})
+ament_export_targets(${PROJECT_NAME}Targets HAS_LIBRARY_TARGET)
 ament_export_dependencies(console_bridge)
 ament_export_dependencies(urdfdom_headers)
 ament_export_dependencies(urdf)
