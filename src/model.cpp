@@ -37,6 +37,7 @@
 #include "srdfdom/model.h"
 #include <console_bridge/console.h>
 #include <boost/algorithm/string/trim.hpp>
+#include <boost/algorithm/string/case_conv.hpp>
 #include <algorithm>
 #include <fstream>
 #include <sstream>
@@ -532,35 +533,59 @@ void srdf::Model::loadLinkSphereApproximations(const urdf::ModelInterface& urdf_
   }
 }
 
-void srdf::Model::loadDisabledCollisions(const urdf::ModelInterface& urdf_model, XMLElement* robot_xml)
+void srdf::Model::loadCollisionDefaults(const urdf::ModelInterface& urdf_model, XMLElement* robot_xml)
 {
-  for (XMLElement* c_xml = robot_xml->FirstChildElement("disable_collisions"); c_xml;
-       c_xml = c_xml->NextSiblingElement("disable_collisions"))
+  for (XMLElement* xml = robot_xml->FirstChildElement("collision_default"); xml;
+       xml = xml->NextSiblingElement("collision_default"))
+  {
+    const char* link_ = xml->Attribute("link");
+    const char* value_ = xml->Attribute("allow");
+    if (!link_ || !value_)
+    {
+      CONSOLE_BRIDGE_logError("A collision_default tag needs to specify a link name and a allow");
+      continue;
+    }
+    std::string link = boost::trim_copy(std::string(link_));
+    if (!urdf_model.getLink(link))
+    {
+      CONSOLE_BRIDGE_logWarn("Link '%s' is not known to URDF. Cannot specify collison default.", link_);
+      continue;
+    }
+    std::string value(value_);
+    boost::trim(value);
+    boost::to_upper(value);
+    if (value == "ALWAYS")
+      no_default_collision_links_.push_back(link);
+  }
+}
+
+void srdf::Model::loadCollisionPairs(const urdf::ModelInterface& urdf_model, XMLElement* robot_xml,
+                                     const char* tag_name, bool disabled)
+{
+  for (XMLElement* c_xml = robot_xml->FirstChildElement(tag_name); c_xml; c_xml = c_xml->NextSiblingElement(tag_name))
   {
     const char* link1 = c_xml->Attribute("link1");
     const char* link2 = c_xml->Attribute("link2");
     if (!link1 || !link2)
     {
-      CONSOLE_BRIDGE_logError("A pair of links needs to be specified to disable collisions");
-      continue;
-    }
-    DisabledCollision dc;
-    dc.link1_ = boost::trim_copy(std::string(link1));
-    dc.link2_ = boost::trim_copy(std::string(link2));
-    if (!urdf_model.getLink(dc.link1_))
-    {
-      CONSOLE_BRIDGE_logWarn("Link '%s' is not known to URDF. Cannot disable collisons.", link1);
-      continue;
-    }
-    if (!urdf_model.getLink(dc.link2_))
-    {
-      CONSOLE_BRIDGE_logWarn("Link '%s' is not known to URDF. Cannot disable collisons.", link2);
+      CONSOLE_BRIDGE_logError("A pair of links needs to be specified to disable/enable collisions");
       continue;
     }
     const char* reason = c_xml->Attribute("reason");
-    if (reason)
-      dc.reason_ = std::string(reason);
-    disabled_collisions_.push_back(dc);
+
+    CollisionPair pair{ boost::trim_copy(std::string(link1)), boost::trim_copy(std::string(link2)),
+                        reason ? reason : "", disabled };
+    if (!urdf_model.getLink(pair.link1_))
+    {
+      CONSOLE_BRIDGE_logWarn("Link '%s' is not known to URDF. Cannot disable/enable collisons.", link1);
+      continue;
+    }
+    if (!urdf_model.getLink(pair.link2_))
+    {
+      CONSOLE_BRIDGE_logWarn("Link '%s' is not known to URDF. Cannot disable/enable collisons.", link2);
+      continue;
+    }
+    collision_pairs_.push_back(pair);
   }
 }
 
@@ -619,7 +644,9 @@ bool srdf::Model::initXml(const urdf::ModelInterface& urdf_model, XMLElement* ro
   loadGroupStates(urdf_model, robot_xml);
   loadEndEffectors(urdf_model, robot_xml);
   loadLinkSphereApproximations(urdf_model, robot_xml);
-  loadDisabledCollisions(urdf_model, robot_xml);
+  loadCollisionDefaults(urdf_model, robot_xml);
+  loadCollisionPairs(urdf_model, robot_xml, "enable_collisions", false);
+  loadCollisionPairs(urdf_model, robot_xml, "disable_collisions", true);
   loadPassiveJoints(urdf_model, robot_xml);
 
   return true;
@@ -673,14 +700,7 @@ void srdf::Model::clear()
   virtual_joints_.clear();
   end_effectors_.clear();
   link_sphere_approximations_.clear();
-  disabled_collisions_.clear();
+  no_default_collision_links_.clear();
+  collision_pairs_.clear();
   passive_joints_.clear();
-}
-
-std::vector<std::pair<std::string, std::string> > srdf::Model::getDisabledCollisions() const
-{
-  std::vector<std::pair<std::string, std::string> > result;
-  for (std::size_t i = 0; i < disabled_collisions_.size(); ++i)
-    result.push_back(std::make_pair(disabled_collisions_[i].link1_, disabled_collisions_[i].link2_));
-  return result;
 }
