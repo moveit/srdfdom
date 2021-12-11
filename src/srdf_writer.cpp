@@ -350,7 +350,7 @@ void SRDFWriter::createCollisionPairsXML(XMLElement* root, const char* tag_name,
 {
   XMLDocument* doc = root->GetDocument();
 
-  for (const srdf::Model::CollisionPair pair : collision_pairs_)
+  for (const srdf::Model::CollisionPair& pair : collision_pairs_)
   {
     if (pair.disabled_ != disabled)
       continue;

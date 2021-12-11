@@ -548,7 +548,7 @@ void srdf::Model::loadCollisionDefaults(const urdf::ModelInterface& urdf_model, 
     std::string link = boost::trim_copy(std::string(link_));
     if (!urdf_model.getLink(link))
     {
-      CONSOLE_BRIDGE_logWarn("Link '%s' is not known to URDF. Cannot specify collison default.", link_);
+      CONSOLE_BRIDGE_logWarn("Link '%s' is not known to URDF. Cannot specify collision default.", link_);
       continue;
     }
     std::string value(value_);
