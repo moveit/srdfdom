@@ -333,7 +333,6 @@ void SRDFWriter::createCollisionDefaultsXML(XMLElement* root)
 
   for (const std::string& name : no_default_collision_links_)
   {
-    // Create new element for each link pair
     XMLElement* entry = doc->NewElement("collision_default");
     entry->SetAttribute("link", name.c_str());
     entry->SetAttribute("allow", "ALWAYS");
