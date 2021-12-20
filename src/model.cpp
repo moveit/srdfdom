@@ -535,14 +535,13 @@ void srdf::Model::loadLinkSphereApproximations(const urdf::ModelInterface& urdf_
 
 void srdf::Model::loadCollisionDefaults(const urdf::ModelInterface& urdf_model, XMLElement* robot_xml)
 {
-  for (XMLElement* xml = robot_xml->FirstChildElement("collision_default"); xml;
-       xml = xml->NextSiblingElement("collision_default"))
+  for (XMLElement* xml = robot_xml->FirstChildElement("disable_default_collisions"); xml;
+       xml = xml->NextSiblingElement("disable_default_collisions"))
   {
     const char* link_ = xml->Attribute("link");
-    const char* value_ = xml->Attribute("allow");
-    if (!link_ || !value_)
+    if (!link_)
     {
-      CONSOLE_BRIDGE_logError("A collision_default tag needs to specify a link name and a allow");
+      CONSOLE_BRIDGE_logError("A disable_default_collisions tag needs to specify a link name");
       continue;
     }
     std::string link = boost::trim_copy(std::string(link_));
@@ -551,11 +550,7 @@ void srdf::Model::loadCollisionDefaults(const urdf::ModelInterface& urdf_model, 
       CONSOLE_BRIDGE_logWarn("Link '%s' is not known to URDF. Cannot specify collision default.", link_);
       continue;
     }
-    std::string value(value_);
-    boost::trim(value);
-    boost::to_upper(value);
-    if (value == "ALWAYS")
-      no_default_collision_links_.push_back(link);
+    no_default_collision_links_.push_back(link);
   }
 }
 
