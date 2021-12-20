@@ -98,7 +98,7 @@ void SRDFWriter::initModel(const urdf::ModelInterface& robot_model, const srdf::
   }
 
   // Copy all read-only data from srdf model to this object
-  no_default_collision_links_ = srdf_model_->getNoCollisionLinks();
+  no_default_collision_links_ = srdf_model_->getNoDefaultCollisionLinks();
   collision_pairs_ = srdf_model_->getCollisionPairs();
   link_sphere_approximations_ = srdf_model_->getLinkSphereApproximations();
   groups_ = srdf_model_->getGroups();

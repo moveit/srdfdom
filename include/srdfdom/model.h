@@ -204,7 +204,7 @@ public:
   }
 
   /// Get the list of links that should have collision checking disabled by default (and only selectively enabled)
-  const std::vector<std::string>& getNoCollisionLinks() const
+  const std::vector<std::string>& getNoDefaultCollisionLinks() const
   {
     return no_default_collision_links_;
   }
