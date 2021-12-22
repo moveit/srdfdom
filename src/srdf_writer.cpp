@@ -99,7 +99,8 @@ void SRDFWriter::initModel(const urdf::ModelInterface& robot_model, const srdf::
 
   // Copy all read-only data from srdf model to this object
   no_default_collision_links_ = srdf_model_->getNoDefaultCollisionLinks();
-  collision_pairs_ = srdf_model_->getCollisionPairs();
+  enabled_collision_pairs_ = srdf_model_->getEnabledCollisionPairs();
+  disabled_collision_pairs_ = srdf_model_->getDisabledCollisionPairs();
   link_sphere_approximations_ = srdf_model_->getLinkSphereApproximations();
   groups_ = srdf_model_->getGroups();
   virtual_joints_ = srdf_model_->getVirtualJoints();
@@ -195,8 +196,11 @@ void SRDFWriter::generateSRDF(XMLDocument& document)
   // Add Link Sphere approximations
   createLinkSphereApproximationsXML(robot_root);
 
+  // Create disable_default_collisions tags and tags to re-enable specific pairs
+  createCollisionDefaultsXML(robot_root);
+
   // Add Disabled Collisions
-  createCollisionPairsXML(robot_root);
+  createDisabledCollisionPairsXML(robot_root);
 }
 
 // ******************************************************************************************
@@ -338,21 +342,19 @@ void SRDFWriter::createCollisionDefaultsXML(XMLElement* root)
     root->InsertEndChild(entry);
   }
   // Write enabled collision pairs
-  createCollisionPairsXML(root, "enable_collisions", false);
+  createCollisionPairsXML(root, "enable_collisions", enabled_collision_pairs_);
 }
 
 // ******************************************************************************************
 // Generate XML for SRDF disabled/enabled collisions of robot link pairs
 // ******************************************************************************************
-void SRDFWriter::createCollisionPairsXML(XMLElement* root, const char* tag_name, bool disabled)
+void SRDFWriter::createCollisionPairsXML(XMLElement* root, const char* tag_name,
+                                         const std::vector<Model::CollisionPair>& pairs)
 {
   XMLDocument* doc = root->GetDocument();
 
-  for (const srdf::Model::CollisionPair& pair : collision_pairs_)
+  for (const srdf::Model::CollisionPair& pair : pairs)
   {
-    if (pair.disabled_ != disabled)
-      continue;
-
     // Create new element for each link pair
     XMLElement* entry = doc->NewElement(tag_name);
     entry->SetAttribute("link1", pair.link1_.c_str());
@@ -366,19 +368,19 @@ void SRDFWriter::createCollisionPairsXML(XMLElement* root, const char* tag_name,
 // ******************************************************************************************
 // Generate XML for SRDF disabled collisions of robot link pairs
 // ******************************************************************************************
-void SRDFWriter::createCollisionPairsXML(XMLElement* root)
+void SRDFWriter::createDisabledCollisionPairsXML(XMLElement* root)
 {
   XMLDocument* doc = root->GetDocument();
 
   // Convenience comments
-  if (!collision_pairs_.empty())  // only show comments if there are corresponding elements
-  {
-    XMLComment* comment = doc->NewComment("DISABLE COLLISIONS: By default it is assumed that any link of the robot "
-                                          "could potentially come into collision with any other link in the robot. "
-                                          "This tag disables collision checking between a specified pair of links. ");
-    root->InsertEndChild(comment);
-  }
-  createCollisionPairsXML(root, "disable_collisions", true);
+  if (disabled_collision_pairs_.empty())
+    return;
+
+  XMLComment* comment = doc->NewComment("DISABLE COLLISIONS: By default it is assumed that any link of the robot "
+                                        "could potentially come into collision with any other link in the robot. "
+                                        "This tag disables collision checking between a specified pair of links. ");
+  root->InsertEndChild(comment);
+  createCollisionPairsXML(root, "disable_collisions", disabled_collision_pairs_);
 }
 
 // ******************************************************************************************

@@ -186,8 +186,6 @@ public:
 
     /// The reason why the collision check was disabled/enabled
     std::string reason_;
-
-    bool disabled_;
   };
 
   // Some joints can be passive (not actuated). This structure specifies information about such joints
@@ -209,10 +207,16 @@ public:
     return no_default_collision_links_;
   }
 
-  /// Get the list of pairs of links for which we explicitly disable/enable collision
-  const std::vector<CollisionPair>& getCollisionPairs() const
+  /// Get the list of pairs of links for which we explicitly re-enable collision (after having disabled it via a default)
+  const std::vector<CollisionPair>& getEnabledCollisionPairs() const
   {
-    return collision_pairs_;
+    return enabled_collision_pairs_;
+  }
+
+  /// Get the list of pairs of links for which we explicitly disable collision
+  const std::vector<CollisionPair>& getDisabledCollisionPairs() const
+  {
+    return disabled_collision_pairs_;
   }
 
   /// Get the list of groups defined for this model
@@ -262,7 +266,7 @@ private:
   void loadLinkSphereApproximations(const urdf::ModelInterface& urdf_model, tinyxml2::XMLElement* robot_xml);
   void loadCollisionDefaults(const urdf::ModelInterface& urdf_model, tinyxml2::XMLElement* robot_xml);
   void loadCollisionPairs(const urdf::ModelInterface& urdf_model, tinyxml2::XMLElement* robot_xml, const char* tag_name,
-                          bool disabled);
+                          std::vector<CollisionPair>& pairs);
   void loadPassiveJoints(const urdf::ModelInterface& urdf_model, tinyxml2::XMLElement* robot_xml);
 
   std::string name_;
@@ -272,7 +276,8 @@ private:
   std::vector<EndEffector> end_effectors_;
   std::vector<LinkSpheres> link_sphere_approximations_;
   std::vector<std::string> no_default_collision_links_;
-  std::vector<CollisionPair> collision_pairs_;
+  std::vector<CollisionPair> enabled_collision_pairs_;
+  std::vector<CollisionPair> disabled_collision_pairs_;
   std::vector<PassiveJoint> passive_joints_;
 };
 typedef std::shared_ptr<Model> ModelSharedPtr;

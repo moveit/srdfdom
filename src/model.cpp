@@ -37,7 +37,6 @@
 #include "srdfdom/model.h"
 #include <console_bridge/console.h>
 #include <boost/algorithm/string/trim.hpp>
-#include <boost/algorithm/string/case_conv.hpp>
 #include <algorithm>
 #include <fstream>
 #include <sstream>
@@ -555,7 +554,7 @@ void srdf::Model::loadCollisionDefaults(const urdf::ModelInterface& urdf_model, 
 }
 
 void srdf::Model::loadCollisionPairs(const urdf::ModelInterface& urdf_model, XMLElement* robot_xml,
-                                     const char* tag_name, bool disabled)
+                                     const char* tag_name, std::vector<CollisionPair>& pairs)
 {
   for (XMLElement* c_xml = robot_xml->FirstChildElement(tag_name); c_xml; c_xml = c_xml->NextSiblingElement(tag_name))
   {
@@ -569,7 +568,7 @@ void srdf::Model::loadCollisionPairs(const urdf::ModelInterface& urdf_model, XML
     const char* reason = c_xml->Attribute("reason");
 
     CollisionPair pair{ boost::trim_copy(std::string(link1)), boost::trim_copy(std::string(link2)),
-                        reason ? reason : "", disabled };
+                        reason ? reason : "" };
     if (!urdf_model.getLink(pair.link1_))
     {
       CONSOLE_BRIDGE_logWarn("Link '%s' is not known to URDF. Cannot disable/enable collisons.", link1);
@@ -580,7 +579,7 @@ void srdf::Model::loadCollisionPairs(const urdf::ModelInterface& urdf_model, XML
       CONSOLE_BRIDGE_logWarn("Link '%s' is not known to URDF. Cannot disable/enable collisons.", link2);
       continue;
     }
-    collision_pairs_.push_back(pair);
+    pairs.push_back(pair);
   }
 }
 
@@ -640,8 +639,8 @@ bool srdf::Model::initXml(const urdf::ModelInterface& urdf_model, XMLElement* ro
   loadEndEffectors(urdf_model, robot_xml);
   loadLinkSphereApproximations(urdf_model, robot_xml);
   loadCollisionDefaults(urdf_model, robot_xml);
-  loadCollisionPairs(urdf_model, robot_xml, "enable_collisions", false);
-  loadCollisionPairs(urdf_model, robot_xml, "disable_collisions", true);
+  loadCollisionPairs(urdf_model, robot_xml, "enable_collisions", enabled_collision_pairs_);
+  loadCollisionPairs(urdf_model, robot_xml, "disable_collisions", disabled_collision_pairs_);
   loadPassiveJoints(urdf_model, robot_xml);
 
   return true;
@@ -696,6 +695,7 @@ void srdf::Model::clear()
   end_effectors_.clear();
   link_sphere_approximations_.clear();
   no_default_collision_links_.clear();
-  collision_pairs_.clear();
+  enabled_collision_pairs_.clear();
+  disabled_collision_pairs_.clear();
   passive_joints_.clear();
 }
