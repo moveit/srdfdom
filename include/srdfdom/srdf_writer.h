@@ -126,11 +126,18 @@ public:
   void createLinkSphereApproximationsXML(tinyxml2::XMLElement* root);
 
   /**
+   * Generate XML for SRDF collision defaults
+   *
+   * @param root  - TinyXML root element to attach sub elements to
+   */
+  void createCollisionDefaultsXML(tinyxml2::XMLElement* root);
+
+  /**
    * Generate XML for SRDF disabled collisions of robot link pairs
    *
    * @param root  - TinyXML root element to attach sub elements to
    */
-  void createDisabledCollisionsXML(tinyxml2::XMLElement* root);
+  void createDisabledCollisionPairsXML(tinyxml2::XMLElement* root);
 
   /**
    * Generate XML for SRDF group states of each joint's position
@@ -160,20 +167,32 @@ public:
    */
   void createPassiveJointsXML(tinyxml2::XMLElement* root);
 
+protected:
+  /**
+   * Generate XML for SRDF disabled/enabled collisions of robot link pairs
+   *
+   * @param root  - TinyXML root element to attach sub elements to
+   */
+  void createCollisionPairsXML(tinyxml2::XMLElement* root, const char* tag_name,
+                               const std::vector<Model::CollisionPair>& pairs);
+
+public:
   // ******************************************************************************************
   // Group Datastructures
   // ******************************************************************************************
 
-  std::vector<srdf::Model::Group> groups_;
-  std::vector<srdf::Model::GroupState> group_states_;
-  std::vector<srdf::Model::VirtualJoint> virtual_joints_;
-  std::vector<srdf::Model::EndEffector> end_effectors_;
-  std::vector<srdf::Model::LinkSpheres> link_sphere_approximations_;
-  std::vector<srdf::Model::DisabledCollision> disabled_collisions_;
-  std::vector<srdf::Model::PassiveJoint> passive_joints_;
+  std::vector<Model::Group> groups_;
+  std::vector<Model::GroupState> group_states_;
+  std::vector<Model::VirtualJoint> virtual_joints_;
+  std::vector<Model::EndEffector> end_effectors_;
+  std::vector<Model::LinkSpheres> link_sphere_approximations_;
+  std::vector<std::string> no_default_collision_links_;
+  std::vector<Model::CollisionPair> disabled_collision_pairs_;
+  std::vector<Model::CollisionPair> enabled_collision_pairs_;
+  std::vector<Model::PassiveJoint> passive_joints_;
 
   // Store the SRDF Model for updating the kinematic_model
-  srdf::ModelSharedPtr srdf_model_;
+  ModelSharedPtr srdf_model_;
 
   // Robot name
   std::string robot_name_;

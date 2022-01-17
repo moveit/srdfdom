@@ -94,6 +94,7 @@ TEST(TestCpp, testSimple)
   EXPECT_TRUE(s.getGroups().size() == 0);
   EXPECT_TRUE(s.getGroupStates().size() == 0);
   EXPECT_TRUE(s.getDisabledCollisionPairs().empty());
+  EXPECT_TRUE(s.getEnabledCollisionPairs().empty());
   EXPECT_TRUE(s.getEndEffectors().size() == 0);
 
   EXPECT_TRUE(s.initFile(*u, std::string(TEST_RESOURCE_LOCATION) + "/pr2_desc.2.srdf"));
@@ -101,6 +102,7 @@ TEST(TestCpp, testSimple)
   EXPECT_TRUE(s.getGroups().size() == 1);
   EXPECT_TRUE(s.getGroupStates().size() == 0);
   EXPECT_TRUE(s.getDisabledCollisionPairs().empty());
+  EXPECT_TRUE(s.getEnabledCollisionPairs().empty());
   EXPECT_TRUE(s.getEndEffectors().size() == 0);
 
   EXPECT_TRUE(s.initFile(*u, std::string(TEST_RESOURCE_LOCATION) + "/pr2_desc.1.srdf"));
@@ -108,6 +110,7 @@ TEST(TestCpp, testSimple)
   EXPECT_TRUE(s.getGroups().size() == 0);
   EXPECT_TRUE(s.getGroupStates().size() == 0);
   EXPECT_TRUE(s.getDisabledCollisionPairs().empty());
+  EXPECT_TRUE(s.getEnabledCollisionPairs().empty());
   EXPECT_TRUE(s.getEndEffectors().size() == 0);
 }
 

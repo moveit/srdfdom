@@ -175,8 +175,8 @@ public:
     std::vector<Sphere> spheres_;
   };
 
-  /// The definition of a disabled collision between two links
-  struct DisabledCollision
+  /// The definition of a disabled/enabled collision between two links
+  struct CollisionPair
   {
     /// The name of the first link (as in URDF) of the disabled collision
     std::string link1_;
@@ -184,7 +184,7 @@ public:
     /// The name of the second link (as in URDF) of the disabled collision
     std::string link2_;
 
-    /// The reason why the collision check was disabled
+    /// The reason why the collision check was disabled/enabled
     std::string reason_;
   };
 
@@ -201,15 +201,23 @@ public:
     return name_;
   }
 
-  /// Get the list of pairs of links that need not be checked for collisions (because they can never touch given the
-  /// geometry and kinematics of the robot)
-  const std::vector<DisabledCollision>& getDisabledCollisionPairs() const
+  /// Get the list of links that should have collision checking disabled by default (and only selectively enabled)
+  const std::vector<std::string>& getNoDefaultCollisionLinks() const
   {
-    return disabled_collisions_;
+    return no_default_collision_links_;
   }
 
-  /// \deprecated{ Use the version returning DisabledCollision }
-  [[deprecated]] std::vector<std::pair<std::string, std::string> > getDisabledCollisions() const;
+  /// Get the list of pairs of links for which we explicitly re-enable collision (after having disabled it via a default)
+  const std::vector<CollisionPair>& getEnabledCollisionPairs() const
+  {
+    return enabled_collision_pairs_;
+  }
+
+  /// Get the list of pairs of links for which we explicitly disable collision
+  const std::vector<CollisionPair>& getDisabledCollisionPairs() const
+  {
+    return disabled_collision_pairs_;
+  }
 
   /// Get the list of groups defined for this model
   const std::vector<Group>& getGroups() const
@@ -256,7 +264,9 @@ private:
   void loadGroupStates(const urdf::ModelInterface& urdf_model, tinyxml2::XMLElement* robot_xml);
   void loadEndEffectors(const urdf::ModelInterface& urdf_model, tinyxml2::XMLElement* robot_xml);
   void loadLinkSphereApproximations(const urdf::ModelInterface& urdf_model, tinyxml2::XMLElement* robot_xml);
-  void loadDisabledCollisions(const urdf::ModelInterface& urdf_model, tinyxml2::XMLElement* robot_xml);
+  void loadCollisionDefaults(const urdf::ModelInterface& urdf_model, tinyxml2::XMLElement* robot_xml);
+  void loadCollisionPairs(const urdf::ModelInterface& urdf_model, tinyxml2::XMLElement* robot_xml, const char* tag_name,
+                          std::vector<CollisionPair>& pairs);
   void loadPassiveJoints(const urdf::ModelInterface& urdf_model, tinyxml2::XMLElement* robot_xml);
 
   std::string name_;
@@ -265,7 +275,9 @@ private:
   std::vector<VirtualJoint> virtual_joints_;
   std::vector<EndEffector> end_effectors_;
   std::vector<LinkSpheres> link_sphere_approximations_;
-  std::vector<DisabledCollision> disabled_collisions_;
+  std::vector<std::string> no_default_collision_links_;
+  std::vector<CollisionPair> enabled_collision_pairs_;
+  std::vector<CollisionPair> disabled_collision_pairs_;
   std::vector<PassiveJoint> passive_joints_;
 };
 typedef std::shared_ptr<Model> ModelSharedPtr;
