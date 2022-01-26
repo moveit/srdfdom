@@ -19,8 +19,6 @@ include_directories(
   ${urdfdom_headers_INCLUDE_DIRS}
   )
 
-add_compile_options(-std=c++11)
-
 catkin_python_setup()
 
 catkin_package(
