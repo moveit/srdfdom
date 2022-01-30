@@ -2,6 +2,16 @@
 Changelog for package srdfdom
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.6.3 (2022-01-30)
+------------------
+* Drop -std=c++11 (`#99 <https://github.com/ros-planning/srdfdom/issues/99>`_)
+* Introduce ``<disable_default_collisions>`` and ``<enable_collisions>`` tags (`#97 <https://github.com/ros-planning/srdfdom/issues/97>`_)
+
+  * Extend SRDF syntax to allow disabling of collisions for all pairs involving a specific link: ``<disable_default_collisions link="link_name"/>``
+  * Individual pairs can be re-enabled like this: ``<enable_collisions link1="link1_name" link2="link2_name" reason="optional-reason"/>``
+  * The old behavior of disabling individual pairs is possible as well: ``<disable_collisions link1="link1_name" link2="link2_name" reason="optional-reason"/>``
+* Contributors: Robert Haschke, Jochen Sprickerhof
+
 0.6.2 (2020-09-09)
 ------------------
 * [bugfix] Correctly return success in SRDFWriter::writeSRDF().
