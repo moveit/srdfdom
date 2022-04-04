@@ -8,7 +8,7 @@ on:
   pull_request:
   push:
     branches:
-      - ros2
+      - foxy
 
 jobs:
   industrial_ci:
@@ -22,11 +22,8 @@ jobs:
             AFTER_RUN_TARGET_TEST: './.ci.prepare_codecov',
             ADDITIONAL_DEBS: 'lcov'
           }
+          - {ROS_DISTRO: foxy, ROS_REPO: main, CCOV_UPLOAD: false}
           - {ROS_DISTRO: foxy, ROS_REPO: testing, CCOV_UPLOAD: false}
-          - {ROS_DISTRO: rolling, ROS_REPO: main, CCOV_UPLOAD: false}
-          - {ROS_DISTRO: rolling, ROS_REPO: testing, CCOV_UPLOAD: false}
-          - {ROS_DISTRO: galactic, ROS_REPO: main, CCOV_UPLOAD: false}
-          - {ROS_DISTRO: galactic, ROS_REPO: testing, CCOV_UPLOAD: false}
     env:
       CCACHE_DIR: /home/runner/.ccache
       BASEDIR: .base
