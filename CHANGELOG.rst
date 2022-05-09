@@ -2,6 +2,12 @@
 Changelog for package srdfdom
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Parse <disable_default_collisions> and <enable_collisions> tags (#101, from #97)
+* Fix Windows .dll install location (#98)
+* Contributors: Robert Haschke, Abishalini Sivaraman, Akash, Henning Kayser
+
 2.0.3 (2021-09-27)
 ------------------
 * Use modern cmake (`#96 <https://github.com/ros-planning/srdfdom/issues/96>`_)
