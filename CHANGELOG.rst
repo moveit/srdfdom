@@ -2,8 +2,8 @@
 Changelog for package srdfdom
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+2.0.4 (2022-05-09)
+------------------
 * Parse <disable_default_collisions> and <enable_collisions> tags (#101, from #97)
 * Fix Windows .dll install location (#98)
 * Contributors: Robert Haschke, Abishalini Sivaraman, Akash, Henning Kayser
