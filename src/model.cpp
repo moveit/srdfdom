@@ -37,7 +37,6 @@
 #include "srdfdom/model.h"
 #include <algorithm>
 #include <boost/algorithm/string/trim.hpp>
-#include <charconv>
 #include <console_bridge/console.h>
 #include <fstream>
 #include <limits>
@@ -47,6 +46,23 @@
 using namespace tinyxml2;
 
 const std::vector<srdf::Model::JointProperty> srdf::Model::empty_vector_;
+
+/** \brief Helper function to convert a std::string to double in a locale-independent way.
+ \throws std::runtime_exception if not a valid number
+*/
+double toDouble(const std::string& s)
+{
+  // convert from string using no locale
+  std::istringstream stream(s);
+  stream.imbue(std::locale::classic());
+  double result;
+  stream >> result;
+  if (stream.fail() || !stream.eof())
+  {
+    throw std::invalid_argument("Failed converting string to real number");
+  }
+  return result;
+}
 
 bool srdf::Model::isValidJoint(const urdf::ModelInterface& urdf_model, const std::string& name) const
 {
@@ -475,16 +491,7 @@ void srdf::Model::loadLinkSphereApproximations(const urdf::ModelInterface& urdf_
         std::stringstream center(s_center);
         center.exceptions(std::stringstream::failbit | std::stringstream::badbit);
         center >> sphere.center_x_ >> sphere.center_y_ >> sphere.center_z_;
-
-        // Parse and return double value if there is no parsing error
-        double result_value;
-        const auto parse_result = std::from_chars(s_r, s_r + std::strlen(s_r), result_value);
-        if (parse_result.ec == std::errc())
-        {
-          throw std::invalid_argument("Link collision sphere for link " + std::string(link_name) +
-                                      " has bad radius attribute value.");
-        }
-        sphere.radius_ = result_value;
+        sphere.radius_ = toDouble(std::string(s_r));
       }
       catch (std::stringstream::failure& e)
       {
