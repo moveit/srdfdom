@@ -35,13 +35,14 @@
 /* Author Ioan Sucan */
 
 #include "srdfdom/model.h"
-#include <console_bridge/console.h>
-#include <boost/algorithm/string/trim.hpp>
 #include <algorithm>
+#include <boost/algorithm/string/trim.hpp>
+#include <charconv>
+#include <console_bridge/console.h>
 #include <fstream>
-#include <sstream>
-#include <set>
 #include <limits>
+#include <set>
+#include <sstream>
 
 using namespace tinyxml2;
 
@@ -474,7 +475,16 @@ void srdf::Model::loadLinkSphereApproximations(const urdf::ModelInterface& urdf_
         std::stringstream center(s_center);
         center.exceptions(std::stringstream::failbit | std::stringstream::badbit);
         center >> sphere.center_x_ >> sphere.center_y_ >> sphere.center_z_;
-        sphere.radius_ = std::stod(s_r);
+
+        // Parse and return double value if there is no parsing error
+        double result_value;
+        const auto parse_result = std::from_chars(s_r, s_r + std::strlen(s_r), result_value);
+        if (parse_result.ec == std::errc())
+        {
+          throw std::invalid_argument("Link collision sphere for link " + std::string(link_name) +
+                                      " has bad radius attribute value.");
+        }
+        sphere.radius_ = result_value;
       }
       catch (std::stringstream::failure& e)
       {
