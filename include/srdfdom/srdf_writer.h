@@ -167,6 +167,13 @@ public:
    */
   void createPassiveJointsXML(tinyxml2::XMLElement* root);
 
+  /**
+   * Generate XML for SRDF joint properties
+   *
+   * @param root  - TinyXML root element to attach sub elements to
+   */
+  void createJointPropertiesXML(tinyxml2::XMLElement* root);
+
 protected:
   /**
    * Generate XML for SRDF disabled/enabled collisions of robot link pairs
@@ -190,6 +197,7 @@ public:
   std::vector<Model::CollisionPair> disabled_collision_pairs_;
   std::vector<Model::CollisionPair> enabled_collision_pairs_;
   std::vector<Model::PassiveJoint> passive_joints_;
+  std::map<std::string, std::vector<srdf::Model::JointProperty>> joint_properties_;
 
   // Store the SRDF Model for updating the kinematic_model
   ModelSharedPtr srdf_model_;
