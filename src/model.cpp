@@ -163,20 +163,10 @@ void srdf::Model::loadGroups(const urdf::ModelInterface& urdf_model, XMLElement*
         continue;
       }
       std::string jname_str = boost::trim_copy(std::string(jname));
-      if (!urdf_model.getJoint(jname_str))
+      if (!isValidJoint(urdf_model, jname_str))
       {
-        bool missing = true;
-        for (std::size_t k = 0; k < virtual_joints_.size(); ++k)
-          if (virtual_joints_[k].name_ == jname_str)
-          {
-            missing = false;
-            break;
-          }
-        if (missing)
-        {
-          CONSOLE_BRIDGE_logError("Joint '%s' declared as part of group '%s' is not known to the URDF", jname, gname);
-          continue;
-        }
+        CONSOLE_BRIDGE_logError("Joint '%s' declared as part of group '%s' is not known to the URDF", jname, gname);
+        continue;
       }
       g.joints_.push_back(jname_str);
     }
@@ -351,21 +341,11 @@ void srdf::Model::loadGroupStates(const urdf::ModelInterface& urdf_model, XMLEle
         continue;
       }
       std::string jname_str = boost::trim_copy(std::string(jname));
-      if (!urdf_model.getJoint(jname_str))
+      if (!isValidJoint(urdf_model, jname_str))
       {
-        bool missing = true;
-        for (std::size_t k = 0; k < virtual_joints_.size(); ++k)
-          if (virtual_joints_[k].name_ == jname_str)
-          {
-            missing = false;
-            break;
-          }
-        if (missing)
-        {
           CONSOLE_BRIDGE_logError("Joint '%s' declared as part of group state '%s' is not known to the URDF", jname,
                                   sname);
           continue;
-        }
       }
       try
       {
@@ -615,13 +595,7 @@ void srdf::Model::loadPassiveJoints(const urdf::ModelInterface& urdf_model, XMLE
     PassiveJoint pj;
     pj.name_ = boost::trim_copy(std::string(name));
 
-    // see if a virtual joint was marked as passive
-    bool vjoint = false;
-    for (std::size_t i = 0; !vjoint && i < virtual_joints_.size(); ++i)
-      if (virtual_joints_[i].name_ == pj.name_)
-        vjoint = true;
-
-    if (!vjoint && !urdf_model.getJoint(pj.name_))
+    if(!isValidJoint(urdf_model, pj.name_))
     {
       CONSOLE_BRIDGE_logError("Joint '%s' marked as passive is not known to the URDF. Ignoring.", name);
       continue;

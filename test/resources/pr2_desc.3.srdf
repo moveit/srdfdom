@@ -69,4 +69,9 @@
    <disable_collisions link1="r_shoulder_pan_link" link2="l_gripper_palm_link" />
    <!-- and many more disable_collisions tags -->
 
+  <joint_property joint_name="world_joint" property_name="angular_distance_weight" value="0.5" />
+
+   <!-- When parsing, this made up joint that is not present in the URDF is expected to print an error -->
+   <joint_property joint_name="made_up_joint" property_name="angular_distance_weight" value="0.5" />
+
 </robot>
