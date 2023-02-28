@@ -17,11 +17,11 @@ jobs:
       BEFORE_RUN_TARGET_TEST: "sudo apt-get -qq install -y locales; sudo locale-gen nl_NL.UTF-8"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/cache@v2
+      - uses: actions/checkout@v3
+      - uses: actions/cache@v3
         with:
           path: ${{ env.CCACHE_DIR }}
-          key: ccache-${{ matrix.env.ROS_DISTRO }}-${{ matrix.env.ROS_REPO }}-${{ github.sha }}  
+          key: ccache-${{ matrix.env.ROS_DISTRO }}-${{ matrix.env.ROS_REPO }}-${{ github.sha }}
           restore-keys: |
             ccache-${{ matrix.env.ROS_DISTRO }}-${{ matrix.env.ROS_REPO }}
       - uses: 'ros-industrial/industrial_ci@master'
