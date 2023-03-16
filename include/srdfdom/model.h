@@ -201,19 +201,6 @@ public:
     return name_;
   }
 
-  // Some joints may have additional properties.
-  struct JointProperty
-  {
-    /// The name of the joint that this property belongs to
-    std::string joint_name_;
-
-    /// The name of the property
-    std::string property_name_;
-
-    /// The value of the property. Type not specified.
-    std::string value_;
-  };
-
   /// Get the list of links that should have collision checking disabled by default (and only selectively enabled)
   const std::vector<std::string>& getNoDefaultCollisionLinks() const
   {
@@ -269,20 +256,22 @@ public:
   }
 
   /// Get the joint properties for a particular joint (empty vector if none)
-  const std::vector<JointProperty>& getJointProperties(const std::string& joint_name) const
+  const std::map<std::string, std::string>& getJointProperties(const std::string& joint_name) const
   {
-    std::map<std::string, std::vector<JointProperty>>::const_iterator iter = joint_properties_.find(joint_name);
+    auto iter = joint_properties_.find(joint_name);
+
     if (iter == joint_properties_.end())
     {
-      // We return a standard empty vector here rather than insert a new empty vector
-      // into the map in order to keep the method const
-      return empty_vector_;
+      // We return a standard empty map here rather than create a new empty map
+      // in order to keep the method const
+      return empty_map_;
     }
+
     return iter->second;
   }
 
   /// Get the joint properties list
-  const std::map<std::string, std::vector<JointProperty>>& getJointProperties() const
+  const std::map<std::string, std::map<std::string, std::string>>& getJointProperties() const
   {
     return joint_properties_;
   }
@@ -314,10 +303,12 @@ private:
   std::vector<CollisionPair> enabled_collision_pairs_;
   std::vector<CollisionPair> disabled_collision_pairs_;
   std::vector<PassiveJoint> passive_joints_;
-  std::map<std::string, std::vector<JointProperty>> joint_properties_;
 
-  // Empty joint property vector
-  static const std::vector<JointProperty> empty_vector_;
+  // joint name -> (property name -> property value)
+  std::map<std::string, std::map<std::string, std::string>> joint_properties_;
+
+  // Empty joint property map
+  static const std::map<std::string, std::string> empty_map_;
 };
 typedef std::shared_ptr<Model> ModelSharedPtr;
 typedef std::shared_ptr<const Model> ModelConstSharedPtr;

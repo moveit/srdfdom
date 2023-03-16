@@ -518,9 +518,9 @@ void SRDFWriter::createJointPropertiesXML(tinyxml2::XMLElement* root)
     for (const auto& joint_property : joint_properties.second)
     {
       XMLElement* p_joint = doc->NewElement("joint_property");
-      p_joint->SetAttribute("joint_name", joint_property.joint_name_.c_str());
-      p_joint->SetAttribute("property_name", joint_property.property_name_.c_str());
-      p_joint->SetAttribute("value", joint_property.value_.c_str());
+      p_joint->SetAttribute("joint_name", joint_properties.first.c_str());
+      p_joint->SetAttribute("property_name", joint_property.first.c_str());
+      p_joint->SetAttribute("value", joint_property.second.c_str());
       root->InsertEndChild(p_joint);
     }
   }

@@ -179,18 +179,17 @@ TEST(TestCpp, testComplex)
   EXPECT_TRUE(s.getEndEffectors()[index].parent_link_ == "r_wrist_roll_link");
 
   // Joint Properties
-  const std::vector<srdf::Model::JointProperty>& gripper_props = s.getJointProperties("r_gripper_tool_joint");
+  const std::map<std::string, std::string>& gripper_props = s.getJointProperties("r_gripper_tool_joint");
   EXPECT_EQ(gripper_props.size(), 0u);
 
   // When parsing, this made up joint that is not present in the URDF is expected to print an error
   // AND the property should not be made available in the srdf::Model
-  const std::vector<srdf::Model::JointProperty>& made_up_props = s.getJointProperties("made_up_joint");
+  const std::map<std::string, std::string>& made_up_props = s.getJointProperties("made_up_joint");
   EXPECT_EQ(made_up_props.size(), 0u);
 
-  const std::vector<srdf::Model::JointProperty>& world_props = s.getJointProperties("world_joint");
+  const std::map<std::string, std::string>& world_props = s.getJointProperties("world_joint");
   ASSERT_EQ(world_props.size(), 1u);
-  EXPECT_EQ(world_props[0].property_name_, "angular_distance_weight");
-  EXPECT_EQ(world_props[0].value_, "0.5");
+  EXPECT_EQ(world_props.at("angular_distance_weight"), "0.5");
 }
 
 TEST(TestCpp, testReadWrite)
