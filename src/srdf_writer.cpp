@@ -509,8 +509,7 @@ void SRDFWriter::createJointPropertiesXML(tinyxml2::XMLElement* root)
 
   if (!joint_properties_.empty())
   {
-    XMLComment* comment = doc->NewComment(
-        "JOINT PROPERTIES: Purpose: Define a property for a particular joint (could be a virtual joint)");
+    XMLComment* comment = doc->NewComment("JOINT PROPERTIES: Define properties for individual joints");
     root->InsertEndChild(comment);
   }
   for (const auto& joint_properties : joint_properties_)
@@ -518,9 +517,9 @@ void SRDFWriter::createJointPropertiesXML(tinyxml2::XMLElement* root)
     for (const auto& joint_property : joint_properties.second)
     {
       XMLElement* p_joint = doc->NewElement("joint_property");
-      p_joint->SetAttribute("joint_name", joint_property.joint_name_.c_str());
-      p_joint->SetAttribute("property_name", joint_property.property_name_.c_str());
-      p_joint->SetAttribute("value", joint_property.value_.c_str());
+      p_joint->SetAttribute("joint_name", joint_properties.first.c_str());
+      p_joint->SetAttribute("property_name", joint_property.first.c_str());
+      p_joint->SetAttribute("value", joint_property.second.c_str());
       root->InsertEndChild(p_joint);
     }
   }

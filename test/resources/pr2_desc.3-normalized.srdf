@@ -63,7 +63,7 @@
     <end_effector name="l_end_effector" parent_link="l_wrist_roll_link" group="l_end_effector"/>
     <!--VIRTUAL JOINT: Purpose: this element defines a virtual joint between a robot link and an external frame of reference (considered fixed with respect to the robot)-->
     <virtual_joint name="world_joint" type="planar" parent_frame="odom" child_link="base_footprint"/>
-    <!--JOINT PROPERTIES: Purpose: Define a property for a particular joint (could be a virtual joint)-->
+    <!--JOINT PROPERTIES: Define properties for individual joints-->
     <joint_property joint_name="world_joint" property_name="angular_distance_weight" value="0.5"/>
     <!--DISABLE COLLISIONS: By default it is assumed that any link of the robot could potentially come into collision with any other link in the robot. This tag disables collision checking between a specified pair of links. -->
     <disable_collisions link1="r_shoulder_pan_link" link2="r_shoulder_lift_link" reason="adjacent"/>

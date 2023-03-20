@@ -45,8 +45,6 @@
 
 using namespace tinyxml2;
 
-const std::vector<srdf::Model::JointProperty> srdf::Model::empty_vector_;
-
 bool srdf::Model::isValidJoint(const urdf::ModelInterface& urdf_model, const std::string& name) const
 {
   if (urdf_model.getJoint(name))
@@ -612,6 +610,9 @@ void srdf::Model::loadJointProperties(const urdf::ModelInterface& urdf_model, XM
     const char* jname = prop_xml->Attribute("joint_name");
     const char* pname = prop_xml->Attribute("property_name");
     const char* pval = prop_xml->Attribute("value");
+
+    std::string jname_str = boost::trim_copy(std::string(jname));
+
     if (!jname)
     {
       CONSOLE_BRIDGE_logError("joint_property is missing a joint name");
@@ -628,18 +629,13 @@ void srdf::Model::loadJointProperties(const urdf::ModelInterface& urdf_model, XM
       continue;
     }
 
-    JointProperty jp;
-    jp.joint_name_ = boost::trim_copy(std::string(jname));
-    jp.property_name_ = boost::trim_copy(std::string(pname));
-    jp.value_ = std::string(pval);
-
-    if (!isValidJoint(urdf_model, jp.joint_name_))
+    if (!isValidJoint(urdf_model, jname_str))
     {
       CONSOLE_BRIDGE_logError("Property defined for a joint '%s' that is not known to the URDF. Ignoring.",
-                              jp.joint_name_.c_str());
+                              jname_str.c_str());
       continue;
     }
-    joint_properties_[jp.joint_name_].push_back(jp);
+    joint_properties_[jname_str][boost::trim_copy(std::string(pname))] = std::string(pval);
   }
 }
 
