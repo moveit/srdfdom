@@ -52,6 +52,9 @@ namespace srdf
 class Model
 {
 public:
+  using PropertyMap = std::map<std::string, std::string>;       // property name -> value
+  using JointPropertyMap = std::map<std::string, PropertyMap>;  // joint name -> properties
+
   Model()
   {
   }
@@ -255,23 +258,20 @@ public:
     return link_sphere_approximations_;
   }
 
-  /// Get the joint properties for a particular joint (empty vector if none)
-  const std::map<std::string, std::string>& getJointProperties(const std::string& joint_name) const
+  /// Get the joint properties for a particular joint
+  const PropertyMap& getJointProperties(const std::string& joint_name) const
   {
-    auto iter = joint_properties_.find(joint_name);
+    static const PropertyMap empty_map;
 
-    if (iter == joint_properties_.end())
-    {
-      // We return a standard empty map here rather than create a new empty map
-      // in order to keep the method const
-      return empty_map_;
-    }
-
-    return iter->second;
+    auto it = joint_properties_.find(joint_name);
+    if (it == joint_properties_.end())
+      return empty_map;
+    else
+      return it->second;
   }
 
-  /// Get the joint properties list
-  const std::map<std::string, std::map<std::string, std::string>>& getJointProperties() const
+  /// Get the joint properties map
+  const JointPropertyMap& getJointProperties() const
   {
     return joint_properties_;
   }
@@ -303,12 +303,7 @@ private:
   std::vector<CollisionPair> enabled_collision_pairs_;
   std::vector<CollisionPair> disabled_collision_pairs_;
   std::vector<PassiveJoint> passive_joints_;
-
-  // joint name -> (property name -> property value)
-  std::map<std::string, std::map<std::string, std::string>> joint_properties_;
-
-  // Empty joint property map
-  static const std::map<std::string, std::string> empty_map_;
+  JointPropertyMap joint_properties_;
 };
 typedef std::shared_ptr<Model> ModelSharedPtr;
 typedef std::shared_ptr<const Model> ModelConstSharedPtr;

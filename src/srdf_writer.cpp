@@ -509,8 +509,7 @@ void SRDFWriter::createJointPropertiesXML(tinyxml2::XMLElement* root)
 
   if (!joint_properties_.empty())
   {
-    XMLComment* comment = doc->NewComment(
-        "JOINT PROPERTIES: Purpose: Define a property for a particular joint (could be a virtual joint)");
+    XMLComment* comment = doc->NewComment("JOINT PROPERTIES: Define properties for individual joints");
     root->InsertEndChild(comment);
   }
   for (const auto& joint_properties : joint_properties_)

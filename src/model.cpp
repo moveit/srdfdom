@@ -45,8 +45,6 @@
 
 using namespace tinyxml2;
 
-const std::map<std::string, std::string> srdf::Model::empty_map_;
-
 bool srdf::Model::isValidJoint(const urdf::ModelInterface& urdf_model, const std::string& name) const
 {
   if (urdf_model.getJoint(name))
