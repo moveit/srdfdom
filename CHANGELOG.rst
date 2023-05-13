@@ -2,6 +2,11 @@
 Changelog for package srdfdom
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.6.4 (2023-05-13)
+------------------
+* Allow generic joint properties (`#109 <https://github.com/ros-planning/srdfdom/issues/109>`_, `#111 <https://github.com/ros-planning/srdfdom/issues/111>`_)
+* Contributors: Scott Chow, Robert Haschke
+
 0.6.3 (2022-01-30)
 ------------------
 * Drop -std=c++11 (`#99 <https://github.com/ros-planning/srdfdom/issues/99>`_)
