@@ -22,8 +22,8 @@ jobs:
             AFTER_RUN_TARGET_TEST: './.ci.prepare_codecov',
             ADDITIONAL_DEBS: 'lcov'
           }
-          - {ROS_DISTRO: galactic, ROS_REPO: main, CCOV_UPLOAD: false}
-          - {ROS_DISTRO: galactic, ROS_REPO: testing, CCOV_UPLOAD: false}
+          - {ROS_DISTRO: iron, ROS_REPO: main, CCOV_UPLOAD: false}
+          - {ROS_DISTRO: iron, ROS_REPO: testing, CCOV_UPLOAD: false}
           - {ROS_DISTRO: humble, ROS_REPO: main, CCOV_UPLOAD: false}
           - {ROS_DISTRO: humble, ROS_REPO: testing, CCOV_UPLOAD: false}
           - {ROS_DISTRO: rolling, ROS_REPO: main, CCOV_UPLOAD: false}
