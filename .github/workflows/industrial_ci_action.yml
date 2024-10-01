@@ -22,14 +22,14 @@ jobs:
             AFTER_RUN_TARGET_TEST: './.ci.prepare_codecov',
             ADDITIONAL_DEBS: 'lcov'
           }
-          - {ROS_DISTRO: humble, ROS_REPO: main, REPO_BRANCH: humble, CCOV_UPLOAD: false}
-          - {ROS_DISTRO: humble, ROS_REPO: testing, REPO_BRANCH: humble, CCOV_UPLOAD: false}
-          - {ROS_DISTRO: iron, ROS_REPO: main, REPO_BRANCH: iron, CCOV_UPLOAD: false}
-          - {ROS_DISTRO: iron, ROS_REPO: testing, REPO_BRANCH: iron, CCOV_UPLOAD: false}
-          - {ROS_DISTRO: jazzy, ROS_REPO: main, REPO_BRANCH: jazzy, CCOV_UPLOAD: false}
-          - {ROS_DISTRO: jazzy, ROS_REPO: testing, REPO_BRANCH: jazzy, CCOV_UPLOAD: false}
-          - {ROS_DISTRO: rolling, ROS_REPO: main, REPO_BRANCH: ros2, CCOV_UPLOAD: false}
-          - {ROS_DISTRO: rolling, ROS_REPO: testing, REPO_BRANCH: ros2, CCOV_UPLOAD: false}
+          - {ROS_DISTRO: humble, ROS_REPO: main, CCOV_UPLOAD: false}
+          - {ROS_DISTRO: humble, ROS_REPO: testing, CCOV_UPLOAD: false}
+          - {ROS_DISTRO: iron, ROS_REPO: main, CCOV_UPLOAD: false}
+          - {ROS_DISTRO: iron, ROS_REPO: testing, CCOV_UPLOAD: false}
+          - {ROS_DISTRO: jazzy, ROS_REPO: main, CCOV_UPLOAD: false}
+          - {ROS_DISTRO: jazzy, ROS_REPO: testing, CCOV_UPLOAD: false}
+          - {ROS_DISTRO: rolling, ROS_REPO: main, CCOV_UPLOAD: false}
+          - {ROS_DISTRO: rolling, ROS_REPO: testing, CCOV_UPLOAD: false}
     env:
       CCACHE_DIR: /home/runner/.ccache
       BASEDIR: .base
@@ -39,8 +39,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        if: ${{ matrix.env.ROS_DISTRO != 'rolling' }}
         with:
-          ref: ${{ matrix.env.REPO_BRANCH }}
+          ref: ${{ matrix.env.ROS_DISTRO }}
+      - uses: actions/checkout@v4
+        if: ${{ matrix.env.ROS_DISTRO == 'rolling' }}
       - uses: actions/cache@v4
         with:
           path: ${{ env.CCACHE_DIR }}
