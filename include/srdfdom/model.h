@@ -41,7 +41,7 @@
 #include <string>
 #include <vector>
 #include <utility>
-#include <urdf/model.h>
+#include <urdf/model.hpp>
 #include <memory>
 #include <tinyxml2.h>
 
