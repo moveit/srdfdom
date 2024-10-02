@@ -236,19 +236,6 @@ class Robot(xmlr.Object):
     def add_link_sphere_approximation(self, link):
         self.add_aggregate("link_sphere_approximation", link)
 
-    @classmethod
-    def from_parameter_server(cls, key="robot_description_semantic"):
-        """
-        Retrieve the robot semantic model on the parameter server
-        and parse it to create a SRDF robot structure.
-
-        Warning: this requires roscore to be running.
-        """
-        # Could move this into xml_reflection
-        import rospy
-
-        return cls.from_xml_string(rospy.get_param(key))
-
 
 xmlr.reflect(
     Robot,

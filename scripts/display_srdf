@@ -1,5 +1,4 @@
-#!/usr/bin/env python
-
+#!/usr/bin/env python3
 from __future__ import print_function
 import sys
 import argparse
@@ -10,8 +9,6 @@ parser = argparse.ArgumentParser(usage="Load an SRDF file")
 parser.add_argument(
     "file",
     type=argparse.FileType("r"),
-    nargs="?",
-    default=None,
     help="File to load. Use - for stdin",
 )
 parser.add_argument(
@@ -19,10 +16,7 @@ parser.add_argument(
 )
 args = parser.parse_args()
 
-if args.file is None:
-    robot = SRDF.from_parameter_server()
-else:
-    robot = SRDF.from_xml_string(args.file.read())
+robot = SRDF.from_xml_string(args.file.read())
 
 print(robot)
 
