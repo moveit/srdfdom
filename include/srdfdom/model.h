@@ -41,9 +41,14 @@
 #include <string>
 #include <vector>
 #include <utility>
-#include <urdf/model.h>
 #include <memory>
 #include <tinyxml2.h>
+
+#if __has_include(<urdf/model.hpp>)
+#include <urdf/model.hpp>
+#else
+#include <urdf/model.h>
+#endif
 
 #include "visibility_control.h"
 
