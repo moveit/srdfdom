@@ -3,7 +3,7 @@ srdfdom
 
 Parser for the Semantic Robot Description Format (SRDF).
 
-Includes a cpp and a python parser, as well as a cpp writer.
+Includes a C++ and a Python parser, as well as a C++ writer.
 
 ## GitHub Actions - Continuous Integration
 
@@ -26,20 +26,19 @@ Reused for srdf python parser
 
 ## C++ example
 
-test_parser.cpp contains examples how to access the srdf elements from the cpp parser
+`test/test_parser.cpp` contains examples of how to access the SRDF elements from the C++ parser.
 
 ## Python example
 
-test.py contains examples how to access the srdf elements from the python parser
+`test/test.py` contains examples on how to access the SRDF elements from the Python parser.
 
-display_srdf reads a srdf from a file given in command line argument
-or from parameter server (robot_description_semantic) and displays it in a yaml format
-if an output option (-o <filename>) is provided, dumps the xml (re-generated from parsed input xml)
+`scripts/display_srdf` reads SRDF from a file given in a command line argument and displays it in a YAML format.
+If an output option (`-o <filename>`) is provided, it dumps the XML (re-generated from parsed input XML) to file.
 
 example:
 
-    rosrun srdfdom display_srdf test/res/pr2_desc.3.srdf
+    ros2 run srdfdom display_srdf test/resources/pr2_desc.3.srdf
 
 ## Test
 
-    catkin_make run_tests_srdfdom
+    colcon test --packages-select srdfdom
