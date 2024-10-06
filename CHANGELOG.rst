@@ -2,6 +2,28 @@
 Changelog for package srdfdom
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Fix README instructions for ROS 2 (`#130 <https://github.com/moveit/srdfdom/issues/130>`_)
+* Support conditional urdf/model.hpp include (`#127 <https://github.com/moveit/srdfdom/issues/127>`_)
+* Remove rospy usage (`#129 <https://github.com/moveit/srdfdom/issues/129>`_)
+* Add Jazzy to CI (`#128 <https://github.com/moveit/srdfdom/issues/128>`_)
+* Update CMakeLists.txt (`#123 <https://github.com/moveit/srdfdom/issues/123>`_)
+  - minimum cmake version: 3.8
+  - use default C++17
+  Co-authored-by: Robert Haschke <rhaschke@techfak.uni-bielefeld.de>
+* CI: Use clang-format-14
+* CI: update pre-commit tool versions (`#125 <https://github.com/moveit/srdfdom/issues/125>`_)
+* CI: drop Galactic, add Iron
+  Co-authored-by: Robert Haschke <rhaschke@users.noreply.github.com>
+* CI: Update action versions (`#121 <https://github.com/moveit/srdfdom/issues/121>`_)
+  Co-authored-by: Robert Haschke <rhaschke@techfak.uni-bielefeld.de>
+* CI: update actions/checkout to version 3 (`#116 <https://github.com/moveit/srdfdom/issues/116>`_)
+* Update .pre-commit-config.yaml (`#113 <https://github.com/moveit/srdfdom/issues/113>`_)
+* Parse decimals in a locale-independent way (`#108 <https://github.com/moveit/srdfdom/issues/108>`_)
+* Humble and formatting updates (`#107 <https://github.com/moveit/srdfdom/issues/107>`_)
+* Contributors: AndyZe, Robert Haschke, Sebastian Castro, Vatan Aksoy Tezer, mosfet80
+
 2.0.4 (2022-05-09)
 ------------------
 * Parse <disable_default_collisions> and <enable_collisions> tags (#101, from #97)
