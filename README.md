@@ -26,20 +26,19 @@ Reused for srdf python parser
 
 ## C++ example
 
-test_parser.cpp contains examples how to access the srdf elements from the cpp parser
+`test/test_parser.cpp` contains examples how to access the srdf elements from the cpp parser
 
 ## Python example
 
-test.py contains examples how to access the srdf elements from the python parser
+`test/test.py` contains examples how to access the srdf elements from the python parser
 
-display_srdf reads a srdf from a file given in command line argument
-or from parameter server (robot_description_semantic) and displays it in a yaml format
-if an output option (-o <filename>) is provided, dumps the xml (re-generated from parsed input xml)
+`scripts/display_srdf` reads a srdf from a file given in a command line argument and displays it in a yaml format.
+If an output option (`-o <filename>`) is provided, it dumps the xml (re-generated from parsed input xml).
 
 example:
 
-    rosrun srdfdom display_srdf test/res/pr2_desc.3.srdf
+    ros2 run srdfdom display_srdf test/resources/pr2_desc.3.srdf
 
 ## Test
 
-    catkin_make run_tests_srdfdom
+    colcon test --packages-select srdfdom
