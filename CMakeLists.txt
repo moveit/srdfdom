@@ -27,7 +27,7 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 
 target_include_directories(${PROJECT_NAME}
     PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-           $<INSTALL_INTERFACE:include>)
+           $<INSTALL_INTERFACE:include/${PROJECT_NAME}>)
 target_link_libraries(${PROJECT_NAME} PUBLIC tinyxml2::tinyxml2)
 
 # Ament dependencies
