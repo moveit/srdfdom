@@ -2,6 +2,12 @@
 Changelog for package srdfdom
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.0.6 (2024-10-13)
+------------------
+* Fix linking against tinyxml2
+* Install headers into include/srdfdom/srdfdom to make overlays work
+* Contributors: Robert Haschke
+
 2.0.5 (2024-10-06)
 ------------------
 * Fix README instructions for ROS 2 (`#130 <https://github.com/moveit/srdfdom/issues/130>`_)
