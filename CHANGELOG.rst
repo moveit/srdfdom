@@ -2,6 +2,11 @@
 Changelog for package srdfdom
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.0.7 (2024-10-14)
+------------------
+* Fix installing headers
+* Contributors: Robert Haschke
+
 2.0.6 (2024-10-13)
 ------------------
 * Fix linking against tinyxml2
