@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.8)
+cmake_minimum_required(VERSION 3.20)
 project(srdfdom LANGUAGES CXX)
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
@@ -31,10 +31,10 @@ target_include_directories(${PROJECT_NAME}
 target_link_libraries(${PROJECT_NAME} PUBLIC tinyxml2::tinyxml2)
 
 # Ament dependencies
-ament_target_dependencies(${PROJECT_NAME} PUBLIC
+target_link_libraries(${PROJECT_NAME} PUBLIC
   console_bridge
-  urdf
-  urdfdom_headers
+  urdf::urdf
+  urdfdom_headers::urdfdom_headers
 )
 
 install(TARGETS ${PROJECT_NAME}
