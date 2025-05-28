@@ -2,6 +2,11 @@
 Changelog for package srdfdom
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.0.8 (2025-05-28)
+------------------
+* Modernize cmake
+* Contributors: mosfet80
+
 2.0.7 (2024-10-14)
 ------------------
 * Fix installing headers
