@@ -32,7 +32,7 @@ target_link_libraries(${PROJECT_NAME} PUBLIC tinyxml2::tinyxml2)
 
 # Ament dependencies
 target_link_libraries(${PROJECT_NAME} PUBLIC
-  console_bridge
+  console_bridge::console_bridge
   urdf::urdf
   urdfdom_headers::urdfdom_headers
 )
