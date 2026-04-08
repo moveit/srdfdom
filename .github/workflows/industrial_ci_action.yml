@@ -22,14 +22,10 @@ jobs:
             AFTER_RUN_TARGET_TEST: './.ci.prepare_codecov',
             ADDITIONAL_DEBS: 'lcov'
           }
-          - {ROS_DISTRO: humble, ROS_REPO: main, CCOV_UPLOAD: false}
-          - {ROS_DISTRO: humble, ROS_REPO: testing, CCOV_UPLOAD: false}
-          - {ROS_DISTRO: iron, ROS_REPO: main, CCOV_UPLOAD: false}
-          - {ROS_DISTRO: iron, ROS_REPO: testing, CCOV_UPLOAD: false}
-          - {ROS_DISTRO: jazzy, ROS_REPO: main, CCOV_UPLOAD: false}
-          - {ROS_DISTRO: jazzy, ROS_REPO: testing, CCOV_UPLOAD: false}
-          - {ROS_DISTRO: rolling, ROS_REPO: main, CCOV_UPLOAD: false}
           - {ROS_DISTRO: rolling, ROS_REPO: testing, CCOV_UPLOAD: false}
+          - {ROS_DISTRO: humble, ROS_REPO: main, CCOV_UPLOAD: false}
+          - {ROS_DISTRO: jazzy, ROS_REPO: main, CCOV_UPLOAD: false}
+          - {ROS_DISTRO: kilted, ROS_REPO: main, CCOV_UPLOAD: false}
     env:
       CCACHE_DIR: /home/runner/.ccache
       BASEDIR: .base
@@ -38,8 +34,8 @@ jobs:
     name: ${{ matrix.env.ROS_DISTRO }}-${{ matrix.env.ROS_REPO }}${{ matrix.env.CCOV_UPLOAD && ' + ccov' || ''}}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/cache@v4
+      - uses: actions/checkout@v6
+      - uses: actions/cache@v5
         with:
           path: ${{ env.CCACHE_DIR }}
           key: ccache-${{ matrix.env.ROS_DISTRO }}-${{ matrix.env.ROS_REPO }}-${{ github.sha }}
@@ -47,12 +43,12 @@ jobs:
             ccache-${{ matrix.env.ROS_DISTRO }}-${{ matrix.env.ROS_REPO }}
       - uses: 'ros-industrial/industrial_ci@master'
         env: ${{ matrix.env }}
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: failure()
         with:
           name: test-results
           path: ${{ env.BASEDIR }}/target_ws/**/test_results/**/*.xml
-      - uses: codecov/codecov-action@v4
+      - uses: codecov/codecov-action@v6
         if: ${{ matrix.env.CCOV_UPLOAD }}
         with:
           files: ${{ env.BASEDIR }}/coverage.info
