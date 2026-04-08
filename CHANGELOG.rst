@@ -2,6 +2,12 @@
 Changelog for package srdfdom
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.0.9 (2026-04-08)
+------------------
+* Use tinyxml2 package instead of deprecated tinyxml2_vendor (`#137 <https://github.com/ros-planning/srdfdom/issues/137>`_)
+* Use correct target for console_bridge (`#136 <https://github.com/ros-planning/srdfdom/issues/136>`_)
+* Contributors: Daisuke Nishimatsu, Robert Haschke, mosfet80
+
 2.0.8 (2025-05-28)
 ------------------
 * Modernize cmake
