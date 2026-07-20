@@ -36,7 +36,7 @@
 
 #include <srdfdom/model.h>
 #include <srdfdom/srdf_writer.h>
-#include <urdf_parser/urdf_parser.h>
+#include <urdfdom/urdf_parser/urdf_parser.h>
 #include <fstream>
 #include <stdexcept>
 #include <gtest/gtest.h>
